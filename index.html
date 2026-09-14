@@ -1,0 +1,4644 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+
+<title>恋爱签</title>
+
+<meta name="theme-color" content="#fcecf3">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+<style>
+
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html,
+body{
+    margin:0;
+    padding:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "PingFang SC",
+        "Microsoft YaHei",
+        sans-serif;
+    color:#5f4652;
+}
+
+body{
+    background:
+        radial-gradient(
+            circle at 50% -10%,
+            #ffffff 0%,
+            #fff8fb 35%,
+            #fcecf3 70%,
+            #f8e3ed 100%
+        );
+}
+
+button,
+input,
+textarea{
+    font-family:inherit;
+}
+
+button{
+    cursor:pointer;
+    -webkit-user-select:none;
+    user-select:none;
+    touch-action:manipulation;
+}
+
+.page{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+}
+
+
+/* =====================================================
+   背景
+   ===================================================== */
+
+.glow{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(55px);
+    pointer-events:none;
+}
+
+.glow.one{
+    width:180px;
+    height:180px;
+    background:rgba(255,190,211,.27);
+    top:-60px;
+    left:-50px;
+}
+
+.glow.two{
+    width:220px;
+    height:220px;
+    background:rgba(248,211,225,.28);
+    right:-80px;
+    top:25%;
+}
+
+.glow.three{
+    width:190px;
+    height:190px;
+    background:rgba(255,220,231,.30);
+    bottom:-80px;
+    left:20%;
+}
+
+.heart{
+    position:absolute;
+    color:rgba(213,130,158,.15);
+    font-family:serif;
+    pointer-events:none;
+    user-select:none;
+}
+
+.heart.h1{
+    top:13%;
+    left:8%;
+    font-size:20px;
+    transform:rotate(-15deg);
+}
+
+.heart.h2{
+    top:27%;
+    right:9%;
+    font-size:15px;
+    transform:rotate(18deg);
+}
+
+.heart.h3{
+    bottom:22%;
+    left:10%;
+    font-size:17px;
+    transform:rotate(12deg);
+}
+
+.heart.h4{
+    bottom:12%;
+    right:12%;
+    font-size:22px;
+    transform:rotate(-12deg);
+}
+
+
+/* =====================================================
+   首页
+   ===================================================== */
+
+#homePage{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:
+        calc(env(safe-area-inset-top) + 45px)
+        24px
+        calc(env(safe-area-inset-bottom) + 28px);
+}
+
+.home-title{
+    text-align:center;
+    flex-shrink:0;
+}
+
+.home-title .en{
+    font-family:Georgia,serif;
+    font-size:11px;
+    letter-spacing:4px;
+    color:#c58ca2;
+    margin-bottom:9px;
+}
+
+.home-title h1{
+    margin:0;
+    font-family:
+        "STKaiti",
+        "KaiTi",
+        "FZKai-Z03",
+        serif;
+    font-size:40px;
+    font-weight:400;
+    letter-spacing:7px;
+    color:#654957;
+}
+
+.home-title p{
+    margin:12px 0 0;
+    font-family:
+        "STKaiti",
+        "KaiTi",
+        serif;
+    font-size:14px;
+    letter-spacing:1px;
+    color:#a77c8d;
+}
+
+.home-card-area{
+    flex:1;
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:0;
+}
+
+.card-stack{
+    position:relative;
+    width:190px;
+    height:270px;
+    animation:cardFloat 4s ease-in-out infinite;
+}
+
+.stack-card{
+    position:absolute;
+    width:190px;
+    height:270px;
+    border-radius:22px;
+    box-shadow:0 18px 45px rgba(143,84,108,.13);
+}
+
+.stack-card.back1{
+    background:linear-gradient(145deg,#f3d8e3,#edd0dd);
+    transform:translate(-12px,7px) rotate(-7deg);
+}
+
+.stack-card.back2{
+    background:linear-gradient(145deg,#f8e8ee,#f2dce6);
+    transform:translate(12px,5px) rotate(7deg);
+}
+
+.main-card{
+    position:absolute;
+    inset:0;
+    border-radius:22px;
+    background:
+        radial-gradient(
+            circle at 20% 15%,
+            rgba(255,255,255,.9),
+            transparent 32%
+        ),
+        linear-gradient(145deg,#fffdfd,#fdf0f5);
+    box-shadow:
+        0 20px 50px rgba(143,84,108,.17),
+        inset 0 0 0 1px rgba(255,255,255,.9);
+    overflow:hidden;
+}
+
+.main-card:before{
+    content:"";
+    position:absolute;
+    inset:10px;
+    border:1px solid rgba(193,132,155,.25);
+    border-radius:16px;
+    pointer-events:none;
+}
+
+.corner{
+    position:absolute;
+    color:#d7a4b8;
+    font-family:serif;
+    font-size:13px;
+}
+
+.corner.c1{top:18px;left:18px}
+.corner.c2{top:18px;right:18px}
+.corner.c3{bottom:18px;left:18px}
+.corner.c4{bottom:18px;right:18px}
+
+.card-center{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    width:82px;
+    height:82px;
+    border-radius:50%;
+    background:rgba(246,214,226,.45);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:34px;
+    color:#d38da9;
+}
+
+.main-card .love-card-title{
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:46px;
+    text-align:center;
+    font-family:"STKaiti","KaiTi",serif;
+    font-size:24px;
+    letter-spacing:5px;
+    color:#765261;
+}
+
+.main-card .love-card-sub{
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:23px;
+    text-align:center;
+    font-family:Georgia,serif;
+    font-size:7px;
+    letter-spacing:2px;
+    color:#c08aa0;
+}
+
+@keyframes cardFloat{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-8px)}
+}
+
+.home-actions{
+    width:100%;
+    flex-shrink:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:15px;
+}
+
+.primary-btn{
+    width:min(280px,86vw);
+    height:52px;
+    border:none;
+    border-radius:28px;
+    background:linear-gradient(135deg,#d993ad,#c77f9b);
+    color:white;
+    font-size:15px;
+    letter-spacing:2px;
+    box-shadow:0 10px 25px rgba(190,113,143,.22);
+}
+
+.primary-btn:active{
+    transform:scale(.97);
+}
+
+.secondary-btn{
+    border:none;
+    background:transparent;
+    color:#ad7c8e;
+    font-size:13px;
+    letter-spacing:1px;
+    padding:5px 12px;
+}
+
+
+/* =====================================================
+   通用页面
+   ===================================================== */
+
+.sub-page{
+    display:none;
+    flex-direction:column;
+    padding:
+        calc(env(safe-area-inset-top) + 15px)
+        18px
+        calc(env(safe-area-inset-bottom) + 20px);
+}
+
+.page-header{
+    position:relative;
+    width:100%;
+    height:48px;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.page-header-title{
+    font-family:"STKaiti","KaiTi",serif;
+    font-size:21px;
+    letter-spacing:4px;
+    color:#684c59;
+}
+
+
+/* =====================================================
+   我的卡牌
+   ===================================================== */
+
+#collectionPage{
+    background:
+        radial-gradient(
+            circle at 50% -10%,
+            #ffffff 0%,
+            #fff8fb 35%,
+            #fcecf3 70%,
+            #f8e3ed 100%
+        );
+}
+
+.collection-intro{
+    flex-shrink:0;
+    margin-top:10px;
+    padding:0 5px;
+}
+
+.collection-intro h2{
+    margin:0;
+    font-size:20px;
+    font-weight:500;
+    color:#684b58;
+}
+
+.collection-intro p{
+    margin:7px 0 0;
+    font-size:12px;
+    color:#a98a96;
+}
+
+.category-list{
+    flex:1;
+    min-height:0;
+    overflow-y:auto;
+    padding:18px 2px 10px;
+    scrollbar-width:none;
+}
+
+.category-list::-webkit-scrollbar{
+    display:none;
+}
+
+.category-item{
+    width:100%;
+    min-height:72px;
+    border:1px solid rgba(213,177,191,.25);
+    border-radius:16px;
+    background:rgba(255,255,255,.72);
+    margin-bottom:10px;
+    padding:12px 14px;
+    display:flex;
+    align-items:center;
+    text-align:left;
+    box-shadow:0 5px 18px rgba(143,84,108,.05);
+    transition:transform .15s ease,background .15s ease;
+}
+
+.category-item:active{
+    transform:scale(.985);
+    background:rgba(255,255,255,.9);
+}
+
+.category-icon{
+    width:42px;
+    height:42px;
+    border-radius:13px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:21px;
+    flex-shrink:0;
+    margin-right:12px;
+}
+
+.category-item:nth-child(1) .category-icon{background:#edf6dc}
+.category-item:nth-child(2) .category-icon{background:#f8e5ed}
+.category-item:nth-child(3) .category-icon{background:#f9e4df}
+.category-item:nth-child(4) .category-icon{background:#e6edf8}
+.category-item:nth-child(5) .category-icon{background:#ece5f2}
+.category-item:nth-child(6) .category-icon{background:#fff0d7}
+
+.category-info{
+    flex:1;
+    min-width:0;
+}
+
+.category-name{
+    font-size:16px;
+    font-weight:500;
+    color:#6b4e5b;
+}
+
+.category-count{
+    margin-top:5px;
+    font-size:11px;
+    color:#ad929d;
+}
+
+.category-arrow{
+    color:#c391a4;
+    font-size:22px;
+    margin-left:8px;
+}
+
+.collection-bottom{
+    flex-shrink:0;
+    text-align:center;
+    padding:5px 0 3px;
+}
+
+.collection-total{
+    font-size:10px;
+    color:#b99aa7;
+    letter-spacing:1px;
+}
+
+
+/* =====================================================
+   编辑
+   ===================================================== */
+
+#editorPage{
+    display:none;
+    flex-direction:column;
+}
+
+.editor-summary{
+    flex-shrink:0;
+    margin:10px 0 14px;
+    padding-left:3px;
+}
+
+.editor-summary-top{
+    display:flex;
+    align-items:center;
+}
+
+.editor-summary-icon{
+    width:42px;
+    height:42px;
+    border-radius:13px;
+    background:rgba(255,255,255,.72);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+    margin-right:10px;
+}
+
+.editor-summary-name{
+    font-size:20px;
+    font-weight:500;
+    color:#684c59;
+}
+
+.editor-summary-count{
+    margin-top:4px;
+    font-size:11px;
+    color:#ad929d;
+}
+
+.add-content-box{
+    flex-shrink:0;
+    width:100%;
+    background:rgba(255,255,255,.72);
+    border:1px solid rgba(213,177,191,.25);
+    border-radius:17px;
+    padding:12px;
+    box-shadow:0 5px 18px rgba(143,84,108,.05);
+}
+
+.content-input{
+    display:block;
+    width:100%;
+    height:150px;
+    min-height:150px;
+    max-height:240px;
+    resize:vertical;
+    border:1px solid rgba(208,173,188,.25);
+    outline:none;
+    border-radius:13px;
+    background:#fbf3f7;
+    padding:13px;
+    font-size:15px;
+    line-height:1.75;
+    color:#705563;
+}
+
+.content-input:focus{
+    border-color:rgba(195,132,158,.45);
+    background:#fffafd;
+}
+
+.content-input::placeholder{
+    color:#bda5af;
+}
+
+.add-content-row{
+    display:flex;
+    justify-content:flex-end;
+    margin-top:10px;
+}
+
+.add-btn{
+    height:40px;
+    padding:0 22px;
+    border:none;
+    border-radius:20px;
+    background:linear-gradient(135deg,#d993ad,#c77f9b);
+    color:white;
+    font-size:13px;
+    box-shadow:0 6px 15px rgba(190,113,143,.16);
+}
+
+.add-btn:active{
+    transform:scale(.96);
+}
+
+.content-list{
+    flex:1;
+    min-height:0;
+    overflow-y:auto;
+    margin-top:13px;
+    padding:0 1px 20px;
+    scrollbar-width:none;
+}
+
+.content-list::-webkit-scrollbar{
+    display:none;
+}
+
+.content-empty{
+    padding-top:55px;
+    text-align:center;
+    color:#b99da8;
+}
+
+.content-empty-icon{
+    font-size:27px;
+    margin-bottom:9px;
+}
+
+.content-empty-text{
+    font-size:12px;
+    line-height:1.8;
+}
+
+
+/* =====================================================
+   内容列表
+   ===================================================== */
+
+.content-item{
+    width:100%;
+    min-height:46px;
+    margin-bottom:7px;
+    padding:8px 8px 8px 9px;
+
+    display:grid;
+    grid-template-columns:32px minmax(0,1fr) 30px;
+    align-items:center;
+    column-gap:5px;
+
+    background:rgba(255,255,255,.72);
+    border:1px solid rgba(213,177,191,.2);
+    border-radius:11px;
+
+    box-shadow:0 3px 10px rgba(143,84,108,.035);
+}
+
+.content-number{
+    width:32px;
+    min-width:32px;
+    height:26px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:8px;
+    background:rgba(246,224,233,.55);
+
+    color:#ad7d90;
+    font-size:12px;
+    font-weight:500;
+    line-height:1;
+
+    white-space:nowrap;
+}
+
+.content-text{
+    min-width:0;
+    display:block;
+
+    font-size:14px;
+    line-height:1.55;
+    color:#735764;
+
+    white-space:pre-wrap;
+    word-break:break-word;
+
+    cursor:pointer;
+    user-select:none;
+    -webkit-user-select:none;
+}
+
+.content-text:active{
+    opacity:.7;
+}
+
+.item-actions{
+    width:30px;
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.item-action.delete-action{
+    width:28px;
+    height:28px;
+
+    border:1px solid rgba(190,143,160,.35);
+    border-radius:7px;
+
+    background:rgba(255,248,251,.9);
+    color:#b78396;
+
+    font-size:18px;
+    font-weight:300;
+    line-height:1;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:0;
+}
+
+.item-action.delete-action:active{
+    transform:scale(.9);
+    background:#f8e8ee;
+}
+
+
+/* =====================================================
+   删除弹窗
+   ===================================================== */
+
+.delete-modal{
+    position:fixed;
+    inset:0;
+    z-index:400;
+
+    display:none;
+    align-items:center;
+    justify-content:center;
+
+    background:rgba(81,48,62,.24);
+
+    backdrop-filter:blur(7px);
+    -webkit-backdrop-filter:blur(7px);
+
+    padding:25px;
+}
+
+.delete-modal.show{
+    display:flex;
+}
+
+.delete-box{
+    width:180px;
+    background:linear-gradient(145deg,#fffefe,#f9edf2);
+    border-radius:20px;
+    padding:10px;
+
+    box-shadow:0 20px 50px rgba(75,38,53,.22);
+
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.delete-confirm-btn,
+.delete-cancel-btn{
+    width:100%;
+    height:42px;
+    border-radius:14px;
+    font-size:14px;
+    border:1px solid rgba(193,132,155,.22);
+    background:white;
+    color:#ad7c8e;
+}
+
+.delete-confirm-btn{
+    border:none;
+    color:white;
+    background:linear-gradient(135deg,#d993ad,#c77f9b);
+}
+
+.delete-confirm-btn:active,
+.delete-cancel-btn:active{
+    transform:scale(.97);
+}
+
+
+/* =====================================================
+   游戏
+   ===================================================== */
+
+#drawPage{
+    display:none;
+    flex-direction:column;
+    padding:
+        calc(env(safe-area-inset-top) + 20px)
+        18px
+        calc(env(safe-area-inset-bottom) + 24px);
+}
+
+.draw-header{
+    position:relative;
+    width:100%;
+    height:42px;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.draw-header-title{
+    font-family:"STKaiti","KaiTi",serif;
+    font-size:21px;
+    letter-spacing:4px;
+    color:#684c59;
+}
+
+.draw-intro{
+    text-align:center;
+    flex-shrink:0;
+    margin-top:17px;
+}
+
+.draw-intro h2{
+    margin:0;
+    font-family:"STKaiti","KaiTi",serif;
+    font-size:23px;
+    font-weight:400;
+    letter-spacing:3px;
+    color:#684b58;
+}
+
+.draw-intro p{
+    margin:8px 0 0;
+    font-size:12px;
+    letter-spacing:1px;
+    color:#ad8493;
+}
+
+.cards-board{
+    width:100%;
+    flex:1;
+    min-height:0;
+
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    grid-template-rows:repeat(2,auto);
+
+    gap:22px 9px;
+
+    align-content:center;
+    justify-items:center;
+
+    padding:8px 5px;
+}
+
+.love-card{
+    position:relative;
+    width:100%;
+    max-width:108px;
+    aspect-ratio:.705;
+
+    border-radius:17px;
+    border:0;
+    padding:0;
+
+    background:none;
+
+    perspective:900px;
+
+    transition:
+        transform .25s ease,
+        opacity .25s ease;
+}
+
+.love-card:active{
+    transform:scale(.94);
+}
+
+.love-card-inner{
+    position:absolute;
+    inset:0;
+    border-radius:17px;
+
+    transform-style:preserve-3d;
+
+    transition:
+        transform .65s cubic-bezier(.2,.8,.2,1);
+}
+
+.love-card.flipped .love-card-inner{
+    transform:rotateY(180deg);
+}
+
+.card-face{
+    position:absolute;
+    inset:0;
+
+    border-radius:17px;
+
+    backface-visibility:hidden;
+    -webkit-backface-visibility:hidden;
+
+    overflow:hidden;
+}
+
+.card-back{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+
+    box-shadow:0 10px 25px rgba(130,75,98,.13);
+}
+
+.card-back:before{
+    content:"";
+    position:absolute;
+    inset:7px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,.48);
+    pointer-events:none;
+}
+
+.back-symbol{
+    font-family:Georgia,serif;
+    font-size:27px;
+    color:rgba(255,255,255,.88);
+    margin-bottom:10px;
+}
+
+.back-label{
+    font-family:Georgia,serif;
+    font-size:7px;
+    letter-spacing:2px;
+    color:rgba(255,255,255,.8);
+}
+
+.card-color-1 .card-back{
+    background:linear-gradient(145deg,#B7E35A,#8FBE35);
+}
+
+.card-color-2 .card-back{
+    background:linear-gradient(145deg,#B84A3A,#8F3028);
+}
+
+.card-color-3 .card-back{
+    background:linear-gradient(145deg,#3FBF7F,#238A5B);
+}
+
+.card-color-4 .card-back{
+    background:linear-gradient(145deg,#C49A3A,#8F6A20);
+}
+
+.card-color-5 .card-back{
+    background:linear-gradient(145deg,#81D8D0,#49B8B0);
+}
+
+.card-color-6 .card-back{
+    background:linear-gradient(145deg,#7A5140,#4E3025);
+}
+
+.card-front{
+    transform:rotateY(180deg);
+
+    background:linear-gradient(145deg,#fffefe,#faedf2);
+
+    border:1px solid rgba(196,132,155,.2);
+
+    box-shadow:0 10px 25px rgba(130,75,98,.12);
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+
+    padding:15px 10px;
+}
+
+.card-front:before{
+    content:"";
+    position:absolute;
+    inset:6px;
+    border:1px solid rgba(193,132,155,.18);
+    border-radius:12px;
+    pointer-events:none;
+}
+
+.card-type{
+    position:relative;
+    font-size:8px;
+    letter-spacing:2px;
+    color:#c18ca1;
+    margin-top:3px;
+}
+
+.card-icon{
+    position:relative;
+    font-size:25px;
+    margin-top:15px;
+}
+
+.card-name{
+    position:relative;
+    margin-top:8px;
+
+    font-family:"STKaiti","KaiTi",serif;
+    font-size:17px;
+    letter-spacing:2px;
+    color:#72505e;
+}
+
+
+/* =====================================================
+   洗牌
+   ===================================================== */
+
+.shuffle-area{
+    flex-shrink:0;
+    height:48px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    opacity:0;
+    pointer-events:none;
+
+    transform:translateY(8px);
+
+    transition:
+        opacity .35s ease,
+        transform .35s ease;
+}
+
+.shuffle-area.show{
+    opacity:1;
+    pointer-events:auto;
+    transform:translateY(0);
+}
+
+.shuffle-btn{
+    height:40px;
+    min-width:120px;
+    padding:0 25px;
+
+    border:1px solid rgba(193,132,155,.28);
+    border-radius:22px;
+
+    background:rgba(255,255,255,.62);
+
+    color:#a87387;
+    font-size:13px;
+    letter-spacing:2px;
+
+    box-shadow:0 7px 20px rgba(150,90,112,.08);
+}
+
+.shuffle-btn:active{
+    transform:scale(.94);
+}
+
+
+/* =====================================================
+   大卡牌
+   ===================================================== */
+
+.card-overlay{
+    position:fixed;
+    inset:0;
+    z-index:100;
+
+    display:none;
+
+    align-items:center;
+    justify-content:center;
+
+    background:rgba(81,48,62,.28);
+
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+
+    opacity:0;
+
+    transition:opacity .28s ease;
+
+    padding:
+        calc(env(safe-area-inset-top) + 25px)
+        20px
+        calc(env(safe-area-inset-bottom) + 25px);
+}
+
+.card-overlay.show{
+    opacity:1;
+}
+
+.big-card-wrap{
+    position:relative;
+
+    width:min(330px,86vw);
+    height:min(500px,76vh);
+    min-height:400px;
+
+    perspective:1400px;
+
+    transform:scale(.58) rotate(-5deg);
+    opacity:0;
+
+    z-index:1;
+}
+
+.card-overlay.show .big-card-wrap{
+    animation:
+        cardAppear .65s cubic-bezier(.16,1,.3,1) forwards;
+}
+
+.card-overlay.instant .big-card-wrap{
+    animation:none;
+    transform:scale(1) rotate(0deg);
+    opacity:1;
+}
+
+@keyframes cardAppear{
+    0%{
+        transform:scale(.55) rotate(-8deg);
+        opacity:0;
+    }
+    35%{
+        transform:scale(1.08) rotate(8deg);
+        opacity:1;
+    }
+    60%{
+        transform:scale(.96) rotate(-5deg);
+    }
+    78%{
+        transform:scale(1.02) rotate(3deg);
+    }
+    100%{
+        transform:scale(1) rotate(0deg);
+        opacity:1;
+    }
+}
+
+.big-card{
+    position:absolute;
+    inset:0;
+
+    transform-style:preserve-3d;
+
+    border-radius:27px;
+
+    transition:
+        transform .85s cubic-bezier(.2,.75,.2,1);
+}
+
+.big-card.reveal{
+    transform:rotateY(180deg);
+}
+
+.big-face{
+    position:absolute;
+    inset:0;
+
+    border-radius:27px;
+    overflow:hidden;
+
+    backface-visibility:hidden;
+    -webkit-backface-visibility:hidden;
+}
+
+.big-back{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+
+    box-shadow:0 30px 70px rgba(75,38,53,.3);
+}
+
+.big-back:before{
+    content:"";
+    position:absolute;
+    inset:12px;
+    border-radius:20px;
+    border:1px solid rgba(255,255,255,.48);
+    pointer-events:none;
+}
+
+.big-back:after{
+    content:"";
+    position:absolute;
+    inset:21px;
+    border-radius:16px;
+    border:1px solid rgba(255,255,255,.22);
+    pointer-events:none;
+}
+
+.big-back.card-color-1{
+    background:linear-gradient(145deg,#B7E35A,#8FBE35);
+}
+
+.big-back.card-color-2{
+    background:linear-gradient(145deg,#B84A3A,#8F3028);
+}
+
+.big-back.card-color-3{
+    background:linear-gradient(145deg,#3FBF7F,#238A5B);
+}
+
+.big-back.card-color-4{
+    background:linear-gradient(145deg,#C49A3A,#8F6A20);
+}
+
+.big-back.card-color-5{
+    background:linear-gradient(145deg,#81D8D0,#49B8B0);
+}
+
+.big-back.card-color-6{
+    background:linear-gradient(145deg,#7A5140,#4E3025);
+}
+
+.big-symbol{
+    position:relative;
+    width:105px;
+    height:105px;
+
+    border-radius:50%;
+    background:rgba(255,255,255,.17);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:white;
+    font-size:45px;
+}
+
+.big-back-title{
+    position:relative;
+    margin-top:24px;
+
+    color:white;
+
+    font-family:"STKaiti","KaiTi",serif;
+    font-size:25px;
+    letter-spacing:6px;
+}
+
+.big-back-en{
+    position:relative;
+    margin-top:9px;
+
+    font-family:Georgia,serif;
+    font-size:8px;
+    letter-spacing:3px;
+    color:rgba(255,255,255,.78);
+}
+
+.big-front{
+    transform:rotateY(180deg);
+
+    background:
+        radial-gradient(
+            circle at 15% 10%,
+            rgba(255,255,255,.95),
+            transparent 30%
+        ),
+        linear-gradient(145deg,#fffefe,#f9edf2);
+
+    box-shadow:0 30px 70px rgba(75,38,53,.3);
+
+    padding:24px 22px 22px;
+
+    display:flex;
+    flex-direction:column;
+}
+
+.big-front:before{
+    content:"";
+    position:absolute;
+    inset:10px;
+    border-radius:20px;
+    border:1px solid rgba(193,132,155,.22);
+    pointer-events:none;
+}
+
+.big-corner{
+    position:absolute;
+    color:#d5a0b4;
+    font-family:Georgia,serif;
+    font-size:15px;
+    pointer-events:none;
+}
+
+.big-corner.tl{top:20px;left:20px}
+.big-corner.tr{top:20px;right:20px}
+.big-corner.bl{bottom:20px;left:20px}
+.big-corner.br{bottom:20px;right:20px}
+
+.big-content{
+    position:relative;
+    z-index:2;
+
+    flex:1;
+    min-height:0;
+
+    display:flex;
+    flex-direction:column;
+}
+
+.big-type{
+    flex-shrink:0;
+    text-align:center;
+    margin-top:4px;
+
+    font-family:Georgia,serif;
+    font-size:9px;
+    letter-spacing:3px;
+    color:#c08ca0;
+}
+
+.big-icon{
+    flex-shrink:0;
+    text-align:center;
+    font-size:39px;
+    margin-top:19px;
+}
+
+.big-title{
+    flex-shrink:0;
+    text-align:center;
+    margin-top:10px;
+
+    font-family:"STKaiti","KaiTi",serif;
+    font-size:29px;
+    font-weight:400;
+    letter-spacing:4px;
+    color:#694c58;
+}
+
+.big-divider{
+    flex-shrink:0;
+    width:45px;
+    height:1px;
+    background:#dcb4c3;
+    margin:15px auto 13px;
+}
+
+.big-description{
+    flex:1;
+    min-height:0;
+
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+
+    padding:0 8px 10px;
+
+    text-align:center;
+
+    font-size:15px;
+    line-height:2;
+    letter-spacing:.5px;
+
+    color:#795d68;
+
+    scrollbar-width:none;
+}
+
+.big-description::-webkit-scrollbar{
+    display:none;
+}
+
+
+/* =====================================================
+   倒计时按钮
+   ===================================================== */
+
+.timer-action{
+    flex-shrink:0;
+
+    display:none;
+
+    justify-content:center;
+    align-items:center;
+
+    padding:5px 0 7px;
+}
+
+.timer-action.show{
+    display:flex;
+}
+
+.timer-start-btn{
+    min-width:155px;
+    height:38px;
+
+    padding:0 18px;
+
+    border:1px solid rgba(193,132,155,.25);
+    border-radius:21px;
+
+    background:rgba(255,255,255,.78);
+
+    color:#aa7187;
+
+    font-size:12px;
+    letter-spacing:1px;
+
+    box-shadow:0 6px 16px rgba(150,90,112,.08);
+}
+
+.timer-start-btn:active{
+    transform:scale(.96);
+    background:#fff;
+}
+
+.big-footer{
+    flex-shrink:0;
+
+    text-align:center;
+
+    font-family:Georgia,serif;
+    font-size:8px;
+    letter-spacing:2px;
+    color:#c49aaa;
+
+    padding-top:4px;
+}
+
+.close-hint{
+    position:fixed;
+    z-index:101;
+
+    left:0;
+    right:0;
+
+    bottom:calc(env(safe-area-inset-bottom) + 18px);
+
+    text-align:center;
+
+    color:rgba(255,255,255,.9);
+
+    font-size:11px;
+    letter-spacing:1px;
+
+    opacity:0;
+    transition:opacity .3s ease;
+
+    pointer-events:none;
+}
+
+.card-overlay.show .close-hint{
+    opacity:1;
+}
+
+.big-card-wrap.spinning{
+    animation:cardSpin 1.15s cubic-bezier(.4,.05,.6,.95);
+}
+
+@keyframes cardSpin{
+    0%{
+        transform:scale(.75) rotate(0deg);
+    }
+    20%{
+        transform:scale(.88) rotate(70deg);
+    }
+    42%{
+        transform:scale(.94) rotate(155deg);
+    }
+    65%{
+        transform:scale(.98) rotate(245deg);
+    }
+    84%{
+        transform:scale(1.02) rotate(315deg);
+    }
+    100%{
+        transform:scale(1) rotate(360deg);
+    }
+}
+
+
+/* =====================================================
+   倒计时面板
+   ===================================================== */
+
+.timer-overlay{
+    position:fixed;
+    inset:0;
+
+    z-index:200;
+
+    display:none;
+
+    align-items:center;
+    justify-content:center;
+
+    padding:
+        calc(env(safe-area-inset-top) + 25px)
+        20px
+        calc(env(safe-area-inset-bottom) + 25px);
+
+    background:rgba(70,43,54,.30);
+
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+}
+
+.timer-overlay.show{
+    display:flex;
+}
+
+.timer-box{
+    width:min(285px,82vw);
+
+    padding:25px 22px 20px;
+
+    border-radius:25px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.98),
+            rgba(250,237,243,.98)
+        );
+
+    border:1px solid rgba(255,255,255,.9);
+
+    box-shadow:
+        0 25px 70px rgba(65,38,50,.25);
+
+    text-align:center;
+
+    animation:
+        timerBoxIn .35s
+        cubic-bezier(.16,1,.3,1);
+}
+
+@keyframes timerBoxIn{
+    from{
+        opacity:0;
+        transform:translateY(18px) scale(.94);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+    }
+}
+
+.timer-kicker{
+    font-family:Georgia,serif;
+    font-size:8px;
+    letter-spacing:3px;
+    color:#c08ca0;
+}
+
+.timer-title{
+    margin-top:7px;
+
+    font-family:"STKaiti","KaiTi",serif;
+    font-size:21px;
+    letter-spacing:3px;
+    color:#694c58;
+}
+
+.timer-circle{
+    width:150px;
+    height:150px;
+
+    margin:20px auto 18px;
+
+    border-radius:50%;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+
+    background:
+        radial-gradient(
+            circle,
+            #fffdfd 0%,
+            #fcecf3 72%,
+            #f6dce7 100%
+        );
+
+    border:1px solid rgba(205,154,174,.25);
+
+    box-shadow:
+        inset 0 0 25px rgba(211,141,169,.10),
+        0 8px 25px rgba(150,90,112,.08);
+}
+
+.timer-time{
+    width:100%;
+
+    font-family:
+        "SFMono-Regular",
+        Consolas,
+        "Liberation Mono",
+        monospace;
+
+    font-size:35px;
+    line-height:1;
+
+    font-variant-numeric:tabular-nums;
+    font-feature-settings:"tnum";
+
+    letter-spacing:1px;
+
+    color:#72505e;
+
+    white-space:nowrap;
+}
+
+.timer-remaining{
+    margin-top:9px;
+
+    font-size:10px;
+    letter-spacing:2px;
+    color:#b58b9a;
+}
+
+.timer-cancel-btn{
+    width:100%;
+    height:42px;
+
+    border-radius:22px;
+
+    border:1px solid rgba(193,132,155,.25);
+
+    background:white;
+
+    color:#ad7c8e;
+
+    font-size:13px;
+    letter-spacing:1px;
+}
+
+.timer-cancel-btn:active{
+    transform:scale(.97);
+}
+
+
+/* =====================================================
+   编辑弹窗
+   ===================================================== */
+
+.edit-modal{
+    position:fixed;
+    inset:0;
+    z-index:300;
+
+    display:none;
+
+    align-items:center;
+    justify-content:center;
+
+    background:rgba(81,48,62,.25);
+
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+
+    padding:25px;
+}
+
+.edit-modal.show{
+    display:flex;
+}
+
+.edit-box{
+    width:min(340px,90vw);
+
+    background:linear-gradient(145deg,#fffefe,#f9edf2);
+
+    border-radius:24px;
+
+    padding:22px;
+
+    box-shadow:0 25px 60px rgba(75,38,53,.22);
+}
+
+.edit-title{
+    text-align:center;
+
+    font-size:20px;
+    font-weight:500;
+
+    color:#684c59;
+
+    margin-bottom:15px;
+}
+
+.edit-textarea{
+    width:100%;
+    min-height:150px;
+
+    resize:none;
+
+    border:1px solid rgba(208,173,188,.25);
+    outline:none;
+
+    border-radius:14px;
+
+    background:#fbf3f7;
+
+    padding:13px;
+
+    color:#705563;
+
+    font-size:14px;
+    line-height:1.7;
+}
+
+.edit-actions{
+    display:flex;
+    gap:10px;
+    margin-top:14px;
+}
+
+.modal-btn{
+    flex:1;
+    height:42px;
+
+    border-radius:22px;
+
+    border:1px solid rgba(193,132,155,.25);
+
+    background:white;
+
+    color:#ad7c8e;
+
+    font-size:13px;
+}
+
+.modal-btn.primary{
+    border:none;
+    color:white;
+    background:linear-gradient(135deg,#d993ad,#c77f9b);
+}
+
+.modal-btn:active{
+    transform:scale(.97);
+}
+
+
+/* =====================================================
+   Toast
+   ===================================================== */
+
+.toast{
+    position:fixed;
+    z-index:500;
+
+    left:50%;
+
+    bottom:calc(env(safe-area-inset-bottom) + 75px);
+
+    transform:translate(-50%,10px);
+
+    padding:10px 17px;
+
+    border-radius:22px;
+
+    background:rgba(80,53,64,.86);
+
+    color:white;
+
+    font-size:12px;
+    letter-spacing:.5px;
+
+    opacity:0;
+    pointer-events:none;
+
+    transition:
+        opacity .25s ease,
+        transform .25s ease;
+
+    white-space:nowrap;
+}
+
+.toast.show{
+    opacity:1;
+    transform:translate(-50%,0);
+}
+
+
+/* =====================================================
+   小屏
+   ===================================================== */
+
+@media(max-height:650px){
+
+    #drawPage{
+        padding-top:
+            calc(env(safe-area-inset-top) + 12px);
+    }
+
+    .draw-intro{
+        margin-top:8px;
+    }
+
+    .draw-intro h2{
+        font-size:20px;
+    }
+
+    .draw-intro p{
+        margin-top:5px;
+        font-size:10px;
+    }
+
+    .cards-board{
+        gap:16px 7px;
+        padding-top:5px;
+        padding-bottom:5px;
+    }
+
+    .love-card{
+        max-width:94px;
+    }
+
+    .big-card-wrap{
+        height:min(470px,78vh);
+        min-height:370px;
+    }
+
+}
+
+@media(max-width:360px){
+
+    .cards-board{
+        gap:15px 5px;
+    }
+
+    .love-card{
+        max-width:90px;
+    }
+
+    .big-card-wrap{
+        width:88vw;
+    }
+
+    .big-description{
+        font-size:14px;
+    }
+
+    .timer-circle{
+        width:135px;
+        height:135px;
+    }
+
+    .timer-time{
+        font-size:32px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+
+<!-- =====================================================
+     首页
+     ===================================================== -->
+
+<section class="page" id="homePage">
+
+    <div class="glow one"></div>
+    <div class="glow two"></div>
+    <div class="glow three"></div>
+
+    <div class="heart h1">♡</div>
+    <div class="heart h2">♡</div>
+    <div class="heart h3">♡</div>
+    <div class="heart h4">♡</div>
+
+    <div class="home-title">
+
+        <div class="en">LOVE CARD</div>
+
+        <h1>恋爱签</h1>
+
+        <p>
+            每一张卡，都藏着属于你们的小惊喜
+        </p>
+
+    </div>
+
+    <div class="home-card-area">
+
+        <div class="card-stack">
+
+            <div class="stack-card back1"></div>
+            <div class="stack-card back2"></div>
+
+            <div class="main-card">
+
+                <div class="corner c1">♡</div>
+                <div class="corner c2">✦</div>
+                <div class="corner c3">✦</div>
+                <div class="corner c4">♡</div>
+
+                <div class="card-center">♡</div>
+
+                <div class="love-card-title">
+                    恋爱签
+                </div>
+
+                <div class="love-card-sub">
+                    YOUR STORY · YOUR MOMENT
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="home-actions">
+
+        <button
+            type="button"
+            class="primary-btn"
+            id="startDrawBtn">
+            开始抽卡
+        </button>
+
+        <button
+            type="button"
+            class="secondary-btn"
+            id="collectionBtn">
+            我的卡牌 ›
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     我的卡牌
+     ===================================================== -->
+
+<section
+    class="page sub-page"
+    id="collectionPage">
+
+    <div class="glow one"></div>
+    <div class="glow two"></div>
+    <div class="glow three"></div>
+
+    <div class="heart h1">♡</div>
+    <div class="heart h2">♡</div>
+    <div class="heart h3">♡</div>
+    <div class="heart h4">♡</div>
+
+    <div class="page-header">
+
+        <div class="page-header-title">
+            我的卡牌
+        </div>
+
+    </div>
+
+    <div class="collection-intro">
+
+        <h2>我的牌库</h2>
+
+        <p>
+            管理六种牌型的自定义内容
+        </p>
+
+    </div>
+
+    <div
+        class="category-list"
+        id="categoryList">
+    </div>
+
+    <div class="collection-bottom">
+
+        <div
+            class="collection-total"
+            id="collectionTotal">
+            共 0 条内容
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     分类编辑
+     ===================================================== -->
+
+<section
+    class="page sub-page"
+    id="editorPage">
+
+    <div class="glow one"></div>
+    <div class="glow two"></div>
+    <div class="glow three"></div>
+
+    <div class="heart h1">♡</div>
+    <div class="heart h2">♡</div>
+    <div class="heart h3">♡</div>
+    <div class="heart h4">♡</div>
+
+    <div class="page-header">
+
+        <div
+            class="page-header-title"
+            id="editorHeaderTitle">
+            幸运牌
+        </div>
+
+    </div>
+
+    <div class="editor-summary">
+
+        <div class="editor-summary-top">
+
+            <div
+                class="editor-summary-icon"
+                id="editorIcon">
+                🍀
+            </div>
+
+            <div>
+
+                <div
+                    class="editor-summary-name"
+                    id="editorName">
+                    幸运牌
+                </div>
+
+                <div
+                    class="editor-summary-count"
+                    id="editorCount">
+                    0 条内容
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="add-content-box">
+
+        <textarea
+            class="content-input"
+            id="contentInput"
+            maxlength="1000"
+            placeholder="输入你想放进这张牌里的内容……&#10;&#10;需要倒计时的话，可以直接写：&#10;【计时：30秒】和对方深情对视。&#10;&#10;也支持：1分钟、1分30秒、90秒。"></textarea>
+
+        <div class="add-content-row">
+
+            <button
+                type="button"
+                class="add-btn"
+                id="addContentBtn">
+                ＋ 添加内容
+            </button>
+
+        </div>
+
+    </div>
+
+    <div
+        class="content-list"
+        id="contentList">
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     游戏
+     ===================================================== -->
+
+<section
+    class="page"
+    id="drawPage">
+
+    <div class="glow one"></div>
+    <div class="glow two"></div>
+    <div class="glow three"></div>
+
+    <div class="heart h1">♡</div>
+    <div class="heart h2">♡</div>
+    <div class="heart h3">♡</div>
+    <div class="heart h4">♡</div>
+
+    <div class="draw-header">
+
+        <div class="draw-header-title">
+            恋爱签
+        </div>
+
+    </div>
+
+    <div class="draw-intro">
+
+        <h2>
+            来试试今天的运气怎么样
+        </h2>
+
+        <p>
+            让我们看看今天你是真心话还是大冒险
+        </p>
+
+    </div>
+
+    <div
+        class="cards-board"
+        id="cardsBoard">
+    </div>
+
+    <div
+        class="shuffle-area"
+        id="shuffleArea">
+
+        <button
+            type="button"
+            class="shuffle-btn"
+            id="shuffleBtn">
+            洗牌
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     大卡牌
+     ===================================================== -->
+
+<div
+    class="card-overlay"
+    id="cardOverlay">
+
+    <div
+        class="big-card-wrap"
+        id="bigCardWrap">
+
+        <div
+            class="big-card"
+            id="bigCard">
+
+            <div
+                class="big-face big-back"
+                id="bigBack">
+
+                <div
+                    class="big-symbol"
+                    id="bigSymbol">
+                    ♡
+                </div>
+
+                <div
+                    class="big-back-title"
+                    id="bigBackTitle">
+                    恋爱签
+                </div>
+
+                <div
+                    class="big-back-en"
+                    id="bigBackEn">
+                    LOVE CARD
+                </div>
+
+            </div>
+
+            <div class="big-face big-front">
+
+                <div class="big-corner tl">♡</div>
+                <div class="big-corner tr">✦</div>
+                <div class="big-corner bl">✦</div>
+                <div class="big-corner br">♡</div>
+
+                <div class="big-content">
+
+                    <div
+                        class="big-type"
+                        id="bigType">
+                        LUCKY
+                    </div>
+
+                    <div
+                        class="big-icon"
+                        id="bigIcon">
+                        🍀
+                    </div>
+
+                    <div
+                        class="big-title"
+                        id="bigTitle">
+                        幸运牌
+                    </div>
+
+                    <div class="big-divider"></div>
+
+                    <div
+                        class="big-description"
+                        id="bigDescription">
+                    </div>
+
+                    <div
+                        class="timer-action"
+                        id="timerAction">
+
+                        <button
+                            type="button"
+                            class="timer-start-btn"
+                            id="timerStartBtn">
+                            ⏱ 开始倒计时
+                        </button>
+
+                    </div>
+
+                    <div
+                        class="big-footer"
+                        id="bigFooter">
+                        LOVE CARD
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="close-hint">
+        点击卡牌以外的地方关闭
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     倒计时
+     ===================================================== -->
+
+<div
+    class="timer-overlay"
+    id="timerOverlay">
+
+    <div
+        class="timer-box"
+        id="timerBox">
+
+        <div class="timer-kicker">
+            LOVE CARD
+        </div>
+
+        <div class="timer-title">
+            倒计时
+        </div>
+
+        <div class="timer-circle">
+
+            <div
+                class="timer-time"
+                id="timerTime">
+                00:30
+            </div>
+
+            <div class="timer-remaining">
+                剩余时间
+            </div>
+
+        </div>
+
+        <button
+            type="button"
+            class="timer-cancel-btn"
+            id="timerCancelBtn">
+            结束计时
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     编辑弹窗
+     ===================================================== -->
+
+<div
+    class="edit-modal"
+    id="editModal">
+
+    <div class="edit-box">
+
+        <div class="edit-title">
+            编辑内容
+        </div>
+
+        <textarea
+            class="edit-textarea"
+            id="editTextarea"
+            maxlength="1000"></textarea>
+
+        <div class="edit-actions">
+
+            <button
+                type="button"
+                class="modal-btn"
+                id="editCancelBtn">
+                取消
+            </button>
+
+            <button
+                type="button"
+                class="modal-btn primary"
+                id="editSaveBtn">
+                保存
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     删除确认
+     ===================================================== -->
+
+<div
+    class="delete-modal"
+    id="deleteModal">
+
+    <div class="delete-box">
+
+        <button
+            type="button"
+            class="delete-confirm-btn"
+            id="deleteConfirmBtn">
+            确认
+        </button>
+
+        <button
+            type="button"
+            class="delete-cancel-btn"
+            id="deleteCancelBtn">
+            取消
+        </button>
+
+    </div>
+
+</div>
+
+
+<div
+    class="toast"
+    id="toast">
+</div>
+
+
+<script>
+
+/* =====================================================
+   六种牌型
+   ===================================================== */
+
+const categories = [
+
+    {
+        id:"lucky",
+        name:"幸运牌",
+        icon:"🍀",
+        english:"LUCKY CARD",
+        symbol:"✦"
+    },
+
+    {
+        id:"truth",
+        name:"真心话",
+        icon:"💬",
+        english:"TRUTH CARD",
+        symbol:"◇"
+    },
+
+    {
+        id:"dare",
+        name:"大冒险",
+        icon:"🔥",
+        english:"DARE CARD",
+        symbol:"✦"
+    },
+
+    {
+        id:"game",
+        name:"小游戏",
+        icon:"🎮",
+        english:"GAME CARD",
+        symbol:"☆"
+    },
+
+    {
+        id:"punishment",
+        name:"惩罚牌",
+        icon:"🖤",
+        english:"PUNISHMENT CARD",
+        symbol:"◇"
+    },
+
+    {
+        id:"action",
+        name:"行动牌",
+        icon:"⚡",
+        english:"ACTION CARD",
+        symbol:"♡"
+    }
+
+];
+
+const cardColors = [
+    "card-color-1",
+    "card-color-2",
+    "card-color-3",
+    "card-color-4",
+    "card-color-5",
+    "card-color-6"
+];
+
+
+/* =====================================================
+   本地存储
+   ===================================================== */
+
+const STORAGE_KEY =
+    "loveCard_customContents_v3";
+
+function createDefaultData(){
+
+    return {
+        lucky:[],
+        truth:[],
+        dare:[],
+        game:[],
+        punishment:[],
+        action:[]
+    };
+
+}
+
+function loadData(){
+
+    try{
+
+        const saved =
+            localStorage.getItem(STORAGE_KEY);
+
+        if(!saved){
+            return createDefaultData();
+        }
+
+        const parsed =
+            JSON.parse(saved);
+
+        const data =
+            createDefaultData();
+
+        categories.forEach(category => {
+
+            if(Array.isArray(parsed[category.id])){
+
+                data[category.id] =
+                    parsed[category.id]
+                        .map(item => String(item));
+
+            }
+
+        });
+
+        return data;
+
+    }catch(error){
+
+        return createDefaultData();
+
+    }
+
+}
+
+let customData = loadData();
+
+function saveData(){
+
+    try{
+
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify(customData)
+        );
+
+    }catch(error){
+
+        showToast("保存失败，请检查浏览器存储");
+
+    }
+
+}
+
+
+/* =====================================================
+   DOM
+   ===================================================== */
+
+const homePage =
+    document.getElementById("homePage");
+
+const drawPage =
+    document.getElementById("drawPage");
+
+const collectionPage =
+    document.getElementById("collectionPage");
+
+const editorPage =
+    document.getElementById("editorPage");
+
+const overlay =
+    document.getElementById("cardOverlay");
+
+const bigCardWrap =
+    document.getElementById("bigCardWrap");
+
+const bigCard =
+    document.getElementById("bigCard");
+
+const bigBack =
+    document.getElementById("bigBack");
+
+const bigSymbol =
+    document.getElementById("bigSymbol");
+
+const bigBackTitle =
+    document.getElementById("bigBackTitle");
+
+const bigBackEn =
+    document.getElementById("bigBackEn");
+
+const bigType =
+    document.getElementById("bigType");
+
+const bigIcon =
+    document.getElementById("bigIcon");
+
+const bigTitle =
+    document.getElementById("bigTitle");
+
+const bigDescription =
+    document.getElementById("bigDescription");
+
+const bigFooter =
+    document.getElementById("bigFooter");
+
+const shuffleArea =
+    document.getElementById("shuffleArea");
+
+const editModal =
+    document.getElementById("editModal");
+
+const deleteModal =
+    document.getElementById("deleteModal");
+
+const timerOverlay =
+    document.getElementById("timerOverlay");
+
+const timerTime =
+    document.getElementById("timerTime");
+
+const timerAction =
+    document.getElementById("timerAction");
+
+const timerStartBtn =
+    document.getElementById("timerStartBtn");
+
+const timerCancelBtn =
+    document.getElementById("timerCancelBtn");
+
+
+/* =====================================================
+   状态
+   ===================================================== */
+
+let currentCategoryId = null;
+
+let currentRoundCards = [];
+
+let completedCount = 0;
+
+let currentCardIndex = null;
+
+let cardOpening = false;
+
+/*
+ * 新增：
+ * 抽牌动画 + 翻牌完成后继续锁定的时间。
+ *
+ * 抽牌动画实际翻转结束时间：
+ * 1400ms
+ *
+ * 再额外锁定：
+ * 1000ms
+ *
+ * 所以用户必须等大约 2.4 秒，
+ * 才可以点击卡牌外部关闭。
+ */
+let cardCloseLocked = false;
+
+let cardCloseUnlockTimer = null;
+
+let editingIndex = null;
+
+let pendingDeleteIndex = null;
+
+let currentPage = "home";
+
+
+/* =====================================================
+   倒计时状态
+   ===================================================== */
+
+let timerSeconds = 0;
+
+let timerRemaining = 0;
+
+let timerInterval = null;
+
+let timerActive = false;
+
+
+/* =====================================================
+   倒计时提示音
+   ===================================================== */
+
+/*
+ * 使用浏览器自带的 Web Audio API。
+ *
+ * 不需要外部音频文件。
+ * 不需要网络。
+ *
+ * 倒计时结束时：
+ * 滴 —— 滴 —— 滴
+ *
+ * 总时长约 2 秒。
+ */
+
+let audioContext = null;
+
+function playTimerFinishedSound(){
+
+    try{
+
+        const AudioContext =
+            window.AudioContext ||
+            window.webkitAudioContext;
+
+        if(!AudioContext){
+            return;
+        }
+
+        if(!audioContext){
+
+            audioContext =
+                new AudioContext();
+
+        }
+
+        if(audioContext.state === "suspended"){
+
+            audioContext.resume();
+
+        }
+
+        const now =
+            audioContext.currentTime;
+
+        /*
+         * 三声提示音
+         *
+         * 每一声：
+         * 约 0.18 秒
+         *
+         * 间隔：
+         * 约 0.48 秒
+         */
+
+        const beepTimes = [
+            0,
+            0.55,
+            1.10
+        ];
+
+        beepTimes.forEach((offset,index) => {
+
+            const oscillator =
+                audioContext.createOscillator();
+
+            const gain =
+                audioContext.createGain();
+
+            oscillator.type = "sine";
+
+            /*
+             * 三声略微不同，
+             * 听起来更自然。
+             */
+            oscillator.frequency.value =
+                index === 2 ? 880 : 820;
+
+            gain.gain.setValueAtTime(
+                0,
+                now + offset
+            );
+
+            gain.gain.linearRampToValueAtTime(
+                0.16,
+                now + offset + 0.025
+            );
+
+            gain.gain.linearRampToValueAtTime(
+                0,
+                now + offset + 0.20
+            );
+
+            oscillator.connect(gain);
+            gain.connect(audioContext.destination);
+
+            oscillator.start(
+                now + offset
+            );
+
+            oscillator.stop(
+                now + offset + 0.22
+            );
+
+        });
+
+    }catch(error){
+
+        /*
+         * 如果手机浏览器不支持音频，
+         * 不影响倒计时和游戏其他功能。
+         */
+
+    }
+
+}
+
+
+/* =====================================================
+   页面
+   ===================================================== */
+
+function showOnlyPage(page){
+
+    homePage.style.display = "none";
+    drawPage.style.display = "none";
+    collectionPage.style.display = "none";
+    editorPage.style.display = "none";
+
+    if(page === "home"){
+        homePage.style.display = "flex";
+    }
+
+    if(page === "draw"){
+        drawPage.style.display = "flex";
+    }
+
+    if(page === "collection"){
+        collectionPage.style.display = "flex";
+    }
+
+    if(page === "editor"){
+        editorPage.style.display = "flex";
+    }
+
+}
+
+
+/* =====================================================
+   History
+   ===================================================== */
+
+if(
+    !history.state ||
+    history.state.loveCard !== true
+){
+
+    history.replaceState(
+        {
+            loveCard:true,
+            page:"home"
+        },
+        "",
+        location.href
+    );
+
+}
+
+
+/* =====================================================
+   页面跳转
+   ===================================================== */
+
+function openDrawPage(){
+
+    closeEditModal();
+    closeDeleteConfirm();
+    closeTimer(false);
+    closeCard(false);
+
+    createNewRound();
+
+    currentPage = "draw";
+
+    showOnlyPage("draw");
+
+    history.pushState(
+        {
+            loveCard:true,
+            page:"draw"
+        },
+        "",
+        location.href
+    );
+
+}
+
+function openCollectionPage(){
+
+    closeEditModal();
+    closeDeleteConfirm();
+    closeTimer(false);
+    closeCard(false);
+
+    currentPage = "collection";
+
+    showOnlyPage("collection");
+
+    renderCategoryList();
+
+    history.pushState(
+        {
+            loveCard:true,
+            page:"collection"
+        },
+        "",
+        location.href
+    );
+
+}
+
+function backHome(){
+
+    closeEditModal();
+    closeDeleteConfirm();
+    closeTimer(false);
+    closeCard(false);
+
+    currentPage = "home";
+
+    showOnlyPage("home");
+
+}
+
+function backCollection(){
+
+    closeEditModal();
+    closeDeleteConfirm();
+    closeTimer(false);
+    closeCard(false);
+
+    editorPage.style.display = "none";
+
+    collectionPage.style.display = "flex";
+
+    currentPage = "collection";
+
+    renderCategoryList();
+
+}
+
+
+/* =====================================================
+   返回键
+   ===================================================== */
+
+window.addEventListener("popstate",function(event){
+
+    if(timerActive){
+
+        closeTimer(false);
+
+        history.pushState(
+            {
+                loveCard:true,
+                page:"draw"
+            },
+            "",
+            location.href
+        );
+
+        return;
+
+    }
+
+
+    if(
+        event.state &&
+        event.state.loveCard === true &&
+        event.state.page === "home"
+    ){
+
+        backHome();
+        return;
+
+    }
+
+
+    if(
+        event.state &&
+        event.state.loveCard === true &&
+        event.state.page === "collection"
+    ){
+
+        backCollection();
+        return;
+
+    }
+
+
+    if(
+        event.state &&
+        event.state.loveCard === true &&
+        event.state.page === "editor"
+    ){
+
+        currentPage = "editor";
+
+        showOnlyPage("editor");
+
+        return;
+
+    }
+
+
+    if(
+        event.state &&
+        event.state.loveCard === true &&
+        event.state.page === "draw"
+    ){
+
+        currentPage = "draw";
+
+        showOnlyPage("draw");
+
+        return;
+
+    }
+
+
+    history.replaceState(
+        {
+            loveCard:true,
+            page:"home"
+        },
+        "",
+        location.href
+    );
+
+    backHome();
+
+});
+
+
+/* =====================================================
+   分类
+   ===================================================== */
+
+function renderCategoryList(){
+
+    const list =
+        document.getElementById("categoryList");
+
+    list.innerHTML = "";
+
+    let total = 0;
+
+    categories.forEach(category => {
+
+        const count =
+            customData[category.id].length;
+
+        total += count;
+
+        const button =
+            document.createElement("button");
+
+        button.type = "button";
+
+        button.className =
+            "category-item";
+
+        button.innerHTML = `
+
+            <div class="category-icon">
+                ${category.icon}
+            </div>
+
+            <div class="category-info">
+
+                <div class="category-name">
+                    ${escapeHTML(category.name)}
+                </div>
+
+                <div class="category-count">
+                    ${count} 条内容
+                </div>
+
+            </div>
+
+            <div class="category-arrow">
+                ›
+            </div>
+
+        `;
+
+        button.addEventListener(
+            "click",
+            function(event){
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                openEditor(category.id);
+
+            }
+        );
+
+        list.appendChild(button);
+
+    });
+
+    document.getElementById(
+        "collectionTotal"
+    ).textContent =
+        "共 " + total + " 条内容";
+
+}
+
+
+/* =====================================================
+   编辑器
+   ===================================================== */
+
+function openEditor(categoryId){
+
+    closeDeleteConfirm();
+
+    currentCategoryId =
+        categoryId;
+
+    const category =
+        categories.find(
+            item => item.id === categoryId
+        );
+
+    if(!category){
+        return;
+    }
+
+    collectionPage.style.display = "none";
+    editorPage.style.display = "flex";
+
+    currentPage = "editor";
+
+    document.getElementById(
+        "editorHeaderTitle"
+    ).textContent =
+        category.name;
+
+    document.getElementById(
+        "editorIcon"
+    ).textContent =
+        category.icon;
+
+    document.getElementById(
+        "editorName"
+    ).textContent =
+        category.name;
+
+    document.getElementById(
+        "contentInput"
+    ).value = "";
+
+    renderEditor();
+
+    history.pushState(
+        {
+            loveCard:true,
+            page:"editor"
+        },
+        "",
+        location.href
+    );
+
+}
+
+
+/* =====================================================
+   编辑器列表
+   ===================================================== */
+
+function renderEditor(){
+
+    if(!currentCategoryId){
+        return;
+    }
+
+    const data =
+        customData[currentCategoryId];
+
+    document.getElementById(
+        "editorCount"
+    ).textContent =
+        data.length + " 条内容";
+
+    const list =
+        document.getElementById("contentList");
+
+    list.innerHTML = "";
+
+    if(data.length === 0){
+
+        const category =
+            categories.find(
+                item => item.id === currentCategoryId
+            );
+
+        list.innerHTML = `
+
+            <div class="content-empty">
+
+                <div class="content-empty-icon">
+                    ${category.icon}
+                </div>
+
+                <div class="content-empty-text">
+                    这里还没有内容<br>
+                    在上面的输入框添加第一条吧
+                </div>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+    data.forEach((text,index) => {
+
+        const item =
+            document.createElement("div");
+
+        item.className =
+            "content-item";
+
+        const number =
+            document.createElement("div");
+
+        number.className =
+            "content-number";
+
+        number.textContent =
+            index + 1;
+
+        const content =
+            document.createElement("div");
+
+        content.className =
+            "content-text";
+
+        content.textContent =
+            text;
+
+        content.addEventListener(
+            "dblclick",
+            function(event){
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                editContent(index);
+
+            }
+        );
+
+        const actions =
+            document.createElement("div");
+
+        actions.className =
+            "item-actions";
+
+        const deleteButton =
+            document.createElement("button");
+
+        deleteButton.type = "button";
+
+        deleteButton.className =
+            "item-action delete-action";
+
+        deleteButton.textContent =
+            "×";
+
+        deleteButton.addEventListener(
+            "click",
+            function(event){
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                openDeleteConfirm(index);
+
+            }
+        );
+
+        actions.appendChild(deleteButton);
+
+        item.appendChild(number);
+        item.appendChild(content);
+        item.appendChild(actions);
+
+        list.appendChild(item);
+
+    });
+
+}
+
+
+/* =====================================================
+   HTML 安全
+   ===================================================== */
+
+function escapeHTML(text){
+
+    return String(text)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* =====================================================
+   添加
+   ===================================================== */
+
+function addContent(){
+
+    if(!currentCategoryId){
+        return;
+    }
+
+    const input =
+        document.getElementById("contentInput");
+
+    const text =
+        input.value.trim();
+
+    if(!text){
+
+        showToast("请输入内容");
+
+        input.focus();
+
+        return;
+
+    }
+
+    customData[currentCategoryId].push(text);
+
+    saveData();
+
+    input.value = "";
+
+    renderEditor();
+
+    showToast("已添加");
+
+}
+
+
+/* =====================================================
+   编辑
+   ===================================================== */
+
+function editContent(index){
+
+    if(!currentCategoryId){
+        return;
+    }
+
+    const data =
+        customData[currentCategoryId];
+
+    if(
+        index < 0 ||
+        index >= data.length
+    ){
+        return;
+    }
+
+    editingIndex = index;
+
+    document.getElementById(
+        "editTextarea"
+    ).value =
+        data[index];
+
+    editModal.classList.add("show");
+
+}
+
+function saveEdit(){
+
+    if(
+        !currentCategoryId ||
+        editingIndex === null
+    ){
+        return;
+    }
+
+    const textarea =
+        document.getElementById("editTextarea");
+
+    const text =
+        textarea.value.trim();
+
+    if(!text){
+
+        showToast("内容不能为空");
+
+        return;
+
+    }
+
+    customData[
+        currentCategoryId
+    ][editingIndex] =
+        text;
+
+    saveData();
+
+    closeEditModal();
+
+    renderEditor();
+
+    showToast("已保存");
+
+}
+
+function closeEditModal(){
+
+    editModal.classList.remove("show");
+
+    editingIndex = null;
+
+}
+
+
+/* =====================================================
+   删除
+   ===================================================== */
+
+function openDeleteConfirm(index){
+
+    if(!currentCategoryId){
+        return;
+    }
+
+    const data =
+        customData[currentCategoryId];
+
+    if(
+        index < 0 ||
+        index >= data.length
+    ){
+        return;
+    }
+
+    pendingDeleteIndex =
+        index;
+
+    deleteModal.classList.add("show");
+
+}
+
+function closeDeleteConfirm(){
+
+    deleteModal.classList.remove("show");
+
+    pendingDeleteIndex =
+        null;
+
+}
+
+function deleteContent(index){
+
+    if(!currentCategoryId){
+        return;
+    }
+
+    const data =
+        customData[currentCategoryId];
+
+    if(
+        index < 0 ||
+        index >= data.length
+    ){
+        return;
+    }
+
+    data.splice(index,1);
+
+    saveData();
+
+    renderEditor();
+
+    showToast("已删除");
+
+}
+
+
+/* =====================================================
+   Fisher-Yates
+   ===================================================== */
+
+function shuffleArray(array){
+
+    const result = [...array];
+
+    for(
+        let i = result.length - 1;
+        i > 0;
+        i--
+    ){
+
+        const j =
+            Math.floor(
+                Math.random() * (i + 1)
+            );
+
+        [
+            result[i],
+            result[j]
+        ] =
+        [
+            result[j],
+            result[i]
+        ];
+
+    }
+
+    return result;
+
+}
+
+
+/* =====================================================
+   创建一局
+   ===================================================== */
+
+function createNewRound(){
+
+    const shuffledCategories =
+        shuffleArray(categories);
+
+    const shuffledColors =
+        shuffleArray(cardColors);
+
+    currentRoundCards =
+        shuffledCategories.map(
+            (category,index) => {
+
+                const contents =
+                    customData[category.id] || [];
+
+                let selectedContent;
+
+                if(contents.length > 0){
+
+                    const randomIndex =
+                        Math.floor(
+                            Math.random() *
+                            contents.length
+                        );
+
+                    selectedContent =
+                        contents[randomIndex];
+
+                }else{
+
+                    selectedContent =
+                        "这张牌还没有自定义内容。\n\n" +
+                        "回到首页，进入「我的卡牌」，" +
+                        "为【" +
+                        category.name +
+                        "】添加内容吧。";
+
+                }
+
+                return {
+
+                    categoryId:category.id,
+
+                    type:category.name,
+
+                    icon:category.icon,
+
+                    english:category.english,
+
+                    symbol:category.symbol,
+
+                    description:selectedContent,
+
+                    color:shuffledColors[index]
+
+                };
+
+            }
+        );
+
+    completedCount = 0;
+
+    currentCardIndex = null;
+
+    cardOpening = false;
+
+    cardCloseLocked = false;
+
+    clearTimeout(cardCloseUnlockTimer);
+
+    cardCloseUnlockTimer = null;
+
+    closeTimer(false);
+
+    renderGameCards();
+
+    shuffleArea.classList.remove("show");
+
+}
+
+
+/* =====================================================
+   游戏卡牌
+   ===================================================== */
+
+function renderGameCards(){
+
+    const board =
+        document.getElementById("cardsBoard");
+
+    board.innerHTML = "";
+
+    currentRoundCards.forEach(
+        (card,index) => {
+
+            const button =
+                document.createElement("button");
+
+            button.type = "button";
+
+            button.className =
+                "love-card " +
+                card.color;
+
+            button.dataset.index =
+                index;
+
+            button.innerHTML = `
+
+                <div class="love-card-inner">
+
+                    <div class="card-face card-back">
+
+                        <div class="back-symbol">
+                            ${escapeHTML(card.symbol)}
+                        </div>
+
+                        <div class="back-label">
+                            LOVE CARD
+                        </div>
+
+                    </div>
+
+                    <div class="card-face card-front">
+
+                        <div class="card-type">
+                            ${escapeHTML(
+                                card.english.replace(" CARD","")
+                            )}
+                        </div>
+
+                        <div class="card-icon">
+                            ${escapeHTML(card.icon)}
+                        </div>
+
+                        <div class="card-name">
+                            ${escapeHTML(card.type)}
+                        </div>
+
+                    </div>
+
+                </div>
+
+            `;
+
+            button.addEventListener(
+                "click",
+                function(event){
+
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    openCard(index);
+
+                }
+            );
+
+            board.appendChild(button);
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   时间解析
+   ===================================================== */
+
+function parseTimer(text){
+
+    const source =
+        String(text);
+
+    const explicit =
+        source.match(
+            /[【\[]\s*(?:计时|倒计时)\s*[:：]\s*(?:(\d+)\s*分(?:钟)?\s*)?(?:(\d+)\s*秒)?\s*[】\]]/i
+        );
+
+    if(explicit){
+
+        const minutes =
+            Number(explicit[1] || 0);
+
+        const seconds =
+            Number(explicit[2] || 0);
+
+        const total =
+            minutes * 60 + seconds;
+
+        if(
+            total > 0 &&
+            total <= 3600
+        ){
+
+            return {
+
+                seconds:total,
+
+                display:
+                    source
+                        .replace(explicit[0],"")
+                        .trim()
+
+            };
+
+        }
+
+    }
+
+
+    const minuteSecond =
+        source.match(
+            /(\d+)\s*分(?:钟)?\s*(\d+)\s*秒/
+        );
+
+    if(minuteSecond){
+
+        const total =
+            Number(minuteSecond[1]) * 60 +
+            Number(minuteSecond[2]);
+
+        if(
+            total > 0 &&
+            total <= 3600
+        ){
+
+            return {
+                seconds:total,
+                display:source
+            };
+
+        }
+
+    }
+
+
+    const minutesOnly =
+        source.match(
+            /(\d+)\s*分钟?/
+        );
+
+    if(minutesOnly){
+
+        const total =
+            Number(minutesOnly[1]) * 60;
+
+        if(
+            total > 0 &&
+            total <= 3600
+        ){
+
+            return {
+                seconds:total,
+                display:source
+            };
+
+        }
+
+    }
+
+
+    const secondsOnly =
+        source.match(
+            /(\d+)\s*秒/
+        );
+
+    if(secondsOnly){
+
+        const total =
+            Number(secondsOnly[1]);
+
+        if(
+            total > 0 &&
+            total <= 3600
+        ){
+
+            return {
+                seconds:total,
+                display:source
+            };
+
+        }
+
+    }
+
+    return null;
+
+}
+
+
+/* =====================================================
+   时间格式
+   ===================================================== */
+
+function formatTime(totalSeconds){
+
+    const safe =
+        Math.max(
+            0,
+            Math.floor(totalSeconds)
+        );
+
+    const minutes =
+        Math.floor(safe / 60);
+
+    const seconds =
+        safe % 60;
+
+    return (
+        String(minutes).padStart(2,"0") +
+        ":" +
+        String(seconds).padStart(2,"0")
+    );
+
+}
+
+
+/* =====================================================
+   打开卡牌
+   ===================================================== */
+
+function openCard(index){
+
+    /*
+     * 如果正在抽牌动画，
+     * 或者卡牌刚刚翻开后的 1 秒锁定期，
+     * 不允许再次操作。
+     */
+    if(
+        cardOpening ||
+        cardCloseLocked ||
+        timerActive
+    ){
+        return;
+    }
+
+    const card =
+        currentRoundCards[index];
+
+    if(!card){
+        return;
+    }
+
+    const smallCard =
+        document.querySelector(
+            `.love-card[data-index="${index}"]`
+        );
+
+    if(!smallCard){
+        return;
+    }
+
+    const alreadyOpened =
+        smallCard.classList.contains("flipped");
+
+    currentCardIndex = index;
+
+    if(!alreadyOpened){
+
+        /*
+         * 开始抽牌。
+         *
+         * 从这里开始：
+         * cardOpening = true
+         * cardCloseLocked = true
+         *
+         * 所以整个动画期间，
+         * 点击外部都不会关闭。
+         */
+        cardOpening = true;
+
+        cardCloseLocked = true;
+
+        clearTimeout(cardCloseUnlockTimer);
+
+        cardCloseUnlockTimer = null;
+
+        overlay.classList.remove("instant");
+
+        bigCard.classList.remove("reveal");
+
+        bigCardWrap.classList.remove("spinning");
+
+        fillBigCard(card);
+
+        overlay.style.display = "flex";
+
+        requestAnimationFrame(() => {
+
+            overlay.classList.add("show");
+
+        });
+
+        /*
+         * 250ms 后开始旋转动画。
+         */
+        setTimeout(() => {
+
+            if(!overlay.classList.contains("show")){
+                return;
+            }
+
+            bigCardWrap.classList.add("spinning");
+
+        },250);
+
+
+        /*
+         * 1400ms：
+         * 原本的抽牌动画结束，
+         * 让大卡牌翻到正面。
+         *
+         * 但是这里仍然不能关闭。
+         *
+         * 接下来继续锁定 1000ms。
+         */
+        setTimeout(() => {
+
+            if(!overlay.classList.contains("show")){
+
+                cardOpening = false;
+
+                cardCloseLocked = false;
+
+                return;
+
+            }
+
+            bigCardWrap.classList.remove("spinning");
+
+            bigCard.classList.add("reveal");
+
+            cardOpening = false;
+
+            /*
+             * 翻牌完成后继续锁定 1 秒。
+             */
+            cardCloseLocked = true;
+
+            clearTimeout(cardCloseUnlockTimer);
+
+            cardCloseUnlockTimer =
+                setTimeout(() => {
+
+                    cardCloseLocked = false;
+
+                    cardCloseUnlockTimer = null;
+
+                },1000);
+
+        },1400);
+
+        return;
+
+    }
+
+
+    /*
+     * 已经翻过的卡牌。
+     */
+    cardOpening = false;
+
+    cardCloseLocked = false;
+
+    clearTimeout(cardCloseUnlockTimer);
+
+    cardCloseUnlockTimer = null;
+
+    fillBigCard(card);
+
+    overlay.classList.add("instant");
+
+    overlay.style.display = "flex";
+
+    requestAnimationFrame(() => {
+
+        overlay.classList.add("show");
+
+        bigCard.classList.add("reveal");
+
+    });
+
+}
+
+
+/* =====================================================
+   填充大卡
+   ===================================================== */
+
+function fillBigCard(card){
+
+    bigBack.className =
+        "big-face big-back";
+
+    bigBack.classList.add(card.color);
+
+    bigSymbol.textContent =
+        card.symbol;
+
+    bigBackTitle.textContent =
+        card.type;
+
+    bigBackEn.textContent =
+        card.english;
+
+    bigType.textContent =
+        card.english.replace(" CARD","");
+
+    bigIcon.textContent =
+        card.icon;
+
+    bigTitle.textContent =
+        card.type;
+
+
+    const timerInfo =
+        parseTimer(card.description);
+
+
+    bigDescription.innerHTML =
+        escapeHTML(
+            timerInfo
+                ? timerInfo.display
+                : card.description
+        ).replace(
+            /\n/g,
+            "<br>"
+        );
+
+
+    if(timerInfo){
+
+        timerSeconds =
+            timerInfo.seconds;
+
+        timerStartBtn.textContent =
+            "⏱ 开始倒计时 · " +
+            formatTime(timerInfo.seconds);
+
+        timerAction.classList.add("show");
+
+    }else{
+
+        timerSeconds = 0;
+
+        timerAction.classList.remove("show");
+
+    }
+
+
+    bigFooter.textContent =
+        "LOVE CARD · " +
+        card.type;
+
+}
+
+
+/* =====================================================
+   外部关闭卡牌
+   ===================================================== */
+
+function overlayClick(event){
+
+    /*
+     * 倒计时期间不允许关闭。
+     */
+    if(timerActive){
+        return;
+    }
+
+    /*
+     * 抽牌动画期间不允许关闭。
+     */
+    if(cardOpening){
+        return;
+    }
+
+    /*
+     * 翻牌完成后的额外 1 秒锁定期间，
+     * 同样不允许关闭。
+     */
+    if(cardCloseLocked){
+        return;
+    }
+
+    /*
+     * 点击卡牌本身不关闭。
+     */
+    if(
+        event.target.closest(".big-card-wrap")
+    ){
+        return;
+    }
+
+    /*
+     * 只有满足上面所有条件，
+     * 点击外部才真正关闭。
+     */
+    closeCard(true);
+
+}
+
+
+/* =====================================================
+   关闭卡牌
+   ===================================================== */
+
+function closeCard(markCompleted){
+
+    /*
+     * 任何锁定期间，
+     * 都不允许关闭。
+     *
+     * 这里再次检查，
+     * 防止其他代码间接调用 closeCard()
+     * 绕过外部点击限制。
+     */
+    if(
+        timerActive ||
+        cardOpening ||
+        cardCloseLocked
+    ){
+        return;
+    }
+
+    if(currentCardIndex === null){
+
+        overlay.classList.remove(
+            "show",
+            "instant"
+        );
+
+        overlay.style.display = "none";
+
+        return;
+
+    }
+
+
+    if(markCompleted){
+
+        const smallCard =
+            document.querySelector(
+                `.love-card[data-index="${currentCardIndex}"]`
+            );
+
+        if(
+            smallCard &&
+            !smallCard.classList.contains("flipped")
+        ){
+
+            smallCard.classList.add("flipped");
+
+            completedCount++;
+
+            if(completedCount >= 6){
+
+                setTimeout(() => {
+
+                    shuffleArea.classList.add("show");
+
+                },220);
+
+            }
+
+        }
+
+    }
+
+
+    overlay.classList.remove(
+        "show",
+        "instant"
+    );
+
+    bigCard.classList.remove("reveal");
+
+    bigCardWrap.classList.remove("spinning");
+
+    clearTimeout(cardCloseUnlockTimer);
+
+    cardCloseUnlockTimer = null;
+
+    cardOpening = false;
+
+    cardCloseLocked = false;
+
+    setTimeout(() => {
+
+        if(
+            !overlay.classList.contains("show")
+        ){
+
+            overlay.style.display = "none";
+
+        }
+
+    },280);
+
+    currentCardIndex = null;
+
+}
+
+
+/* =====================================================
+   倒计时
+   ===================================================== */
+
+function startTimer(){
+
+    if(timerActive){
+        return;
+    }
+
+    if(
+        !timerSeconds ||
+        timerSeconds <= 0
+    ){
+        return;
+    }
+
+    /*
+     * 在用户点击“开始倒计时”的时候，
+     * 浏览器已经处于用户手势上下文中。
+     *
+     * 这里提前创建 / 唤醒 AudioContext，
+     * 可以提高 Android 浏览器允许播放结束提示音的成功率。
+     */
+    try{
+
+        const AudioContext =
+            window.AudioContext ||
+            window.webkitAudioContext;
+
+        if(AudioContext){
+
+            if(!audioContext){
+
+                audioContext =
+                    new AudioContext();
+
+            }
+
+            if(audioContext.state === "suspended"){
+
+                audioContext.resume();
+
+            }
+
+        }
+
+    }catch(error){
+
+    }
+
+
+    timerRemaining =
+        timerSeconds;
+
+    timerActive = true;
+
+    timerTime.textContent =
+        formatTime(timerRemaining);
+
+    timerOverlay.classList.add("show");
+
+    clearInterval(timerInterval);
+
+    timerInterval =
+        setInterval(() => {
+
+            timerRemaining--;
+
+            timerTime.textContent =
+                formatTime(timerRemaining);
+
+            if(timerRemaining <= 0){
+
+                finishTimer();
+
+            }
+
+        },1000);
+
+}
+
+
+function finishTimer(){
+
+    clearInterval(timerInterval);
+
+    timerInterval = null;
+
+    timerRemaining = 0;
+
+    timerActive = false;
+
+    timerOverlay.classList.remove("show");
+
+    /*
+     * 倒计时结束：
+     * 播放 3 声提示音。
+     *
+     * 不再显示任何文字提示。
+     */
+    playTimerFinishedSound();
+
+}
+
+
+function closeTimer(showMessage){
+
+    clearInterval(timerInterval);
+
+    timerInterval = null;
+
+    timerRemaining = 0;
+
+    timerActive = false;
+
+    timerOverlay.classList.remove("show");
+
+    if(showMessage){
+        showToast("已结束计时");
+    }
+
+}
+
+
+/* =====================================================
+   洗牌
+   ===================================================== */
+
+function shuffleCards(){
+
+    closeTimer(false);
+
+    /*
+     * 洗牌时彻底解除之前卡牌的锁定状态。
+     */
+    clearTimeout(cardCloseUnlockTimer);
+
+    cardCloseUnlockTimer = null;
+
+    cardOpening = false;
+
+    cardCloseLocked = false;
+
+    shuffleArea.classList.remove("show");
+
+    createNewRound();
+
+}
+
+
+/* =====================================================
+   Toast
+   ===================================================== */
+
+let toastTimer = null;
+
+function showToast(message){
+
+    const toast =
+        document.getElementById("toast");
+
+    toast.textContent =
+        message;
+
+    toast.classList.add("show");
+
+    clearTimeout(toastTimer);
+
+    toastTimer =
+        setTimeout(() => {
+
+            toast.classList.remove("show");
+
+        },1800);
+
+}
+
+
+/* =====================================================
+   事件绑定
+   ===================================================== */
+
+document
+    .getElementById("startDrawBtn")
+    .addEventListener(
+        "click",
+        function(event){
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            openDrawPage();
+
+        }
+    );
+
+
+document
+    .getElementById("collectionBtn")
+    .addEventListener(
+        "click",
+        function(event){
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            openCollectionPage();
+
+        }
+    );
+
+
+document
+    .getElementById("addContentBtn")
+    .addEventListener(
+        "click",
+        function(event){
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            addContent();
+
+        }
+    );
+
+
+document
+    .getElementById("shuffleBtn")
+    .addEventListener(
+        "click",
+        function(event){
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            shuffleCards();
+
+        }
+    );
+
+
+document
+    .getElementById("timerStartBtn")
+    .addEventListener(
+        "click",
+        function(event){
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            startTimer();
+
+        }
+    );
+
+
+document
+    .getElementById("timerCancelBtn")
+    .addEventListener(
+        "click",
+        function(event){
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            closeTimer(true);
+
+        }
+    );
+
+
+document
+    .getElementById("editCancelBtn")
+    .addEventListener(
+        "click",
+        function(event){
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            closeEditModal();
+
+        }
+    );
+
+
+document
+    .getElementById("editSaveBtn")
+    .addEventListener(
+        "click",
+        function(event){
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            saveEdit();
+
+        }
+    );
+
+
+document
+    .getElementById("deleteConfirmBtn")
+    .addEventListener(
+        "click",
+        function(event){
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            if(
+                pendingDeleteIndex === null
+            ){
+
+                closeDeleteConfirm();
+
+                return;
+
+            }
+
+            const index =
+                pendingDeleteIndex;
+
+            closeDeleteConfirm();
+
+            deleteContent(index);
+
+        }
+    );
+
+
+document
+    .getElementById("deleteCancelBtn")
+    .addEventListener(
+        "click",
+        function(event){
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            closeDeleteConfirm();
+
+        }
+    );
+
+
+/* =====================================================
+   弹窗背景
+   ===================================================== */
+
+deleteModal.addEventListener(
+    "click",
+    function(event){
+
+        if(event.target === deleteModal){
+
+            closeDeleteConfirm();
+
+        }
+
+    }
+);
+
+
+editModal.addEventListener(
+    "click",
+    function(event){
+
+        if(event.target === editModal){
+
+            closeEditModal();
+
+        }
+
+    }
+);
+
+
+timerOverlay.addEventListener(
+    "click",
+    function(event){
+
+        /*
+         * 倒计时期间点击外部不关闭，
+         * 必须点击“结束计时”。
+         */
+
+        if(event.target === timerOverlay){
+
+            return;
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   卡牌遮罩
+   ===================================================== */
+
+overlay.addEventListener(
+    "click",
+    function(event){
+
+        overlayClick(event);
+
+    }
+);
+
+
+bigCardWrap.addEventListener(
+    "click",
+    function(event){
+
+        event.stopPropagation();
+
+    }
+);
+
+
+/*
+ * 防止双击缩放，但不阻止正常 click。
+ */
+
+document.addEventListener(
+    "dblclick",
+    function(event){
+
+        if(
+            event.target.closest("button") ||
+            event.target.closest("textarea") ||
+            event.target.closest("input")
+        ){
+            return;
+        }
+
+    }
+);
+
+
+/* =====================================================
+   初始化
+   ===================================================== */
+
+renderCategoryList();
+
+currentPage = "home";
+
+showOnlyPage("home");
+
+</script>
+
+</body>
+</html>
