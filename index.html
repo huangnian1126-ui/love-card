@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
 
-<title>恋爱签</title>
+<title>恋爱牌</title>
 
 <meta name="theme-color" content="#fcecf3">
 <link rel="manifest" href="manifest.json">
@@ -149,7 +149,7 @@ button{
     flex-direction:column;
     align-items:center;
     padding:
-        calc(env(safe-area-inset-top) + 45px)
+        calc(env(safe-area-inset-top) + 28px)
         24px
         calc(env(safe-area-inset-bottom) + 28px);
 }
@@ -198,6 +198,8 @@ button{
     align-items:center;
     justify-content:center;
     min-height:0;
+    margin-top:-12px;
+    padding-bottom:8px;
 }
 
 .card-stack{
@@ -308,13 +310,33 @@ button{
     50%{transform:translateY(-8px)}
 }
 
+.card-stack{
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+    transition:transform .38s cubic-bezier(.22,.8,.25,1);
+}
+
+.card-stack:active,
+.card-stack.pressed{
+    animation:none;
+    transform:scale(.97);
+    transition:transform .32s cubic-bezier(.22,.8,.25,1);
+}
+
 .home-actions{
     width:100%;
     flex-shrink:0;
     display:flex;
-    flex-direction:column;
+    flex-direction:row;
     align-items:center;
-    gap:15px;
+    justify-content:center;
+    gap:28px;
+    padding-top:4px;
+}
+
+.home-actions .secondary-btn{
+    min-width:108px;
+    text-align:center;
 }
 
 .primary-btn{
@@ -492,6 +514,23 @@ button{
     font-size:10px;
     color:#b99aa7;
     letter-spacing:1px;
+}
+
+.reset-round-btn{
+    height:40px;
+    min-width:140px;
+    padding:0 22px;
+    border:1px solid rgba(193,132,155,.28);
+    border-radius:22px;
+    background:rgba(255,255,255,.62);
+    color:#a87387;
+    font-size:13px;
+    letter-spacing:2px;
+    box-shadow:0 6px 16px rgba(150,90,112,.08);
+}
+
+.reset-round-btn:active{
+    transform:scale(.96);
 }
 
 
@@ -814,43 +853,133 @@ button{
     color:#684c59;
 }
 
-.draw-intro{
-    text-align:center;
+.draw-divider{
+    width:48px;
+    height:1px;
+    margin:8px auto 0;
+    background:linear-gradient(
+        90deg,
+        transparent,
+        rgba(196,154,170,.45),
+        transparent
+    );
     flex-shrink:0;
-    margin-top:17px;
 }
 
-.draw-intro h2{
-    margin:0;
-    font-family:"STKaiti","KaiTi",serif;
-    font-size:23px;
-    font-weight:400;
-    letter-spacing:3px;
-    color:#684b58;
+.draw-status{
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    margin-top:12px;
+    padding:0 10px;
+    width:100%;
+    max-width:360px;
+    margin-left:auto;
+    margin-right:auto;
+    box-sizing:border-box;
 }
 
-.draw-intro p{
-    margin:8px 0 0;
-    font-size:12px;
+.status-chip{
+    font-size:11px;
     letter-spacing:1px;
-    color:#ad8493;
+    color:#c49aaa;
+    background:rgba(255,255,255,.5);
+    border:1px solid rgba(213,177,191,.22);
+    border-radius:10px;
+    padding:4px 10px;
+    white-space:nowrap;
+    line-height:1.3;
+    text-align:center;
+}
+
+.status-chip.status-side{
+    min-width:96px;
+}
+
+.status-chip.status-center{
+    flex:0 0 auto;
+}
+
+.bottom-meta{
+    flex-shrink:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:6px;
+    margin-top:4px;
+    opacity:1;
+    transition:opacity .3s ease;
+    pointer-events:none;
+}
+
+.bottom-meta.hide{
+    opacity:0;
+}
+
+.turn-pill{
+    font-family:"STKaiti","KaiTi",serif;
+    font-size:12px;
+    letter-spacing:3px;
+    color:#c49aaa;
+    padding:4px 14px;
+    border-radius:12px;
+    background:rgba(255,255,255,.45);
+    border:1px solid rgba(213,177,191,.2);
 }
 
 .cards-board{
     width:100%;
     flex:1;
     min-height:0;
+    position:relative;
 
     display:grid;
     grid-template-columns:repeat(3,1fr);
-    grid-template-rows:repeat(2,auto);
+    grid-template-rows:repeat(3,auto);
 
-    gap:22px 9px;
+    gap:14px 9px;
 
     align-content:center;
     justify-items:center;
 
-    padding:8px 5px;
+    padding:6px 5px;
+}
+
+.cards-board.phase-priority{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.cards-board.phase-priority .love-card{
+    max-width:120px;
+}
+
+.love-card.dealing{
+    transition:
+        transform .55s cubic-bezier(.22,.8,.25,1),
+        opacity .4s ease;
+}
+
+.love-card.collecting{
+    transition:
+        transform .45s cubic-bezier(.4,.0,.2,1),
+        opacity .35s ease;
+}
+
+@keyframes cardShake{
+    0%,100%{transform:translate(0,0) rotate(0deg)}
+    15%{transform:translate(-3px,2px) rotate(-2deg)}
+    30%{transform:translate(3px,-2px) rotate(2deg)}
+    45%{transform:translate(-2px,-1px) rotate(-1deg)}
+    60%{transform:translate(2px,2px) rotate(1deg)}
+    75%{transform:translate(-1px,1px) rotate(-1deg)}
+}
+
+.love-card.shaking{
+    animation:cardShake .45s ease-in-out;
 }
 
 .love-card{
@@ -959,6 +1088,18 @@ button{
     background:linear-gradient(145deg,#7A5140,#4E3025);
 }
 
+.card-color-7 .card-back{
+    background:linear-gradient(145deg,#D4B84A,#B8982E);
+}
+
+.card-color-8 .card-back{
+    background:linear-gradient(145deg,#A63D3D,#7A2428);
+}
+
+.card-color-9 .card-back{
+    background:linear-gradient(145deg,#D7A8E8,#B88AD0);
+}
+
 .card-front{
     transform:rotateY(180deg);
 
@@ -1058,6 +1199,79 @@ button{
     transform:scale(.94);
 }
 
+.round-indicator{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    pointer-events:none;
+}
+
+.round-indicator span{
+    font-family:"STKaiti","KaiTi",serif;
+    font-size:12px;
+    letter-spacing:3px;
+    color:#c49aaa;
+    padding:4px 14px;
+    border-radius:12px;
+    background:rgba(255,255,255,.45);
+    border:1px solid rgba(213,177,191,.2);
+}
+
+.unlock-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-top:10px;
+    padding:0 2px;
+}
+
+.unlock-label{
+    font-size:12px;
+    color:#ad8493;
+    letter-spacing:.5px;
+    white-space:nowrap;
+}
+
+.unlock-input{
+    width:72px;
+    height:34px;
+    border:1px solid rgba(208,173,188,.3);
+    border-radius:10px;
+    background:#fbf3f7;
+    color:#705563;
+    font-size:14px;
+    text-align:center;
+    outline:none;
+    padding:0 8px;
+}
+
+.unlock-input:focus{
+    border-color:rgba(195,132,158,.5);
+    background:#fffafd;
+}
+
+.unlock-badge{
+    display:inline-block;
+    margin-left:6px;
+    padding:1px 7px;
+    border-radius:8px;
+    background:rgba(246,224,233,.7);
+    color:#ad7d90;
+    font-size:10px;
+    letter-spacing:.5px;
+    vertical-align:middle;
+    white-space:nowrap;
+}
+
+.edit-unlock-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-top:12px;
+}
+
 
 /* =====================================================
    大卡牌
@@ -1120,21 +1334,21 @@ button{
 
 @keyframes cardAppear{
     0%{
-        transform:scale(.55) rotate(-8deg);
+        transform:scale(.48) rotate(-12deg) translateY(20px);
         opacity:0;
     }
-    35%{
-        transform:scale(1.08) rotate(8deg);
+    30%{
+        transform:scale(1.1) rotate(9deg) translateY(-4px);
         opacity:1;
     }
-    60%{
-        transform:scale(.96) rotate(-5deg);
+    55%{
+        transform:scale(.95) rotate(-5deg) translateY(2px);
     }
-    78%{
-        transform:scale(1.02) rotate(3deg);
+    75%{
+        transform:scale(1.03) rotate(3deg) translateY(-1px);
     }
     100%{
-        transform:scale(1) rotate(0deg);
+        transform:scale(1) rotate(0deg) translateY(0);
         opacity:1;
     }
 }
@@ -1215,6 +1429,18 @@ button{
 
 .big-back.card-color-6{
     background:linear-gradient(145deg,#7A5140,#4E3025);
+}
+
+.big-back.card-color-7{
+    background:linear-gradient(145deg,#D4B84A,#B8982E);
+}
+
+.big-back.card-color-8{
+    background:linear-gradient(145deg,#A63D3D,#7A2428);
+}
+
+.big-back.card-color-9{
+    background:linear-gradient(145deg,#D7A8E8,#B88AD0);
 }
 
 .big-symbol{
@@ -1457,19 +1683,22 @@ button{
 
 @keyframes cardSpin{
     0%{
-        transform:scale(.75) rotate(0deg);
+        transform:scale(.72) rotate(0deg);
     }
-    20%{
-        transform:scale(.88) rotate(70deg);
+    18%{
+        transform:scale(.86) rotate(75deg);
     }
-    42%{
-        transform:scale(.94) rotate(155deg);
+    38%{
+        transform:scale(.93) rotate(160deg);
     }
-    65%{
-        transform:scale(.98) rotate(245deg);
+    58%{
+        transform:scale(.97) rotate(250deg);
     }
-    84%{
-        transform:scale(1.02) rotate(315deg);
+    78%{
+        transform:scale(1.03) rotate(320deg);
+    }
+    90%{
+        transform:scale(1.01) rotate(350deg);
     }
     100%{
         transform:scale(1) rotate(360deg);
@@ -1793,23 +2022,20 @@ button{
             calc(env(safe-area-inset-top) + 12px);
     }
 
-    .draw-intro{
+    .draw-status{
         margin-top:8px;
+        gap:5px 6px;
     }
 
-    .draw-intro h2{
-        font-size:20px;
-    }
-
-    .draw-intro p{
-        margin-top:5px;
+    .status-chip{
         font-size:10px;
+        padding:3px 8px;
     }
 
     .cards-board{
-        gap:16px 7px;
-        padding-top:5px;
-        padding-bottom:5px;
+        gap:10px 7px;
+        padding-top:4px;
+        padding-bottom:4px;
     }
 
     .love-card{
@@ -1826,7 +2052,7 @@ button{
 @media(max-width:360px){
 
     .cards-board{
-        gap:15px 5px;
+        gap:9px 5px;
     }
 
     .love-card{
@@ -1877,7 +2103,7 @@ button{
 
         <div class="en">LOVE CARD</div>
 
-        <h1>恋爱签</h1>
+        <h1>恋爱牌</h1>
 
         <p>
             每一张卡，都藏着属于你们的小惊喜
@@ -1887,7 +2113,7 @@ button{
 
     <div class="home-card-area">
 
-        <div class="card-stack">
+        <div class="card-stack" id="startGameCard" role="button" aria-label="开始游戏">
 
             <div class="stack-card back1"></div>
             <div class="stack-card back2"></div>
@@ -1902,7 +2128,7 @@ button{
                 <div class="card-center">♡</div>
 
                 <div class="love-card-title">
-                    恋爱签
+                    恋爱牌
                 </div>
 
                 <div class="love-card-sub">
@@ -1919,16 +2145,16 @@ button{
 
         <button
             type="button"
-            class="primary-btn"
-            id="startDrawBtn">
-            开始抽卡
+            class="secondary-btn"
+            id="joinUsBtn">
+            加入我们
         </button>
 
         <button
             type="button"
             class="secondary-btn"
             id="collectionBtn">
-            我的卡牌 ›
+            我的设置
         </button>
 
     </div>
@@ -1956,7 +2182,7 @@ button{
     <div class="page-header">
 
         <div class="page-header-title">
-            我的卡牌
+            我的设置
         </div>
 
     </div>
@@ -1978,11 +2204,12 @@ button{
 
     <div class="collection-bottom">
 
-        <div
-            class="collection-total"
-            id="collectionTotal">
-            共 0 条内容
-        </div>
+        <button
+            type="button"
+            class="reset-round-btn"
+            id="resetRoundBtn">
+            重置轮数
+        </button>
 
     </div>
 
@@ -2054,6 +2281,18 @@ button{
             maxlength="1000"
             placeholder="输入你想放进这张牌里的内容……&#10;&#10;需要倒计时的话，可以直接写：&#10;【计时：30秒】和对方深情对视。&#10;&#10;也支持：1分钟、1分30秒、90秒。"></textarea>
 
+        <div class="unlock-row">
+            <span class="unlock-label">从第几轮开始出现</span>
+            <input
+                type="number"
+                class="unlock-input"
+                id="unlockRoundInput"
+                min="1"
+                max="999"
+                value="1"
+                inputmode="numeric">
+        </div>
+
         <div class="add-content-row">
 
             <button
@@ -2095,21 +2334,17 @@ button{
     <div class="draw-header">
 
         <div class="draw-header-title">
-            恋爱签
+            恋爱牌
         </div>
 
     </div>
 
-    <div class="draw-intro">
+    <div class="draw-divider"></div>
 
-        <h2>
-            来试试今天的运气怎么样
-        </h2>
-
-        <p>
-            让我们看看今天你是真心话还是大冒险
-        </p>
-
+    <div class="draw-status" id="drawStatus">
+        <span class="status-chip status-side" id="boyDrinkChip">男生酒量 0 张</span>
+        <span class="status-chip status-center" id="drawProgress">已抽 0/9</span>
+        <span class="status-chip status-side" id="girlDrinkChip">女生酒量 0 张</span>
     </div>
 
     <div
@@ -2128,6 +2363,13 @@ button{
             洗牌
         </button>
 
+    </div>
+
+    <div class="bottom-meta" id="bottomMeta">
+        <div class="turn-pill" id="turnChip">本轮 · —</div>
+        <div class="round-indicator" id="roundIndicator">
+            <span id="roundText">第 1 轮</span>
+        </div>
     </div>
 
 </section>
@@ -2162,7 +2404,7 @@ button{
                 <div
                     class="big-back-title"
                     id="bigBackTitle">
-                    恋爱签
+                    恋爱牌
                 </div>
 
                 <div
@@ -2306,6 +2548,18 @@ button{
             id="editTextarea"
             maxlength="1000"></textarea>
 
+        <div class="edit-unlock-row">
+            <span class="unlock-label">从第几轮开始出现</span>
+            <input
+                type="number"
+                class="unlock-input"
+                id="editUnlockRoundInput"
+                min="1"
+                max="999"
+                value="1"
+                inputmode="numeric">
+        </div>
+
         <div class="edit-actions">
 
             <button
@@ -2428,8 +2682,43 @@ const cardColors = [
     "card-color-3",
     "card-color-4",
     "card-color-5",
-    "card-color-6"
+    "card-color-6",
+    "card-color-7",
+    "card-color-8",
+    "card-color-9"
 ];
+
+const fixedBonusCards = [
+    {
+        categoryId:"penalty_drink",
+        type:"罚酒牌",
+        icon:"🍷",
+        english:"PENALTY",
+        symbol:"✦",
+        description:"你的运气用完啦\n罚酒一杯",
+        isFixed:true
+    },
+    {
+        categoryId:"penalty_drink",
+        type:"罚酒牌",
+        icon:"🍷",
+        english:"PENALTY",
+        symbol:"✦",
+        description:"你的运气用完啦\n罚酒一杯",
+        isFixed:true
+    },
+    {
+        categoryId:"penalty_drink",
+        type:"罚酒牌",
+        icon:"🍷",
+        english:"PENALTY",
+        symbol:"✦",
+        description:"你的运气用完啦\n罚酒一杯",
+        isFixed:true
+    }
+];
+
+const CARDS_PER_ROUND = 9;
 
 
 /* =====================================================
@@ -2437,7 +2726,121 @@ const cardColors = [
    ===================================================== */
 
 const STORAGE_KEY =
+    "loveCard_customContents_v4";
+
+const OLD_STORAGE_KEY =
     "loveCard_customContents_v3";
+
+const ROUND_STORAGE_KEY =
+    "loveCard_savedRound_v1";
+
+const SESSION_STORAGE_KEY =
+    "loveCard_sessionStats_v1";
+
+function loadSavedRound(){
+
+    try{
+
+        const n = Number(
+            localStorage.getItem(ROUND_STORAGE_KEY)
+        );
+
+        if(Number.isFinite(n) && n >= 1){
+            return Math.min(999, Math.floor(n));
+        }
+
+    }catch(error){}
+
+    return 1;
+
+}
+
+function loadSessionStats(){
+
+    try{
+
+        const raw =
+            localStorage.getItem(SESSION_STORAGE_KEY);
+
+        if(!raw){
+            return { girlDrinks:0, boyDrinks:0 };
+        }
+
+        const parsed = JSON.parse(raw);
+
+        const g = Number(parsed.girlDrinks);
+        const b = Number(parsed.boyDrinks);
+
+        return {
+            girlDrinks:
+                Number.isFinite(g) && g >= 0
+                    ? Math.floor(g)
+                    : 0,
+            boyDrinks:
+                Number.isFinite(b) && b >= 0
+                    ? Math.floor(b)
+                    : 0
+        };
+
+    }catch(error){
+
+        return { girlDrinks:0, boyDrinks:0 };
+
+    }
+
+}
+
+function saveSessionStats(){
+
+    try{
+
+        localStorage.setItem(
+            ROUND_STORAGE_KEY,
+            String(Math.max(1, currentRound || 1))
+        );
+
+        localStorage.setItem(
+            SESSION_STORAGE_KEY,
+            JSON.stringify({
+                girlDrinks: Math.max(0, girlDrinks || 0),
+                boyDrinks: Math.max(0, boyDrinks || 0)
+            })
+        );
+
+    }catch(error){}
+
+}
+
+function saveCurrentRound(){
+
+    saveSessionStats();
+
+}
+
+function resetSavedRound(){
+
+    currentRound = 1;
+    girlDrinks = 0;
+    boyDrinks = 0;
+
+    try{
+
+        localStorage.setItem(
+            ROUND_STORAGE_KEY,
+            "1"
+        );
+
+        localStorage.setItem(
+            SESSION_STORAGE_KEY,
+            JSON.stringify({
+                girlDrinks:0,
+                boyDrinks:0
+            })
+        );
+
+    }catch(error){}
+
+}
 
 function createDefaultData(){
 
@@ -2452,12 +2855,39 @@ function createDefaultData(){
 
 }
 
+function normalizeCardItem(item){
+
+    if(item && typeof item === "object" && item.text !== undefined){
+
+        const round = Number(item.unlockRound);
+
+        return {
+            text:String(item.text),
+            unlockRound:
+                Number.isFinite(round) && round >= 1
+                    ? Math.floor(round)
+                    : 1
+        };
+
+    }
+
+    return {
+        text:String(item),
+        unlockRound:1
+    };
+
+}
+
 function loadData(){
 
     try{
 
-        const saved =
+        let saved =
             localStorage.getItem(STORAGE_KEY);
+
+        if(!saved){
+            saved = localStorage.getItem(OLD_STORAGE_KEY);
+        }
 
         if(!saved){
             return createDefaultData();
@@ -2475,7 +2905,8 @@ function loadData(){
 
                 data[category.id] =
                     parsed[category.id]
-                        .map(item => String(item));
+                        .map(normalizeCardItem)
+                        .filter(item => item.text.trim() !== "");
 
             }
 
@@ -2507,6 +2938,17 @@ function saveData(){
         showToast("保存失败，请检查浏览器存储");
 
     }
+
+}
+
+function getAvailableContents(categoryId,round){
+
+    const list =
+        customData[categoryId] || [];
+
+    return list.filter(
+        item => item.unlockRound <= round
+    );
 
 }
 
@@ -2601,6 +3043,31 @@ let completedCount = 0;
 let currentCardIndex = null;
 
 let cardOpening = false;
+
+let currentRound = loadSavedRound();
+
+let currentCardHasTimer = false;
+
+let timerDoneForCurrentCard = false;
+
+let timerAwaitingConfirm = false;
+
+/* priority | dealing | playing | collecting */
+let gamePhase = "priority";
+
+/* girl | boy | null */
+let currentTurn = null;
+
+let girlDrinks = loadSessionStats().girlDrinks;
+
+let boyDrinks = loadSessionStats().boyDrinks;
+
+let isPriorityCard = false;
+
+let dealBusy = false;
+
+/* 记录最近先后结果，避免连续多轮同一边 */
+let recentPrioritySides = [];
 
 /*
  * 新增：
@@ -2813,14 +3280,141 @@ if(
    页面跳转
    ===================================================== */
 
+function updateRoundDisplay(){
+
+    const roundText =
+        document.getElementById("roundText");
+
+    const bottomMeta =
+        document.getElementById("bottomMeta");
+
+    if(roundText){
+        roundText.textContent =
+            "第 " + currentRound + " 轮";
+    }
+
+    if(bottomMeta){
+
+        if(shuffleArea.classList.contains("show")){
+            bottomMeta.classList.add("hide");
+        }else{
+            bottomMeta.classList.remove("hide");
+        }
+
+    }
+
+}
+
+function updateDrawProgress(){
+
+    const el =
+        document.getElementById("drawProgress");
+
+    if(el){
+        el.textContent =
+            "已抽 " + completedCount + "/" + CARDS_PER_ROUND;
+    }
+
+    const turnChip =
+        document.getElementById("turnChip");
+
+    if(turnChip){
+
+        if(currentTurn === "girl"){
+            turnChip.textContent = "本轮 · 女生";
+        }else if(currentTurn === "boy"){
+            turnChip.textContent = "本轮 · 男生";
+        }else{
+            turnChip.textContent = "本轮 · —";
+        }
+
+    }
+
+    const girlChip =
+        document.getElementById("girlDrinkChip");
+
+    const boyChip =
+        document.getElementById("boyDrinkChip");
+
+    if(girlChip){
+        girlChip.textContent =
+            "女生酒量 " + girlDrinks + " 张";
+    }
+
+    if(boyChip){
+        boyChip.textContent =
+            "男生酒量 " + boyDrinks + " 张";
+    }
+
+}
+
+function switchTurn(){
+
+    if(currentTurn === "girl"){
+        currentTurn = "boy";
+    }else if(currentTurn === "boy"){
+        currentTurn = "girl";
+    }
+
+    updateDrawProgress();
+
+}
+
+function lightVibrate(){
+
+    try{
+        if(navigator.vibrate){
+            navigator.vibrate(8);
+        }
+    }catch(error){}
+
+}
+
+function mediumVibrate(){
+
+    try{
+        if(navigator.vibrate){
+            navigator.vibrate(12);
+        }
+    }catch(error){}
+
+}
+
+function formatDescriptionHTML(text){
+
+    return escapeHTML(text)
+        .replace(
+            /(\d+)/g,
+            '<span style="font-size:1.28em;font-weight:600;color:#694c58">$1</span>'
+        )
+        .replace(/\n/g,"<br>");
+
+}
+
 function openDrawPage(){
 
     closeEditModal();
     closeDeleteConfirm();
     closeTimer(false);
-    closeCard(false);
+    closeCard(false, true);
 
-    createNewRound();
+    /* 轮数、酒量从本地记录继续，仅「重置轮数」才清零 */
+    currentRound = loadSavedRound();
+
+    const stats = loadSessionStats();
+    girlDrinks = stats.girlDrinks;
+    boyDrinks = stats.boyDrinks;
+
+    currentTurn = null;
+    gamePhase = "priority";
+    isPriorityCard = false;
+    dealBusy = false;
+
+    prepareRoundCards();
+    startPriorityPhase();
+
+    updateRoundDisplay();
+    updateDrawProgress();
 
     currentPage = "draw";
 
@@ -2866,7 +3460,9 @@ function backHome(){
     closeEditModal();
     closeDeleteConfirm();
     closeTimer(false);
-    closeCard(false);
+    closeCard(false, true);
+
+    saveCurrentRound();
 
     currentPage = "home";
 
@@ -2898,9 +3494,25 @@ function backCollection(){
 
 window.addEventListener("popstate",function(event){
 
-    if(timerActive){
+    if(
+        timerActive ||
+        timerAwaitingConfirm ||
+        (
+            overlay.style.display === "flex" ||
+            overlay.classList.contains("show")
+        )
+    ){
 
-        closeTimer(false);
+        if(timerActive || timerAwaitingConfirm){
+            closeTimer(false);
+        }
+
+        if(
+            overlay.style.display === "flex" ||
+            overlay.classList.contains("show")
+        ){
+            closeCard(true, true);
+        }
 
         history.pushState(
             {
@@ -3052,10 +3664,7 @@ function renderCategoryList(){
 
     });
 
-    document.getElementById(
-        "collectionTotal"
-    ).textContent =
-        "共 " + total + " 条内容";
+    /* 底部改为重置轮数按钮，不再显示总条数 */
 
 }
 
@@ -3103,6 +3712,13 @@ function openEditor(categoryId){
     document.getElementById(
         "contentInput"
     ).value = "";
+
+    const unlockInput =
+        document.getElementById("unlockRoundInput");
+
+    if(unlockInput){
+        unlockInput.value = "1";
+    }
 
     renderEditor();
 
@@ -3169,7 +3785,10 @@ function renderEditor(){
 
     }
 
-    data.forEach((text,index) => {
+    data.forEach((raw,index) => {
+
+        const cardItem =
+            normalizeCardItem(raw);
 
         const item =
             document.createElement("div");
@@ -3192,8 +3811,20 @@ function renderEditor(){
         content.className =
             "content-text";
 
-        content.textContent =
-            text;
+        if(cardItem.unlockRound > 1){
+
+            content.innerHTML =
+                escapeHTML(cardItem.text) +
+                '<span class="unlock-badge">第' +
+                cardItem.unlockRound +
+                '轮</span>';
+
+        }else{
+
+            content.textContent =
+                cardItem.text;
+
+        }
 
         content.addEventListener(
             "dblclick",
@@ -3269,6 +3900,18 @@ function escapeHTML(text){
    添加
    ===================================================== */
 
+function parseUnlockRound(value){
+
+    const n = Number(value);
+
+    if(!Number.isFinite(n) || n < 1){
+        return 1;
+    }
+
+    return Math.min(999,Math.floor(n));
+
+}
+
 function addContent(){
 
     if(!currentCategoryId){
@@ -3277,6 +3920,9 @@ function addContent(){
 
     const input =
         document.getElementById("contentInput");
+
+    const unlockInput =
+        document.getElementById("unlockRoundInput");
 
     const text =
         input.value.trim();
@@ -3291,15 +3937,31 @@ function addContent(){
 
     }
 
-    customData[currentCategoryId].push(text);
+    const unlockRound =
+        parseUnlockRound(
+            unlockInput ? unlockInput.value : 1
+        );
+
+    customData[currentCategoryId].push({
+        text:text,
+        unlockRound:unlockRound
+    });
 
     saveData();
 
     input.value = "";
 
+    if(unlockInput){
+        unlockInput.value = "1";
+    }
+
     renderEditor();
 
-    showToast("已添加");
+    showToast(
+        unlockRound > 1
+            ? "已添加（第 " + unlockRound + " 轮起）"
+            : "已添加"
+    );
 
 }
 
@@ -3326,10 +3988,21 @@ function editContent(index){
 
     editingIndex = index;
 
+    const item =
+        normalizeCardItem(data[index]);
+
     document.getElementById(
         "editTextarea"
     ).value =
-        data[index];
+        item.text;
+
+    const editUnlock =
+        document.getElementById("editUnlockRoundInput");
+
+    if(editUnlock){
+        editUnlock.value =
+            String(item.unlockRound);
+    }
 
     editModal.classList.add("show");
 
@@ -3347,6 +4020,9 @@ function saveEdit(){
     const textarea =
         document.getElementById("editTextarea");
 
+    const editUnlock =
+        document.getElementById("editUnlockRoundInput");
+
     const text =
         textarea.value.trim();
 
@@ -3358,10 +4034,17 @@ function saveEdit(){
 
     }
 
+    const unlockRound =
+        parseUnlockRound(
+            editUnlock ? editUnlock.value : 1
+        );
+
     customData[
         currentCategoryId
-    ][editingIndex] =
-        text;
+    ][editingIndex] = {
+        text:text,
+        unlockRound:unlockRound
+    };
 
     saveData();
 
@@ -3386,6 +4069,8 @@ function closeEditModal(){
    删除
    ===================================================== */
 
+let pendingResetRound = false;
+
 function openDeleteConfirm(index){
 
     if(!currentCategoryId){
@@ -3402,8 +4087,33 @@ function openDeleteConfirm(index){
         return;
     }
 
+    pendingResetRound = false;
+
     pendingDeleteIndex =
         index;
+
+    const confirmBtn =
+        document.getElementById("deleteConfirmBtn");
+
+    if(confirmBtn){
+        confirmBtn.textContent = "确认";
+    }
+
+    deleteModal.classList.add("show");
+
+}
+
+function openResetRoundConfirm(){
+
+    pendingDeleteIndex = null;
+    pendingResetRound = true;
+
+    const confirmBtn =
+        document.getElementById("deleteConfirmBtn");
+
+    if(confirmBtn){
+        confirmBtn.textContent = "确认重置";
+    }
 
     deleteModal.classList.add("show");
 
@@ -3415,6 +4125,15 @@ function closeDeleteConfirm(){
 
     pendingDeleteIndex =
         null;
+
+    pendingResetRound = false;
+
+    const confirmBtn =
+        document.getElementById("deleteConfirmBtn");
+
+    if(confirmBtn){
+        confirmBtn.textContent = "确认";
+    }
 
 }
 
@@ -3484,83 +4203,467 @@ function shuffleArray(array){
    创建一局
    ===================================================== */
 
-function createNewRound(){
-
-    const shuffledCategories =
-        shuffleArray(categories);
+function prepareRoundCards(){
 
     const shuffledColors =
         shuffleArray(cardColors);
 
-    currentRoundCards =
-        shuffledCategories.map(
-            (category,index) => {
+    const normalCards =
+        categories.map(category => {
 
-                const contents =
+            const contents =
+                getAvailableContents(
+                    category.id,
+                    currentRound
+                );
+
+            let selectedContent;
+
+            if(contents.length > 0){
+
+                const randomIndex =
+                    Math.floor(
+                        Math.random() *
+                        contents.length
+                    );
+
+                selectedContent =
+                    contents[randomIndex].text;
+
+            }else{
+
+                const allContents =
                     customData[category.id] || [];
 
-                let selectedContent;
-
-                if(contents.length > 0){
-
-                    const randomIndex =
-                        Math.floor(
-                            Math.random() *
-                            contents.length
-                        );
+                if(allContents.length > 0){
 
                     selectedContent =
-                        contents[randomIndex];
+                        "当前是第 " +
+                        currentRound +
+                        " 轮。\n\n" +
+                        "【" +
+                        category.name +
+                        "】还有内容，但都设置了更高轮次才出现。\n\n" +
+                        "继续洗牌到对应轮次即可解锁。";
 
                 }else{
 
                     selectedContent =
                         "这张牌还没有自定义内容。\n\n" +
-                        "回到首页，进入「我的卡牌」，" +
+                        "回到首页，进入「我的设置」，" +
                         "为【" +
                         category.name +
                         "】添加内容吧。";
 
                 }
 
-                return {
-
-                    categoryId:category.id,
-
-                    type:category.name,
-
-                    icon:category.icon,
-
-                    english:category.english,
-
-                    symbol:category.symbol,
-
-                    description:selectedContent,
-
-                    color:shuffledColors[index]
-
-                };
-
             }
+
+            return {
+                categoryId:category.id,
+                type:category.name,
+                icon:category.icon,
+                english:category.english,
+                symbol:category.symbol,
+                description:selectedContent,
+                isFixed:false
+            };
+
+        });
+
+    const bonusCards =
+        fixedBonusCards.map(card => ({
+            ...card
+        }));
+
+    const allCards =
+        shuffleArray(
+            normalCards.concat(bonusCards)
         );
 
+    currentRoundCards =
+        allCards.map((card,index) => ({
+            ...card,
+            color:shuffledColors[index]
+        }));
+
     completedCount = 0;
-
     currentCardIndex = null;
-
     cardOpening = false;
-
     cardCloseLocked = false;
+    currentCardHasTimer = false;
+    timerDoneForCurrentCard = false;
+    timerAwaitingConfirm = false;
+    isPriorityCard = false;
 
     clearTimeout(cardCloseUnlockTimer);
-
     cardCloseUnlockTimer = null;
-
     closeTimer(false);
 
-    renderGameCards();
+}
+
+
+function startPriorityPhase(){
+
+    gamePhase = "priority";
+    isPriorityCard = false;
+    dealBusy = false;
+
+    const board =
+        document.getElementById("cardsBoard");
+
+    board.className = "cards-board phase-priority";
+    board.innerHTML = "";
+
+    /*
+     * 每轮重新随机。
+     * 使用 crypto 增强随机；若连续两轮同一边，第三轮强制换边，避免手感偏差。
+     */
+    let isGirl = true;
+
+    try{
+
+        if(window.crypto && crypto.getRandomValues){
+
+            const buf = new Uint32Array(1);
+            crypto.getRandomValues(buf);
+            isGirl = (buf[0] % 2) === 0;
+
+        }else{
+
+            isGirl = Math.random() < 0.5;
+
+        }
+
+    }catch(error){
+
+        isGirl = Math.random() < 0.5;
+
+    }
+
+    if(
+        recentPrioritySides.length >= 2 &&
+        recentPrioritySides[0] === recentPrioritySides[1]
+    ){
+
+        const last =
+            recentPrioritySides[1];
+
+        if(
+            (last === "girl" && isGirl) ||
+            (last === "boy" && !isGirl)
+        ){
+            isGirl = !isGirl;
+        }
+
+    }
+
+    const side =
+        isGirl ? "girl" : "boy";
+
+    recentPrioritySides.push(side);
+
+    if(recentPrioritySides.length > 2){
+        recentPrioritySides.shift();
+    }
+
+    const priorityCard = {
+        categoryId:"priority",
+        type: isGirl ? "女孩牌" : "男生牌",
+        icon: isGirl ? "♀" : "♂",
+        english: isGirl ? "LADY FIRST" : "GENT FIRST",
+        symbol: isGirl ? "♡" : "✦",
+        description: isGirl
+            ? "女士优先"
+            : "男士优先",
+        color: isGirl ? "card-color-9" : "card-color-5",
+        isPriority:true,
+        prioritySide: side
+    };
+
+    /* 暂存到 index 0 供 openCard 使用 */
+    currentRoundCards._priority = priorityCard;
+
+    const button =
+        document.createElement("button");
+
+    button.type = "button";
+    button.className =
+        "love-card " + priorityCard.color;
+    button.dataset.index = "priority";
+
+    button.innerHTML = `
+
+        <div class="love-card-inner">
+
+            <div class="card-face card-back">
+
+                <div class="back-symbol">
+                    ✦
+                </div>
+
+                <div class="back-label">
+                    LOVE CARD
+                </div>
+
+            </div>
+
+            <div class="card-face card-front">
+
+                <div class="card-type">
+                    ORDER
+                </div>
+
+                <div class="card-icon">
+                    ${priorityCard.icon}
+                </div>
+
+                <div class="card-name">
+                    先后牌
+                </div>
+
+
+            </div>
+
+        </div>
+
+    `;
+
+    button.addEventListener("click", function(event){
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        openPriorityCard(priorityCard);
+
+    });
+
+    board.appendChild(button);
 
     shuffleArea.classList.remove("show");
+    updateRoundDisplay();
+    updateDrawProgress();
+
+}
+
+
+function openPriorityCard(card){
+
+    if(cardOpening || cardCloseLocked || dealBusy){
+        return;
+    }
+
+    isPriorityCard = true;
+    currentCardHasTimer = false;
+    timerDoneForCurrentCard = true;
+    currentCardIndex = "priority";
+
+    /* 先手结果在翻开时确定 */
+    currentTurn = card.prioritySide;
+    updateDrawProgress();
+
+    cardOpening = true;
+    cardCloseLocked = true;
+    clearTimeout(cardCloseUnlockTimer);
+
+    overlay.classList.remove("instant");
+    bigCard.classList.remove("reveal");
+    bigCardWrap.classList.remove("spinning");
+
+    fillBigCard(card);
+    mediumVibrate();
+
+    overlay.style.display = "flex";
+
+    requestAnimationFrame(() => {
+        overlay.classList.add("show");
+    });
+
+    setTimeout(() => {
+
+        if(!overlay.classList.contains("show")){
+            return;
+        }
+
+        bigCardWrap.classList.add("spinning");
+
+    },250);
+
+    setTimeout(() => {
+
+        if(!overlay.classList.contains("show")){
+            cardOpening = false;
+            cardCloseLocked = false;
+            return;
+        }
+
+        bigCardWrap.classList.remove("spinning");
+        bigCard.classList.add("reveal");
+        cardOpening = false;
+        cardCloseLocked = true;
+
+        clearTimeout(cardCloseUnlockTimer);
+
+        cardCloseUnlockTimer =
+            setTimeout(() => {
+                cardCloseLocked = false;
+                cardCloseUnlockTimer = null;
+            },1000);
+
+    },1400);
+
+}
+
+
+function runDealAnimation(){
+
+    gamePhase = "dealing";
+    dealBusy = true;
+    isPriorityCard = false;
+
+    const board =
+        document.getElementById("cardsBoard");
+
+    board.className = "cards-board";
+    renderGameCards(true);
+
+    const cards =
+        board.querySelectorAll(".love-card");
+
+    const boardRect =
+        board.getBoundingClientRect();
+
+    const cx = boardRect.width / 2;
+    const cy = boardRect.height / 2;
+
+    cards.forEach((card) => {
+
+        const rect = card.getBoundingClientRect();
+        const cardCx =
+            rect.left - boardRect.left + rect.width / 2;
+        const cardCy =
+            rect.top - boardRect.top + rect.height / 2;
+
+        const dx = cx - cardCx;
+        const dy = cy - cardCy;
+
+        card.style.transition = "none";
+        card.style.transform =
+            "translate(" + dx + "px," + dy + "px) scale(.55)";
+        card.style.opacity = "0.35";
+
+    });
+
+    board.offsetHeight;
+
+    cards.forEach((card,i) => {
+
+        setTimeout(() => {
+
+            card.style.transition =
+                "transform .55s cubic-bezier(.22,.8,.25,1), opacity .4s ease";
+            card.style.transform = "translate(0,0) scale(1)";
+            card.style.opacity = "1";
+
+        }, 40 + i * 55);
+
+    });
+
+    setTimeout(() => {
+
+        cards.forEach((card) => {
+            card.style.transition = "";
+            card.style.transform = "";
+            card.style.opacity = "";
+        });
+
+        gamePhase = "playing";
+        dealBusy = false;
+        updateDrawProgress();
+
+    }, 40 + 9 * 55 + 600);
+
+}
+
+
+function runCollectThenPriority(){
+
+    gamePhase = "collecting";
+    dealBusy = true;
+
+    const board =
+        document.getElementById("cardsBoard");
+
+    const cards =
+        board.querySelectorAll(".love-card");
+
+    if(!cards.length){
+
+        currentRound += 1;
+        saveCurrentRound();
+        prepareRoundCards();
+        startPriorityPhase();
+        dealBusy = false;
+        return;
+
+    }
+
+    const boardRect =
+        board.getBoundingClientRect();
+
+    const cx = boardRect.width / 2;
+    const cy = boardRect.height / 2;
+
+    /* 先全部盖回背面，避免收牌时正面露出来 */
+    cards.forEach((card) => {
+        card.classList.remove("flipped");
+        card.style.zIndex = "1";
+        card.style.pointerEvents = "none";
+    });
+
+    cards.forEach((card,i) => {
+
+        const rect = card.getBoundingClientRect();
+        const cardCx =
+            rect.left - boardRect.left + rect.width / 2;
+        const cardCy =
+            rect.top - boardRect.top + rect.height / 2;
+
+        const dx = cx - cardCx;
+        const dy = cy - cardCy;
+
+        setTimeout(() => {
+
+            card.style.transition =
+                "transform .42s cubic-bezier(.4,0,.2,1), opacity .32s ease";
+            card.style.transform =
+                "translate(" + dx + "px," + dy + "px) scale(.42)";
+            card.style.opacity = "0";
+            card.style.zIndex = String(10 + i);
+
+        }, i * 28);
+
+    });
+
+    /* 整板再淡出一帧，避免残留闪一下 */
+    setTimeout(() => {
+        board.style.transition = "opacity .2s ease";
+        board.style.opacity = "0";
+    }, 9 * 28 + 280);
+
+    setTimeout(() => {
+
+        board.style.transition = "";
+        board.style.opacity = "";
+        board.innerHTML = "";
+
+        currentRound += 1;
+        saveCurrentRound();
+        prepareRoundCards();
+        startPriorityPhase();
+        dealBusy = false;
+
+    }, 9 * 28 + 520);
 
 }
 
@@ -3569,15 +4672,20 @@ function createNewRound(){
    游戏卡牌
    ===================================================== */
 
-function renderGameCards(){
+function renderGameCards(forDeal){
 
     const board =
         document.getElementById("cardsBoard");
 
+    board.className = "cards-board";
     board.innerHTML = "";
 
     currentRoundCards.forEach(
         (card,index) => {
+
+            if(card && card.isPriority){
+                return;
+            }
 
             const button =
                 document.createElement("button");
@@ -3808,15 +4916,13 @@ function formatTime(totalSeconds){
 
 function openCard(index){
 
-    /*
-     * 如果正在抽牌动画，
-     * 或者卡牌刚刚翻开后的 1 秒锁定期，
-     * 不允许再次操作。
-     */
     if(
         cardOpening ||
         cardCloseLocked ||
-        timerActive
+        timerActive ||
+        timerAwaitingConfirm ||
+        dealBusy ||
+        gamePhase !== "playing"
     ){
         return;
     }
@@ -3869,6 +4975,8 @@ function openCard(index){
         bigCardWrap.classList.remove("spinning");
 
         fillBigCard(card);
+
+        mediumVibrate();
 
         overlay.style.display = "flex";
 
@@ -3943,7 +5051,7 @@ function openCard(index){
 
 
     /*
-     * 已经翻过的卡牌。
+     * 已经翻过的卡牌：允许直接点外部关闭。
      */
     cardOpening = false;
 
@@ -3954,6 +5062,10 @@ function openCard(index){
     cardCloseUnlockTimer = null;
 
     fillBigCard(card);
+
+    if(currentCardHasTimer){
+        timerDoneForCurrentCard = true;
+    }
 
     overlay.classList.add("instant");
 
@@ -4003,22 +5115,23 @@ function fillBigCard(card){
     const timerInfo =
         parseTimer(card.description);
 
+    const rawText =
+        timerInfo
+            ? timerInfo.display
+            : card.description;
 
     bigDescription.innerHTML =
-        escapeHTML(
-            timerInfo
-                ? timerInfo.display
-                : card.description
-        ).replace(
-            /\n/g,
-            "<br>"
-        );
+        formatDescriptionHTML(rawText);
 
 
     if(timerInfo){
 
         timerSeconds =
             timerInfo.seconds;
+
+        currentCardHasTimer = true;
+        timerDoneForCurrentCard = false;
+        timerAwaitingConfirm = false;
 
         timerStartBtn.textContent =
             "⏱ 开始倒计时 · " +
@@ -4029,6 +5142,10 @@ function fillBigCard(card){
     }else{
 
         timerSeconds = 0;
+
+        currentCardHasTimer = false;
+        timerDoneForCurrentCard = false;
+        timerAwaitingConfirm = false;
 
         timerAction.classList.remove("show");
 
@@ -4048,41 +5165,32 @@ function fillBigCard(card){
 
 function overlayClick(event){
 
-    /*
-     * 倒计时期间不允许关闭。
-     */
-    if(timerActive){
+    if(timerActive || timerAwaitingConfirm){
         return;
     }
 
-    /*
-     * 抽牌动画期间不允许关闭。
-     */
     if(cardOpening){
         return;
     }
 
-    /*
-     * 翻牌完成后的额外 1 秒锁定期间，
-     * 同样不允许关闭。
-     */
     if(cardCloseLocked){
         return;
     }
 
-    /*
-     * 点击卡牌本身不关闭。
-     */
     if(
         event.target.closest(".big-card-wrap")
     ){
         return;
     }
 
-    /*
-     * 只有满足上面所有条件，
-     * 点击外部才真正关闭。
-     */
+    /* 倒计时牌：完成倒计时并点过确定后才能点外部关闭 */
+    if(
+        currentCardHasTimer &&
+        !timerDoneForCurrentCard
+    ){
+        return;
+    }
+
     closeCard(true);
 
 }
@@ -4092,22 +5200,32 @@ function overlayClick(event){
    关闭卡牌
    ===================================================== */
 
-function closeCard(markCompleted){
+function closeCard(markCompleted, forceClose){
 
-    /*
-     * 任何锁定期间，
-     * 都不允许关闭。
-     *
-     * 这里再次检查，
-     * 防止其他代码间接调用 closeCard()
-     * 绕过外部点击限制。
-     */
     if(
-        timerActive ||
-        cardOpening ||
-        cardCloseLocked
+        (timerActive || timerAwaitingConfirm) &&
+        !forceClose
     ){
         return;
+    }
+
+    if(
+        !forceClose &&
+        (cardOpening || cardCloseLocked)
+    ){
+        return;
+    }
+
+    if(
+        !forceClose &&
+        currentCardHasTimer &&
+        !timerDoneForCurrentCard
+    ){
+        return;
+    }
+
+    if(forceClose){
+        closeTimer(false);
     }
 
     if(currentCardIndex === null){
@@ -4126,6 +5244,34 @@ function closeCard(markCompleted){
 
     if(markCompleted){
 
+        /* 先后牌关闭后发牌 */
+        if(isPriorityCard){
+
+            isPriorityCard = false;
+            currentCardIndex = null;
+
+            overlay.classList.remove("show","instant");
+            bigCard.classList.remove("reveal");
+            bigCardWrap.classList.remove("spinning");
+            clearTimeout(cardCloseUnlockTimer);
+            cardCloseUnlockTimer = null;
+            cardOpening = false;
+            cardCloseLocked = false;
+
+            setTimeout(() => {
+                if(!overlay.classList.contains("show")){
+                    overlay.style.display = "none";
+                }
+            },280);
+
+            setTimeout(() => {
+                runDealAnimation();
+            },300);
+
+            return;
+
+        }
+
         const smallCard =
             document.querySelector(
                 `.love-card[data-index="${currentCardIndex}"]`
@@ -4138,13 +5284,35 @@ function closeCard(markCompleted){
 
             smallCard.classList.add("flipped");
 
+            const drawn =
+                currentRoundCards[currentCardIndex];
+
+            if(
+                drawn &&
+                drawn.categoryId === "penalty_drink"
+            ){
+
+                if(currentTurn === "girl"){
+                    girlDrinks += 1;
+                }else if(currentTurn === "boy"){
+                    boyDrinks += 1;
+                }
+
+                saveSessionStats();
+
+            }
+
             completedCount++;
 
-            if(completedCount >= 6){
+            switchTurn();
+            updateDrawProgress();
+
+            if(completedCount >= CARDS_PER_ROUND){
 
                 setTimeout(() => {
 
                     shuffleArea.classList.add("show");
+                    updateRoundDisplay();
 
                 },220);
 
@@ -4195,7 +5363,7 @@ function closeCard(markCompleted){
 
 function startTimer(){
 
-    if(timerActive){
+    if(timerActive || timerAwaitingConfirm){
         return;
     }
 
@@ -4206,13 +5374,6 @@ function startTimer(){
         return;
     }
 
-    /*
-     * 在用户点击“开始倒计时”的时候，
-     * 浏览器已经处于用户手势上下文中。
-     *
-     * 这里提前创建 / 唤醒 AudioContext，
-     * 可以提高 Android 浏览器允许播放结束提示音的成功率。
-     */
     try{
 
         const AudioContext =
@@ -4222,32 +5383,28 @@ function startTimer(){
         if(AudioContext){
 
             if(!audioContext){
-
-                audioContext =
-                    new AudioContext();
-
+                audioContext = new AudioContext();
             }
 
             if(audioContext.state === "suspended"){
-
                 audioContext.resume();
-
             }
 
         }
 
-    }catch(error){
-
-    }
-
+    }catch(error){}
 
     timerRemaining =
         timerSeconds;
 
     timerActive = true;
+    timerAwaitingConfirm = false;
 
     timerTime.textContent =
         formatTime(timerRemaining);
+
+    timerCancelBtn.textContent =
+        "结束计时";
 
     timerOverlay.classList.add("show");
 
@@ -4282,15 +5439,35 @@ function finishTimer(){
 
     timerActive = false;
 
+    /* 不自动关闭，等待点「确定」 */
+    timerAwaitingConfirm = true;
+
+    timerTime.textContent =
+        formatTime(0);
+
+    timerCancelBtn.textContent =
+        "确定";
+
+    playTimerFinishedSound();
+    mediumVibrate();
+
+}
+
+
+function confirmTimerPanel(){
+
+    timerAwaitingConfirm = false;
+    timerActive = false;
+
+    clearInterval(timerInterval);
+    timerInterval = null;
+
     timerOverlay.classList.remove("show");
 
-    /*
-     * 倒计时结束：
-     * 播放 3 声提示音。
-     *
-     * 不再显示任何文字提示。
-     */
-    playTimerFinishedSound();
+    timerDoneForCurrentCard = true;
+
+    timerCancelBtn.textContent =
+        "结束计时";
 
 }
 
@@ -4304,11 +5481,29 @@ function closeTimer(showMessage){
     timerRemaining = 0;
 
     timerActive = false;
+    timerAwaitingConfirm = false;
 
     timerOverlay.classList.remove("show");
 
+    timerCancelBtn.textContent =
+        "结束计时";
+
     if(showMessage){
         showToast("已结束计时");
+    }
+
+}
+
+function onTimerButtonClick(){
+
+    if(timerAwaitingConfirm){
+        confirmTimerPanel();
+        return;
+    }
+
+    if(timerActive){
+        finishTimer();
+        return;
     }
 
 }
@@ -4320,11 +5515,12 @@ function closeTimer(showMessage){
 
 function shuffleCards(){
 
+    if(dealBusy || gamePhase === "dealing" || gamePhase === "collecting"){
+        return;
+    }
+
     closeTimer(false);
 
-    /*
-     * 洗牌时彻底解除之前卡牌的锁定状态。
-     */
     clearTimeout(cardCloseUnlockTimer);
 
     cardCloseUnlockTimer = null;
@@ -4335,7 +5531,10 @@ function shuffleCards(){
 
     shuffleArea.classList.remove("show");
 
-    createNewRound();
+    lightVibrate();
+
+    /* 收牌回中间 → 先后牌 → 再发牌；轮数在收牌结束时 +1 */
+    runCollectThenPriority();
 
 }
 
@@ -4372,19 +5571,37 @@ function showToast(message){
    事件绑定
    ===================================================== */
 
-document
-    .getElementById("startDrawBtn")
-    .addEventListener(
+const startGameCard =
+    document.getElementById("startGameCard");
+
+if(startGameCard){
+
+    startGameCard.addEventListener(
         "click",
         function(event){
 
             event.preventDefault();
             event.stopPropagation();
 
-            openDrawPage();
+            startGameCard.classList.add("pressed");
+            lightVibrate();
+
+            setTimeout(function(){
+
+                startGameCard.classList.remove("pressed");
+
+            },280);
+
+            setTimeout(function(){
+
+                openDrawPage();
+
+            },360);
 
         }
     );
+
+}
 
 
 document
@@ -4397,6 +5614,42 @@ document
             event.stopPropagation();
 
             openCollectionPage();
+
+        }
+    );
+
+
+document
+    .getElementById("joinUsBtn")
+    .addEventListener(
+        "click",
+        function(event){
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            lightVibrate();
+
+            window.open(
+                "https://t.me/qingquxiaoyouxi",
+                "_blank",
+                "noopener,noreferrer"
+            );
+
+        }
+    );
+
+
+document
+    .getElementById("resetRoundBtn")
+    .addEventListener(
+        "click",
+        function(event){
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            openResetRoundConfirm();
 
         }
     );
@@ -4456,7 +5709,7 @@ document
             event.preventDefault();
             event.stopPropagation();
 
-            closeTimer(true);
+            onTimerButtonClick();
 
         }
     );
@@ -4500,6 +5753,16 @@ document
 
             event.preventDefault();
             event.stopPropagation();
+
+            if(pendingResetRound){
+
+                closeDeleteConfirm();
+                resetSavedRound();
+                updateRoundDisplay();
+                showToast("轮数与酒量已重置");
+                return;
+
+            }
 
             if(
                 pendingDeleteIndex === null
