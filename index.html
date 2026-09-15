@@ -3420,6 +3420,19 @@ function openDrawPage(){
 
     showOnlyPage("draw");
 
+    /*
+     * 保证栈为：home → draw
+     * 抽卡页返回时一定回到主页，而不是退出应用
+     */
+    history.replaceState(
+        {
+            loveCard:true,
+            page:"home"
+        },
+        "",
+        location.href
+    );
+
     history.pushState(
         {
             loveCard:true,
@@ -3489,100 +3502,190 @@ function backCollection(){
 
 
 /* =====================================================
-   返回键
+   返回键（逐级返回）
    ===================================================== */
 
-window.addEventListener("popstate",function(event){
+/*
+ * history 层级：
+ * home → collection → editor
+ * home → draw → card → timer
+ *
+ * 侧滑 / 系统返回：只退一层。
+ */
 
+let historySyncLock = false;
+
+function isCardOverlayOpen(){
+
+    return (
+        overlay.style.display === "flex" ||
+        overlay.classList.contains("show")
+    );
+
+}
+
+function isTimerOpen(){
+
+    return timerActive || timerAwaitingConfirm;
+
+}
+
+function pushLayer(page){
+
+    history.pushState(
+        {
+            loveCard:true,
+            page:page
+        },
+        "",
+        location.href
+    );
+
+}
+
+function goBackLayer(){
+
+    /* UI 主动关闭时同步 history，避免栈错位 */
     if(
-        timerActive ||
-        timerAwaitingConfirm ||
+        history.state &&
+        history.state.loveCard === true &&
         (
-            overlay.style.display === "flex" ||
-            overlay.classList.contains("show")
+            history.state.page === "card" ||
+            history.state.page === "timer"
         )
     ){
 
-        if(timerActive || timerAwaitingConfirm){
-            closeTimer(false);
-        }
+        historySyncLock = true;
+        history.back();
 
-        if(
-            overlay.style.display === "flex" ||
-            overlay.classList.contains("show")
-        ){
-            closeCard(true, true);
-        }
+        setTimeout(function(){
+            historySyncLock = false;
+        },80);
 
-        history.pushState(
-            {
-                loveCard:true,
-                page:"draw"
-            },
-            "",
-            location.href
-        );
+    }
+
+}
+
+window.addEventListener("popstate",function(event){
+
+    if(historySyncLock){
+        return;
+    }
+
+    const state =
+        event.state && event.state.loveCard === true
+            ? event.state
+            : null;
+
+    const page =
+        state ? state.page : null;
+
+    /*
+     * 1) 倒计时打开 → 只关倒计时（history 已回到 card）
+     */
+    if(isTimerOpen()){
+
+        closeTimer(false);
+        return;
+
+    }
+
+    /*
+     * 2) 大卡打开 → 只关大卡，留在抽卡页（history 已回到 draw）
+     */
+    if(isCardOverlayOpen()){
+
+        closeCard(true, true);
+        currentPage = "draw";
+        showOnlyPage("draw");
+        return;
+
+    }
+
+    /*
+     * 3) 抽卡页 → 回主页
+     */
+    if(currentPage === "draw"){
+
+        saveCurrentRound();
+        currentPage = "home";
+        showOnlyPage("home");
+
+        if(page !== "home"){
+
+            history.replaceState(
+                {
+                    loveCard:true,
+                    page:"home"
+                },
+                "",
+                location.href
+            );
+
+        }
 
         return;
 
     }
 
-
-    if(
-        event.state &&
-        event.state.loveCard === true &&
-        event.state.page === "home"
-    ){
-
-        backHome();
-        return;
-
-    }
-
-
-    if(
-        event.state &&
-        event.state.loveCard === true &&
-        event.state.page === "collection"
-    ){
+    /*
+     * 4) 编辑页 → 回设置列表
+     */
+    if(currentPage === "editor"){
 
         backCollection();
-        return;
 
-    }
+        if(page !== "collection"){
 
+            history.replaceState(
+                {
+                    loveCard:true,
+                    page:"collection"
+                },
+                "",
+                location.href
+            );
 
-    if(
-        event.state &&
-        event.state.loveCard === true &&
-        event.state.page === "editor"
-    ){
-
-        currentPage = "editor";
-
-        showOnlyPage("editor");
-
-        return;
-
-    }
-
-
-    if(
-        event.state &&
-        event.state.loveCard === true &&
-        event.state.page === "draw"
-    ){
-
-        currentPage = "draw";
-
-        showOnlyPage("draw");
+        }
 
         return;
 
     }
 
+    /*
+     * 5) 设置页 → 回主页
+     */
+    if(currentPage === "collection"){
 
-    history.replaceState(
+        saveCurrentRound();
+        currentPage = "home";
+        showOnlyPage("home");
+
+        if(page !== "home"){
+
+            history.replaceState(
+                {
+                    loveCard:true,
+                    page:"home"
+                },
+                "",
+                location.href
+            );
+
+        }
+
+        return;
+
+    }
+
+    /*
+     * 6) 主页或其它 → 停在主页（不再继续退出）
+     */
+    saveCurrentRound();
+    currentPage = "home";
+    showOnlyPage("home");
+
+    history.pushState(
         {
             loveCard:true,
             page:"home"
@@ -3590,8 +3693,6 @@ window.addEventListener("popstate",function(event){
         "",
         location.href
     );
-
-    backHome();
 
 });
 
@@ -4475,6 +4576,13 @@ function openPriorityCard(card){
 
     overlay.style.display = "flex";
 
+    if(
+        !history.state ||
+        history.state.page !== "card"
+    ){
+        pushLayer("card");
+    }
+
     requestAnimationFrame(() => {
         overlay.classList.add("show");
     });
@@ -4980,6 +5088,13 @@ function openCard(index){
 
         overlay.style.display = "flex";
 
+        if(
+            !history.state ||
+            history.state.page !== "card"
+        ){
+            pushLayer("card");
+        }
+
         requestAnimationFrame(() => {
 
             overlay.classList.add("show");
@@ -5070,6 +5185,13 @@ function openCard(index){
     overlay.classList.add("instant");
 
     overlay.style.display = "flex";
+
+    if(
+        !history.state ||
+        history.state.page !== "card"
+    ){
+        pushLayer("card");
+    }
 
     requestAnimationFrame(() => {
 
@@ -5264,6 +5386,10 @@ function closeCard(markCompleted, forceClose){
                 }
             },280);
 
+            if(!forceClose){
+                goBackLayer();
+            }
+
             setTimeout(() => {
                 runDealAnimation();
             },300);
@@ -5354,6 +5480,14 @@ function closeCard(markCompleted, forceClose){
 
     currentCardIndex = null;
 
+    /*
+     * 仅点外部/UI 关闭时同步 history。
+     * 系统返回（forceClose）已在 popstate 里处理，不能再 back。
+     */
+    if(!forceClose){
+        goBackLayer();
+    }
+
 }
 
 
@@ -5407,6 +5541,13 @@ function startTimer(){
         "结束计时";
 
     timerOverlay.classList.add("show");
+
+    if(
+        !history.state ||
+        history.state.page !== "timer"
+    ){
+        pushLayer("timer");
+    }
 
     clearInterval(timerInterval);
 
@@ -5468,6 +5609,14 @@ function confirmTimerPanel(){
 
     timerCancelBtn.textContent =
         "结束计时";
+
+    if(
+        history.state &&
+        history.state.loveCard === true &&
+        history.state.page === "timer"
+    ){
+        goBackLayer();
+    }
 
 }
 
