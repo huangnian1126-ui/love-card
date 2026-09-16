@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
 
-<title>恋爱牌</title>
+<title>小惊喜</title>
 
 <meta name="theme-color" content="#fcecf3">
 <link rel="manifest" href="manifest.json">
@@ -149,9 +149,9 @@ button{
     flex-direction:column;
     align-items:center;
     padding:
-        calc(env(safe-area-inset-top) + 28px)
+        calc(env(safe-area-inset-top) + 24px)
         24px
-        calc(env(safe-area-inset-bottom) + 28px);
+        calc(env(safe-area-inset-bottom) + 24px);
 }
 
 .home-title{
@@ -174,21 +174,10 @@ button{
         "KaiTi",
         "FZKai-Z03",
         serif;
-    font-size:40px;
+    font-size:37px;
     font-weight:400;
-    letter-spacing:7px;
+    letter-spacing:6px;
     color:#654957;
-}
-
-.home-title p{
-    margin:12px 0 0;
-    font-family:
-        "STKaiti",
-        "KaiTi",
-        serif;
-    font-size:14px;
-    letter-spacing:1px;
-    color:#a77c8d;
 }
 
 .home-card-area{
@@ -198,8 +187,9 @@ button{
     align-items:center;
     justify-content:center;
     min-height:0;
-    margin-top:-12px;
-    padding-bottom:8px;
+    margin-top:-24px;
+    padding-bottom:0;
+    transform:translateY(-62px);
 }
 
 .card-stack{
@@ -281,30 +271,6 @@ button{
     color:#d38da9;
 }
 
-.main-card .love-card-title{
-    position:absolute;
-    left:0;
-    right:0;
-    bottom:46px;
-    text-align:center;
-    font-family:"STKaiti","KaiTi",serif;
-    font-size:24px;
-    letter-spacing:5px;
-    color:#765261;
-}
-
-.main-card .love-card-sub{
-    position:absolute;
-    left:0;
-    right:0;
-    bottom:23px;
-    text-align:center;
-    font-family:Georgia,serif;
-    font-size:7px;
-    letter-spacing:2px;
-    color:#c08aa0;
-}
-
 @keyframes cardFloat{
     0%,100%{transform:translateY(0)}
     50%{transform:translateY(-8px)}
@@ -315,6 +281,101 @@ button{
     -webkit-tap-highlight-color:transparent;
     transition:transform .38s cubic-bezier(.22,.8,.25,1);
 }
+
+/* =====================================================
+   首页进入游戏：柔和的卡牌聚拢 → 放大 → 淡出过渡
+   ===================================================== */
+#homePage.entering{
+    pointer-events:none;
+}
+
+#homePage.entering .home-title{
+    animation:homeContentFadeOut .62s cubic-bezier(.22,.8,.25,1) forwards;
+}
+
+#homePage.entering .home-actions{
+    animation:homeActionsFadeOut .58s .02s cubic-bezier(.22,.8,.25,1) forwards;
+}
+
+#homePage.entering .card-stack{
+    animation:homeCardEnter .72s cubic-bezier(.16,1,.3,1) forwards;
+}
+
+#homePage.entering .stack-card.back1{
+    animation:homeBack1Merge .72s cubic-bezier(.16,1,.3,1) forwards;
+}
+
+#homePage.entering .stack-card.back2{
+    animation:homeBack2Merge .72s cubic-bezier(.16,1,.3,1) forwards;
+}
+
+#homePage.entering .main-card{
+    box-shadow:
+        0 24px 65px rgba(190,113,143,.24),
+        inset 0 0 0 1px rgba(255,255,255,.92);
+    animation:homeMainCardGlow .72s cubic-bezier(.16,1,.3,1) forwards;
+}
+
+@keyframes homeCardEnter{
+    0%{
+        transform:translateY(0) scale(1);
+        opacity:1;
+    }
+    34%{
+        transform:translateY(-2px) scale(1.025);
+        opacity:1;
+    }
+    100%{
+        transform:translateY(-10px) scale(1.13);
+        opacity:.03;
+    }
+}
+
+@keyframes homeBack1Merge{
+    0%{transform:translate(-12px,7px) rotate(-7deg);opacity:1}
+    45%{transform:translate(-5px,3px) rotate(-3deg);opacity:.9}
+    100%{transform:translate(0,0) rotate(0deg);opacity:0}
+}
+
+@keyframes homeBack2Merge{
+    0%{transform:translate(12px,5px) rotate(7deg);opacity:1}
+    45%{transform:translate(5px,3px) rotate(3deg);opacity:.9}
+    100%{transform:translate(0,0) rotate(0deg);opacity:0}
+}
+
+@keyframes homeMainCardGlow{
+    0%{
+        filter:brightness(1);
+    }
+    48%{
+        filter:brightness(1.035);
+    }
+    100%{
+        filter:brightness(1.08);
+    }
+}
+
+@keyframes homeContentFadeOut{
+    0%{opacity:1;transform:translateY(0)}
+    100%{opacity:0;transform:translateY(-12px)}
+}
+
+@keyframes homeActionsFadeOut{
+    0%{opacity:1;transform:translateY(0)}
+    100%{opacity:0;transform:translateY(8px)}
+}
+
+@media (prefers-reduced-motion:reduce){
+    #homePage.entering .home-title,
+    #homePage.entering .home-actions,
+    #homePage.entering .card-stack,
+    #homePage.entering .stack-card.back1,
+    #homePage.entering .stack-card.back2,
+    #homePage.entering .main-card{
+        animation-duration:.35s;
+    }
+}
+
 
 .card-stack:active,
 .card-stack.pressed{
@@ -330,8 +391,8 @@ button{
     flex-direction:row;
     align-items:center;
     justify-content:center;
-    gap:28px;
-    padding-top:4px;
+    gap:20px;
+    padding-top:2px;
 }
 
 .home-actions .secondary-btn{
@@ -469,9 +530,16 @@ button{
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:21px;
     flex-shrink:0;
     margin-right:12px;
+    overflow:hidden;
+}
+
+.category-icon .icon-image{
+    width:38px;
+    height:38px;
+    object-fit:contain;
+    display:block;
 }
 
 .category-item:nth-child(1) .category-icon{background:#edf6dc}
@@ -480,6 +548,27 @@ button{
 .category-item:nth-child(4) .category-icon{background:#e6edf8}
 .category-item:nth-child(5) .category-icon{background:#ece5f2}
 .category-item:nth-child(6) .category-icon{background:#fff0d7}
+
+.icon-image{
+    object-fit:contain;
+    display:block;
+}
+
+.icon-symbol{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.editor-summary-icon .icon-image{
+    width:42px;
+    height:42px;
+}
+
+.content-empty-icon .icon-image{
+    width:54px;
+    height:54px;
+}
 
 .category-info{
     flex:1;
@@ -986,7 +1075,7 @@ button{
     position:relative;
     width:100%;
     max-width:108px;
-    aspect-ratio:.705;
+    aspect-ratio:2 / 3;
 
     border-radius:17px;
     border:0;
@@ -1039,6 +1128,22 @@ button{
     justify-content:center;
 
     box-shadow:0 10px 25px rgba(130,75,98,.13);
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+}
+
+.card-back.has-art{
+    background-color:#f4d5e0;
+}
+
+.card-back.has-art:before{
+    display:none;
+}
+
+.card-back.has-art .back-symbol,
+.card-back.has-art .back-label{
+    display:none;
 }
 
 .card-back:before{
@@ -1062,6 +1167,28 @@ button{
     font-size:7px;
     letter-spacing:2px;
     color:rgba(255,255,255,.8);
+}
+
+/* 卡背图片必须覆盖整张卡。
+ * 各 .card-color-X .card-back 使用 background 简写时会重置
+ * background-size / position，所以这里用 !important 明确恢复图片铺满。
+ */
+.card-back.has-art{
+    background-size:cover !important;
+    background-position:center !important;
+    background-repeat:no-repeat !important;
+}
+
+.big-back.has-art{
+    background-size:cover !important;
+    background-position:center !important;
+    background-repeat:no-repeat !important;
+}
+
+.big-back.has-art .big-symbol,
+.big-back.has-art .big-back-title,
+.big-back.has-art .big-back-en{
+    display:none;
 }
 
 .card-color-1 .card-back{
@@ -1135,8 +1262,19 @@ button{
 
 .card-icon{
     position:relative;
-    font-size:25px;
-    margin-top:15px;
+    width:42px;
+    height:42px;
+    margin:12px auto 0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.card-icon .icon-image{
+    width:42px;
+    height:42px;
+    object-fit:contain;
+    display:block;
 }
 
 .card-name{
@@ -1545,9 +1683,19 @@ button{
 
 .big-icon{
     flex-shrink:0;
-    text-align:center;
-    font-size:39px;
-    margin-top:19px;
+    width:82px;
+    height:82px;
+    margin:14px auto 0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.big-icon .icon-image{
+    width:82px;
+    height:82px;
+    object-fit:contain;
+    display:block;
 }
 
 .big-title{
@@ -1649,32 +1797,6 @@ button{
     color:#c49aaa;
 
     padding-top:4px;
-}
-
-.close-hint{
-    position:fixed;
-    z-index:101;
-
-    left:0;
-    right:0;
-
-    bottom:calc(env(safe-area-inset-bottom) + 18px);
-
-    text-align:center;
-
-    color:rgba(255,255,255,.9);
-
-    font-size:11px;
-    letter-spacing:1px;
-
-    opacity:0;
-    transition:opacity .3s ease;
-
-    pointer-events:none;
-}
-
-.card-overlay.show .close-hint{
-    opacity:1;
 }
 
 .big-card-wrap.spinning{
@@ -2049,6 +2171,13 @@ button{
 
 }
 
+
+@media(max-height:700px){
+    .home-card-area{
+        transform:translateY(-46px);
+    }
+}
+
 @media(max-width:360px){
 
     .cards-board{
@@ -2103,11 +2232,8 @@ button{
 
         <div class="en">LOVE CARD</div>
 
-        <h1>恋爱牌</h1>
+        <h1>小惊喜</h1>
 
-        <p>
-            每一张卡，都藏着属于你们的小惊喜
-        </p>
 
     </div>
 
@@ -2127,13 +2253,7 @@ button{
 
                 <div class="card-center">♡</div>
 
-                <div class="love-card-title">
-                    恋爱牌
-                </div>
 
-                <div class="love-card-sub">
-                    YOUR STORY · YOUR MOMENT
-                </div>
 
             </div>
 
@@ -2189,10 +2309,10 @@ button{
 
     <div class="collection-intro">
 
-        <h2>我的牌库</h2>
+        <h2>牌库</h2>
 
         <p>
-            管理六种牌型的自定义内容
+            自定义内容
         </p>
 
     </div>
@@ -2331,20 +2451,12 @@ button{
     <div class="heart h3">♡</div>
     <div class="heart h4">♡</div>
 
-    <div class="draw-header">
-
-        <div class="draw-header-title">
-            恋爱牌
-        </div>
-
-    </div>
-
     <div class="draw-divider"></div>
 
     <div class="draw-status" id="drawStatus">
-        <span class="status-chip status-side" id="boyDrinkChip">男生酒量 0 张</span>
+        <span class="status-chip status-side" id="boyDrinkChip">男生酒量 0 杯</span>
         <span class="status-chip status-center" id="drawProgress">已抽 0/9</span>
-        <span class="status-chip status-side" id="girlDrinkChip">女生酒量 0 张</span>
+        <span class="status-chip status-side" id="girlDrinkChip">女生酒量 0 杯</span>
     </div>
 
     <div
@@ -2404,7 +2516,7 @@ button{
                 <div
                     class="big-back-title"
                     id="bigBackTitle">
-                    恋爱牌
+                    小惊喜
                 </div>
 
                 <div
@@ -2475,11 +2587,6 @@ button{
         </div>
 
     </div>
-
-    <div class="close-hint">
-        点击卡牌以外的地方关闭
-    </div>
-
 </div>
 
 
@@ -2629,7 +2736,7 @@ const categories = [
     {
         id:"lucky",
         name:"幸运牌",
-        icon:"🍀",
+        icon:"assets/icons/lucky.png",
         english:"LUCKY CARD",
         symbol:"✦"
     },
@@ -2637,7 +2744,7 @@ const categories = [
     {
         id:"truth",
         name:"真心话",
-        icon:"💬",
+        icon:"assets/icons/truth.png",
         english:"TRUTH CARD",
         symbol:"◇"
     },
@@ -2645,7 +2752,7 @@ const categories = [
     {
         id:"dare",
         name:"大冒险",
-        icon:"🔥",
+        icon:"assets/icons/dare.png",
         english:"DARE CARD",
         symbol:"✦"
     },
@@ -2653,7 +2760,7 @@ const categories = [
     {
         id:"game",
         name:"小游戏",
-        icon:"🎮",
+        icon:"assets/icons/game.png",
         english:"GAME CARD",
         symbol:"☆"
     },
@@ -2661,7 +2768,7 @@ const categories = [
     {
         id:"punishment",
         name:"惩罚牌",
-        icon:"🖤",
+        icon:"assets/icons/punishment.png",
         english:"PUNISHMENT CARD",
         symbol:"◇"
     },
@@ -2669,7 +2776,7 @@ const categories = [
     {
         id:"action",
         name:"行动牌",
-        icon:"⚡",
+        icon:"assets/icons/action.png",
         english:"ACTION CARD",
         symbol:"♡"
     }
@@ -2692,7 +2799,7 @@ const fixedBonusCards = [
     {
         categoryId:"penalty_drink",
         type:"罚酒牌",
-        icon:"🍷",
+        icon:"assets/icons/penalty-drink.png",
         english:"PENALTY",
         symbol:"✦",
         description:"你的运气用完啦\n罚酒一杯",
@@ -2701,7 +2808,7 @@ const fixedBonusCards = [
     {
         categoryId:"penalty_drink",
         type:"罚酒牌",
-        icon:"🍷",
+        icon:"assets/icons/penalty-drink.png",
         english:"PENALTY",
         symbol:"✦",
         description:"你的运气用完啦\n罚酒一杯",
@@ -2710,7 +2817,7 @@ const fixedBonusCards = [
     {
         categoryId:"penalty_drink",
         type:"罚酒牌",
-        icon:"🍷",
+        icon:"assets/icons/penalty-drink.png",
         english:"PENALTY",
         symbol:"✦",
         description:"你的运气用完啦\n罚酒一杯",
@@ -2719,6 +2826,17 @@ const fixedBonusCards = [
 ];
 
 const CARDS_PER_ROUND = 9;
+
+
+function iconHTML(iconPath, extraClass="") {
+    const value = String(iconPath ?? "");
+
+    if(value.startsWith("assets/icons/")){
+        return `<img class="icon-image ${extraClass}" src="${value}" alt="" aria-hidden="true">`;
+    }
+
+    return `<span class="icon-symbol ${extraClass}" aria-hidden="true">${escapeHTML(value)}</span>`;
+}
 
 
 /* =====================================================
@@ -2736,6 +2854,20 @@ const ROUND_STORAGE_KEY =
 
 const SESSION_STORAGE_KEY =
     "loveCard_sessionStats_v1";
+
+
+const NORMAL_BACKS = [
+    "assets/backs/normal/01-hearts-ribbon.png",
+    "assets/backs/normal/02-ocean-sun.png",
+    "assets/backs/normal/03-moon-night.png",
+    "assets/backs/normal/04-cat-moon.png",
+    "assets/backs/normal/05-paper-plane.png",
+    "assets/backs/normal/06-cat-butterfly.png",
+    "assets/backs/normal/07-daisy.png",
+    "assets/backs/normal/08-envelope.png",
+    "assets/backs/normal/09-hearts-orbit.png"
+];
+
 
 function loadSavedRound(){
 
@@ -2839,6 +2971,8 @@ function resetSavedRound(){
         );
 
     }catch(error){}
+
+    applyDrawTheme();
 
 }
 
@@ -2963,6 +3097,7 @@ const homePage =
 const drawPage =
     document.getElementById("drawPage");
 
+
 const collectionPage =
     document.getElementById("collectionPage");
 
@@ -3048,6 +3183,9 @@ let currentRound = loadSavedRound();
 
 let currentCardHasTimer = false;
 
+/* 倒计时牌在本张卡完成计时前，严禁通过遮罩外部点击关闭。 */
+let timerCardCloseRequired = false;
+
 let timerDoneForCurrentCard = false;
 
 let timerAwaitingConfirm = false;
@@ -3061,6 +3199,8 @@ let currentTurn = null;
 let girlDrinks = loadSessionStats().girlDrinks;
 
 let boyDrinks = loadSessionStats().boyDrinks;
+
+
 
 let isPriorityCard = false;
 
@@ -3338,12 +3478,12 @@ function updateDrawProgress(){
 
     if(girlChip){
         girlChip.textContent =
-            "女生酒量 " + girlDrinks + " 张";
+            "女生酒量 " + girlDrinks + " 杯";
     }
 
     if(boyChip){
         boyChip.textContent =
-            "男生酒量 " + boyDrinks + " 张";
+            "男生酒量 " + boyDrinks + " 杯";
     }
 
 }
@@ -3385,7 +3525,20 @@ function formatDescriptionHTML(text){
     return escapeHTML(text)
         .replace(
             /(\d+)/g,
-            '<span style="font-size:1.28em;font-weight:600;color:#694c58">$1</span>'
+            '<span class="desc-number">$1</span>'
+        )
+        .replace(/\n/g,"<br>");
+
+}
+
+function formatPriorityDescriptionHTML(text){
+
+    const safe = escapeHTML(text);
+
+    return safe
+        .replace(
+            /^(女士|男士)(优先)$/u,
+            '<span class="priority-gender">$1</span>$2'
         )
         .replace(/\n/g,"<br>");
 
@@ -3409,6 +3562,7 @@ function openDrawPage(){
     gamePhase = "priority";
     isPriorityCard = false;
     dealBusy = false;
+
 
     prepareRoundCards();
     startPriorityPhase();
@@ -3728,7 +3882,7 @@ function renderCategoryList(){
         button.innerHTML = `
 
             <div class="category-icon">
-                ${category.icon}
+                ${iconHTML(category.icon)}
             </div>
 
             <div class="category-info">
@@ -3802,8 +3956,8 @@ function openEditor(categoryId){
 
     document.getElementById(
         "editorIcon"
-    ).textContent =
-        category.icon;
+    ).innerHTML =
+        iconHTML(category.icon);
 
     document.getElementById(
         "editorName"
@@ -3870,7 +4024,7 @@ function renderEditor(){
             <div class="content-empty">
 
                 <div class="content-empty-icon">
-                    ${category.icon}
+                    ${iconHTML(category.icon)}
                 </div>
 
                 <div class="content-empty-text">
@@ -4382,10 +4536,16 @@ function prepareRoundCards(){
             normalCards.concat(bonusCards)
         );
 
+    const backPool = NORMAL_BACKS.slice();
+
+    const shuffledBacks =
+        shuffleArray(backPool);
+
     currentRoundCards =
         allCards.map((card,index) => ({
             ...card,
-            color:shuffledColors[index]
+            color:shuffledColors[index],
+            backImage:shuffledBacks[index % shuffledBacks.length]
         }));
 
     completedCount = 0;
@@ -4393,6 +4553,7 @@ function prepareRoundCards(){
     cardOpening = false;
     cardCloseLocked = false;
     currentCardHasTimer = false;
+    timerCardCloseRequired = false;
     timerDoneForCurrentCard = false;
     timerAwaitingConfirm = false;
     isPriorityCard = false;
@@ -4488,16 +4649,24 @@ function startPriorityPhase(){
     const button =
         document.createElement("button");
 
+    const priBacks = NORMAL_BACKS;
+
+    const priBack =
+        priBacks[Math.floor(Math.random() * priBacks.length)];
+
+    priorityCard.backImage = priBack;
+
     button.type = "button";
     button.className =
-        "love-card " + priorityCard.color;
+        "love-card " +
+        priorityCard.color;
     button.dataset.index = "priority";
 
     button.innerHTML = `
 
         <div class="love-card-inner">
 
-            <div class="card-face card-back">
+            <div class="card-face card-back has-art" style="background-image:url('${priBack}')">
 
                 <div class="back-symbol">
                     ✦
@@ -4556,6 +4725,7 @@ function openPriorityCard(card){
 
     isPriorityCard = true;
     currentCardHasTimer = false;
+    timerCardCloseRequired = false;
     timerDoneForCurrentCard = true;
     currentCardIndex = "priority";
 
@@ -4798,7 +4968,9 @@ function renderGameCards(forDeal){
             const button =
                 document.createElement("button");
 
-            button.type = "button";
+            button.type = "button";             const backImg =
+                card.backImage ||
+                NORMAL_BACKS[index % NORMAL_BACKS.length];
 
             button.className =
                 "love-card " +
@@ -4811,7 +4983,7 @@ function renderGameCards(forDeal){
 
                 <div class="love-card-inner">
 
-                    <div class="card-face card-back">
+                    <div class="card-face card-back has-art" style="background-image:url('${backImg}')">
 
                         <div class="back-symbol">
                             ${escapeHTML(card.symbol)}
@@ -4832,7 +5004,7 @@ function renderGameCards(forDeal){
                         </div>
 
                         <div class="card-icon">
-                            ${escapeHTML(card.icon)}
+                            ${iconHTML(card.icon)}
                         </div>
 
                         <div class="card-name">
@@ -5176,10 +5348,20 @@ function openCard(index){
 
     cardCloseUnlockTimer = null;
 
+    /*
+     * 已经翻过的卡牌：重新打开时保留这张卡原本的计时完成状态。
+     * 旧逻辑会在这里直接把 timerDoneForCurrentCard 设为 true，
+     * 导致尚未完成倒计时的卡牌也能通过点遮罩外部关闭。
+     */
+    const timerWasCompleted =
+        currentCardHasTimer &&
+        timerDoneForCurrentCard;
+
     fillBigCard(card);
 
     if(currentCardHasTimer){
-        timerDoneForCurrentCard = true;
+        timerDoneForCurrentCard = timerWasCompleted;
+        timerCardCloseRequired = !timerWasCompleted;
     }
 
     overlay.classList.add("instant");
@@ -5215,6 +5397,19 @@ function fillBigCard(card){
 
     bigBack.classList.add(card.color);
 
+    if(card.backImage){
+
+        bigBack.classList.add("has-art");
+        bigBack.style.backgroundImage =
+            "url('" + card.backImage + "')";
+
+    }else{
+
+        bigBack.classList.remove("has-art");
+        bigBack.style.backgroundImage = "";
+
+    }
+
     bigSymbol.textContent =
         card.symbol;
 
@@ -5227,8 +5422,8 @@ function fillBigCard(card){
     bigType.textContent =
         card.english.replace(" CARD","");
 
-    bigIcon.textContent =
-        card.icon;
+    bigIcon.innerHTML =
+        iconHTML(card.icon);
 
     bigTitle.textContent =
         card.type;
@@ -5242,8 +5437,20 @@ function fillBigCard(card){
             ? timerInfo.display
             : card.description;
 
+    bigDescription.classList.toggle(
+        "priority-description",
+        !!card.isPriority
+    );
+
+    bigDescription.classList.toggle(
+        "timer-description",
+        !!timerInfo
+    );
+
     bigDescription.innerHTML =
-        formatDescriptionHTML(rawText);
+        card.isPriority
+            ? formatPriorityDescriptionHTML(rawText)
+            : formatDescriptionHTML(rawText);
 
 
     if(timerInfo){
@@ -5252,6 +5459,7 @@ function fillBigCard(card){
             timerInfo.seconds;
 
         currentCardHasTimer = true;
+        timerCardCloseRequired = true;
         timerDoneForCurrentCard = false;
         timerAwaitingConfirm = false;
 
@@ -5266,6 +5474,7 @@ function fillBigCard(card){
         timerSeconds = 0;
 
         currentCardHasTimer = false;
+        timerCardCloseRequired = false;
         timerDoneForCurrentCard = false;
         timerAwaitingConfirm = false;
 
@@ -5307,7 +5516,7 @@ function overlayClick(event){
 
     /* 倒计时牌：完成倒计时并点过确定后才能点外部关闭 */
     if(
-        currentCardHasTimer &&
+        timerCardCloseRequired &&
         !timerDoneForCurrentCard
     ){
         return;
@@ -5340,7 +5549,7 @@ function closeCard(markCompleted, forceClose){
 
     if(
         !forceClose &&
-        currentCardHasTimer &&
+        timerCardCloseRequired &&
         !timerDoneForCurrentCard
     ){
         return;
@@ -5606,6 +5815,7 @@ function confirmTimerPanel(){
     timerOverlay.classList.remove("show");
 
     timerDoneForCurrentCard = true;
+    timerCardCloseRequired = false;
 
     timerCancelBtn.textContent =
         "结束计时";
@@ -5663,6 +5873,13 @@ function onTimerButtonClick(){
    ===================================================== */
 
 function shuffleCards(){
+
+    runShuffleCore();
+
+}
+
+
+function runShuffleCore(){
 
     if(dealBusy || gamePhase === "dealing" || gamePhase === "collecting"){
         return;
@@ -5735,17 +5952,23 @@ if(startGameCard){
             startGameCard.classList.add("pressed");
             lightVibrate();
 
+            /*
+             * 不改变原本的 openDrawPage()，只在进入前增加柔和过渡。
+             * 先轻触回弹，再让牌组聚拢、放大并淡出，最后进入游戏页。
+             */
             setTimeout(function(){
 
                 startGameCard.classList.remove("pressed");
+                homePage.classList.add("entering");
 
-            },280);
+            },120);
 
             setTimeout(function(){
 
                 openDrawPage();
+                homePage.classList.remove("entering");
 
-            },360);
+            },760);
 
         }
     );
@@ -6049,7 +6272,6 @@ document.addEventListener(
    ===================================================== */
 
 renderCategoryList();
-
 currentPage = "home";
 
 showOnlyPage("home");
