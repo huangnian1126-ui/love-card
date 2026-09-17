@@ -523,6 +523,60 @@ button{
     background:rgba(255,255,255,.9);
 }
 
+.category-open{
+    flex:1;
+    min-width:0;
+    min-height:46px;
+    padding:0;
+    border:0;
+    background:transparent;
+    display:flex;
+    align-items:center;
+    text-align:left;
+}
+
+.category-open:active{
+    transform:scale(.99);
+}
+
+.replace-setting{
+    flex-shrink:0;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    gap:4px;
+    margin-left:8px;
+}
+
+.replace-label{
+    font-size:9px;
+    color:#b99aa7;
+    white-space:nowrap;
+}
+
+.replace-input{
+    width:58px;
+    height:30px;
+    border:1px solid rgba(213,177,191,.35);
+    border-radius:10px;
+    outline:none;
+    background:rgba(255,255,255,.8);
+    color:#806070;
+    font-size:12px;
+    text-align:center;
+}
+
+.replace-auto{
+    flex-shrink:0;
+    padding:7px 9px;
+    border-radius:12px;
+    background:rgba(255,226,239,.65);
+    color:#b26f8d;
+    font-size:10px;
+    white-space:nowrap;
+}
+
+
 .category-icon{
     width:42px;
     height:42px;
@@ -548,6 +602,7 @@ button{
 .category-item:nth-child(4) .category-icon{background:#e6edf8}
 .category-item:nth-child(5) .category-icon{background:#ece5f2}
 .category-item:nth-child(6) .category-icon{background:#fff0d7}
+.category-item:nth-child(7) .category-icon{background:#f3e7fb}
 
 .icon-image{
     object-fit:contain;
@@ -2312,7 +2367,7 @@ button{
         <h2>我的牌库</h2>
 
         <p>
-            管理六种牌型的自定义内容
+            管理八种牌型的自定义内容
         </p>
 
     </div>
@@ -2779,6 +2834,14 @@ const categories = [
         icon:"./action.png",
         english:"ACTION CARD",
         symbol:"♡"
+    },
+
+    {
+        id:"spicy",
+        name:"瑟瑟卡",
+        icon:"./se-card-icon.png",
+        english:"SPICY CARD",
+        symbol:"♡"
     }
 
 ];
@@ -2855,6 +2918,158 @@ const ROUND_STORAGE_KEY =
 const SESSION_STORAGE_KEY =
     "loveCard_sessionStats_v1";
 
+const REPLACE_ROUND_STORAGE_KEY =
+    "loveCard_categoryReplaceRound_v1";
+
+const SPICY_HISTORY_STORAGE_KEY =
+    "loveCard_spicyHistory_v1";
+
+const PENALTY_COUNT_STORAGE_KEY =
+    "loveCard_penaltyCount_v1";
+
+const DEFAULT_PENALTY_COUNT = 3;
+const MIN_PENALTY_COUNT = 0;
+const MAX_PENALTY_COUNT = 3;
+
+function loadPenaltyCount(){
+
+    try{
+
+        const n = Number(
+            localStorage.getItem(PENALTY_COUNT_STORAGE_KEY)
+        );
+
+        if(Number.isFinite(n)){
+            return Math.max(
+                MIN_PENALTY_COUNT,
+                Math.min(MAX_PENALTY_COUNT,Math.floor(n))
+            );
+        }
+
+    }catch(error){}
+
+    return DEFAULT_PENALTY_COUNT;
+
+}
+
+let penaltyCount = loadPenaltyCount();
+
+function savePenaltyCount(){
+
+    try{
+
+        localStorage.setItem(
+            PENALTY_COUNT_STORAGE_KEY,
+            String(penaltyCount)
+        );
+
+    }catch(error){}
+
+}
+
+const DEFAULT_CATEGORY_REPLACE_ROUND = 0;
+
+function createDefaultReplaceRounds(){
+
+    return {
+        lucky:DEFAULT_CATEGORY_REPLACE_ROUND,
+        truth:DEFAULT_CATEGORY_REPLACE_ROUND,
+        dare:DEFAULT_CATEGORY_REPLACE_ROUND,
+        game:DEFAULT_CATEGORY_REPLACE_ROUND,
+        punishment:DEFAULT_CATEGORY_REPLACE_ROUND,
+        action:DEFAULT_CATEGORY_REPLACE_ROUND
+    };
+
+}
+
+function loadReplaceRounds(){
+
+    const defaults = createDefaultReplaceRounds();
+
+    try{
+
+        const raw =
+            localStorage.getItem(REPLACE_ROUND_STORAGE_KEY);
+
+        if(!raw){
+            return defaults;
+        }
+
+        const parsed = JSON.parse(raw);
+
+        Object.keys(defaults).forEach(id => {
+
+            const n = Number(parsed[id]);
+
+            if(Number.isFinite(n) && n >= 0){
+                defaults[id] = Math.min(999,Math.floor(n));
+            }
+
+        });
+
+    }catch(error){}
+
+    return defaults;
+
+}
+
+let categoryReplaceRounds = loadReplaceRounds();
+
+function saveReplaceRounds(){
+
+    try{
+
+        localStorage.setItem(
+            REPLACE_ROUND_STORAGE_KEY,
+            JSON.stringify(categoryReplaceRounds)
+        );
+
+    }catch(error){}
+
+}
+
+function getSpicyHistory(){
+
+    try{
+
+        const raw =
+            localStorage.getItem(SPICY_HISTORY_STORAGE_KEY);
+
+        if(!raw){
+            return [];
+        }
+
+        const parsed = JSON.parse(raw);
+
+        if(!Array.isArray(parsed)){
+            return [];
+        }
+
+        return parsed
+            .filter(round => Array.isArray(round))
+            .map(round => round.map(item => String(item)))
+            .slice(-2);
+
+    }catch(error){
+
+        return [];
+
+    }
+
+}
+
+function saveSpicyHistory(history){
+
+    try{
+
+        localStorage.setItem(
+            SPICY_HISTORY_STORAGE_KEY,
+            JSON.stringify(history.slice(-2))
+        );
+
+    }catch(error){}
+
+}
 
 const NORMAL_BACKS = [
     "./01-hearts-ribbon.png",
@@ -2972,6 +3187,10 @@ function resetSavedRound(){
 
     }catch(error){}
 
+    try{
+        localStorage.removeItem(SPICY_HISTORY_STORAGE_KEY);
+    }catch(error){}
+
     applyDrawTheme();
 
 }
@@ -2984,7 +3203,8 @@ function createDefaultData(){
         dare:[],
         game:[],
         punishment:[],
-        action:[]
+        action:[],
+        spicy:[]
     };
 
 }
@@ -3250,119 +3470,89 @@ let timerActive = false;
    倒计时提示音
    ===================================================== */
 
-/*
- * 使用浏览器自带的 Web Audio API。
- *
- * 不需要外部音频文件。
- * 不需要网络。
- *
- * 倒计时结束时：
- * 滴 —— 滴 —— 滴
- *
- * 总时长约 2 秒。
- */
+/* 使用项目目录中的自定义倒计时音频。 */
+const timerAudio = new Audio("./universfield-alarm-clock-ringing-229175.mp3");
+timerAudio.preload = "auto";
+timerAudio.playsInline = true;
 
-let audioContext = null;
+/*
+ * 手机浏览器通常不允许“倒计时结束后的异步代码”第一次播放声音。
+ * 因此在用户点击“开始计时”时，先静音预播放一次，把这个音频解锁；
+ * 真正倒计时结束时再恢复声音并从头播放。
+ */
+let timerAudioUnlocked = false;
+let timerAudioUnlocking = false;
+
+function unlockTimerAudio(){
+
+    if(timerAudioUnlocked || timerAudioUnlocking){
+        return;
+    }
+
+    timerAudioUnlocking = true;
+
+    try{
+
+        timerAudio.muted = true;
+        timerAudio.volume = 1;
+        timerAudio.currentTime = 0;
+
+        const playPromise = timerAudio.play();
+
+        if(playPromise && typeof playPromise.then === "function"){
+
+            playPromise.then(() => {
+
+                timerAudio.pause();
+                timerAudio.currentTime = 0;
+                timerAudio.muted = false;
+                timerAudioUnlocked = true;
+                timerAudioUnlocking = false;
+
+            }).catch(() => {
+
+                timerAudio.muted = false;
+                timerAudioUnlocking = false;
+
+            });
+
+        }else{
+
+            timerAudio.pause();
+            timerAudio.currentTime = 0;
+            timerAudio.muted = false;
+            timerAudioUnlocked = true;
+            timerAudioUnlocking = false;
+
+        }
+
+    }catch(error){
+
+        timerAudio.muted = false;
+        timerAudioUnlocking = false;
+
+    }
+
+}
 
 function playTimerFinishedSound(){
 
     try{
 
-        const AudioContext =
-            window.AudioContext ||
-            window.webkitAudioContext;
+        timerAudio.pause();
+        timerAudio.muted = false;
+        timerAudio.currentTime = 0;
 
-        if(!AudioContext){
-            return;
+        const playPromise = timerAudio.play();
+
+        if(playPromise && typeof playPromise.catch === "function"){
+            playPromise.catch(() => {});
         }
 
-        if(!audioContext){
-
-            audioContext =
-                new AudioContext();
-
-        }
-
-        if(audioContext.state === "suspended"){
-
-            audioContext.resume();
-
-        }
-
-        const now =
-            audioContext.currentTime;
-
-        /*
-         * 三声提示音
-         *
-         * 每一声：
-         * 约 0.18 秒
-         *
-         * 间隔：
-         * 约 0.48 秒
-         */
-
-        const beepTimes = [
-            0,
-            0.55,
-            1.10
-        ];
-
-        beepTimes.forEach((offset,index) => {
-
-            const oscillator =
-                audioContext.createOscillator();
-
-            const gain =
-                audioContext.createGain();
-
-            oscillator.type = "sine";
-
-            /*
-             * 三声略微不同，
-             * 听起来更自然。
-             */
-            oscillator.frequency.value =
-                index === 2 ? 880 : 820;
-
-            gain.gain.setValueAtTime(
-                0,
-                now + offset
-            );
-
-            gain.gain.linearRampToValueAtTime(
-                0.16,
-                now + offset + 0.025
-            );
-
-            gain.gain.linearRampToValueAtTime(
-                0,
-                now + offset + 0.20
-            );
-
-            oscillator.connect(gain);
-            gain.connect(audioContext.destination);
-
-            oscillator.start(
-                now + offset
-            );
-
-            oscillator.stop(
-                now + offset + 0.22
-            );
-
-        });
-
-    }catch(error){
-
-        /*
-         * 如果手机浏览器不支持音频，
-         * 不影响倒计时和游戏其他功能。
-         */
-
-    }
+    }catch(error){}
 
 }
+
 
 
 /* =====================================================
@@ -3862,24 +4052,24 @@ function renderCategoryList(){
 
     list.innerHTML = "";
 
-    let total = 0;
-
     categories.forEach(category => {
 
         const count =
             customData[category.id].length;
 
-        total += count;
+        const item =
+            document.createElement("div");
 
-        const button =
-            document.createElement("button");
-
-        button.type = "button";
-
-        button.className =
+        item.className =
             "category-item";
 
-        button.innerHTML = `
+        const openButton =
+            document.createElement("button");
+
+        openButton.type = "button";
+        openButton.className = "category-open";
+
+        openButton.innerHTML = `
 
             <div class="category-icon">
                 ${iconHTML(category.icon)}
@@ -3897,13 +4087,9 @@ function renderCategoryList(){
 
             </div>
 
-            <div class="category-arrow">
-                ›
-            </div>
-
         `;
 
-        button.addEventListener(
+        openButton.addEventListener(
             "click",
             function(event){
 
@@ -3915,11 +4101,186 @@ function renderCategoryList(){
             }
         );
 
-        list.appendChild(button);
+        item.appendChild(openButton);
+
+        if(category.id !== "spicy"){
+
+            const setting =
+                document.createElement("div");
+
+            setting.className = "replace-setting";
+
+            setting.innerHTML = `
+                <span class="replace-label">第几轮起替换</span>
+                <input
+                    type="number"
+                    class="replace-input"
+                    min="1"
+                    max="999"
+                    inputmode="numeric"
+                    value="${categoryReplaceRounds[category.id] > 0 ? categoryReplaceRounds[category.id] : ""}">
+            `;
+
+            const input =
+                setting.querySelector(".replace-input");
+
+            input.addEventListener("click",function(event){
+                event.preventDefault();
+                event.stopPropagation();
+            });
+
+            input.addEventListener("pointerdown",function(event){
+                event.stopPropagation();
+            });
+
+            input.addEventListener("change",function(){
+
+                const n = Number(input.value);
+
+                categoryReplaceRounds[category.id] =
+                    Number.isFinite(n) && n >= 1
+                        ? Math.min(999,Math.floor(n))
+                        : DEFAULT_CATEGORY_REPLACE_ROUND;
+
+                input.value =
+                    categoryReplaceRounds[category.id] > 0
+                        ? String(categoryReplaceRounds[category.id])
+                        : "";
+
+                saveReplaceRounds();
+
+            });
+
+            item.appendChild(setting);
+
+        }else{
+
+            const auto =
+                document.createElement("div");
+
+            auto.className = "replace-auto";
+            auto.textContent = "自动补位";
+            item.appendChild(auto);
+
+        }
+
+        list.appendChild(item);
 
     });
 
-    /* 底部改为重置轮数按钮，不再显示总条数 */
+    /* 罚酒牌：与其他牌库一样显示数字输入框；默认3张，最多3张，允许设置为0。 */
+    const penaltyItem =
+        document.createElement("div");
+
+    penaltyItem.className = "category-item penalty-deck-item";
+
+    const penaltyOpen =
+        document.createElement("div");
+
+    penaltyOpen.className = "category-open";
+    penaltyOpen.innerHTML = `
+
+        <div class="category-icon">
+            ${iconHTML("./penalty-drink.png")}
+        </div>
+
+        <div class="category-info">
+
+            <div class="category-name">
+                罚酒牌
+            </div>
+
+            <div class="category-count">
+                固定牌型
+            </div>
+
+        </div>
+
+    `;
+
+    penaltyItem.appendChild(penaltyOpen);
+
+    const penaltySetting =
+        document.createElement("div");
+
+    penaltySetting.className = "replace-setting";
+    penaltySetting.innerHTML = `
+        <input
+            type="number"
+            class="replace-input penalty-count-input"
+            min="0"
+            max="3"
+            step="1"
+            inputmode="numeric"
+            pattern="[0-9]*"
+            aria-label="罚酒牌数量"
+            value="${penaltyCount}"
+        >
+    `;
+
+    const penaltyInput =
+        penaltySetting.querySelector(".penalty-count-input");
+
+    /* 不拦截默认聚焦行为：点击/触摸输入框时直接唤起手机数字键盘。 */
+    penaltyInput.addEventListener("pointerdown",function(event){
+        event.stopPropagation();
+    });
+
+    penaltyInput.addEventListener("click",function(event){
+        event.stopPropagation();
+        penaltyInput.focus();
+    });
+
+    penaltyInput.addEventListener("input",function(){
+
+        if(penaltyInput.value === "") return;
+
+        let n = Math.floor(Number(penaltyInput.value));
+
+        if(!Number.isFinite(n)) return;
+
+        n = Math.max(0,Math.min(MAX_PENALTY_COUNT,n));
+        penaltyInput.value = String(n);
+
+        if(penaltyCount !== n){
+            penaltyCount = n;
+            savePenaltyCount();
+        }
+
+    });
+
+    penaltyInput.addEventListener("change",function(){
+
+        let n = Math.floor(Number(penaltyInput.value));
+
+        if(!Number.isFinite(n)){
+            n = penaltyCount;
+        }
+
+        n = Math.max(0,Math.min(MAX_PENALTY_COUNT,n));
+        penaltyCount = n;
+        penaltyInput.value = String(n);
+        savePenaltyCount();
+
+    });
+
+    penaltyInput.addEventListener("blur",function(){
+
+        let n = Math.floor(Number(penaltyInput.value));
+
+        if(!Number.isFinite(n)){
+            n = penaltyCount;
+        }
+
+        n = Math.max(0,Math.min(MAX_PENALTY_COUNT,n));
+        penaltyCount = n;
+        penaltyInput.value = String(n);
+        savePenaltyCount();
+
+    });
+
+    penaltyItem.appendChild(penaltySetting);
+    list.appendChild(penaltyItem);
 
 }
 
@@ -4463,8 +4824,42 @@ function prepareRoundCards(){
     const shuffledColors =
         shuffleArray(cardColors);
 
+    const activeNormalCategories =
+        categories.filter(category => {
+
+            if(category.id === "spicy"){
+                return false;
+            }
+
+            const replaceRound =
+                Number(categoryReplaceRounds[category.id]);
+
+            return !(
+                Number.isFinite(replaceRound) &&
+                currentRound >= replaceRound
+            );
+
+        });
+
+    const retiredCount =
+        categories.filter(category => {
+
+            if(category.id === "spicy"){
+                return false;
+            }
+
+            const replaceRound =
+                Number(categoryReplaceRounds[category.id]);
+
+            return (
+                Number.isFinite(replaceRound) &&
+                currentRound >= replaceRound
+            );
+
+        }).length;
+
     const normalCards =
-        categories.map(category => {
+        activeNormalCategories.map(category => {
 
             const contents =
                 getAvailableContents(
@@ -4526,14 +4921,112 @@ function prepareRoundCards(){
 
         });
 
+    /*
+     * 瑟瑟卡负责补足所有空出来的牌位。
+     * 普通牌库被替换后会产生空位；罚酒牌从 3 张减少后也会产生空位。
+     * 无论如何调整，最终目标始终是 9 张牌。
+     */
+    const bonusCardCount = Math.max(
+        MIN_PENALTY_COUNT,
+        Math.min(MAX_PENALTY_COUNT,penaltyCount)
+    );
+
+    const spicyTargetCount = Math.max(
+        0,
+        CARDS_PER_ROUND - normalCards.length - bonusCardCount
+    );
+
+    const spicyCards = [];
+
+    if(spicyTargetCount > 0){
+
+        /*
+         * 瑟瑟卡没有“从第几轮开始”的替换设置，
+         * 只要普通牌库产生了空出来的牌位，就由瑟瑟卡自动补足。
+         * 因此这里直接使用用户已经添加的瑟瑟卡内容；
+         * 不让普通牌库内容的轮次限制把瑟瑟卡牌位变成空白。
+         */
+        let spicyContents =
+            getAvailableContents("spicy",currentRound);
+
+        if(spicyContents.length === 0){
+
+            spicyContents =
+                (customData.spicy || [])
+                    .map(normalizeCardItem)
+                    .filter(item => item.text.trim() !== "");
+
+        }
+
+        const recentHistory =
+            getSpicyHistory();
+
+        const blocked =
+            new Set(recentHistory.flat());
+
+        const selectedThisRound =
+            new Set();
+
+        /* 优先避开最近两轮；同一轮内绝不重复。 */
+        const buildSpicyCard = picked => ({
+            categoryId:"spicy",
+            type:"瑟瑟卡",
+            icon:"./se-card-icon.png",
+            english:"SPICY CARD",
+            symbol:"♡",
+            description:picked.text,
+            isFixed:false
+        });
+
+        for(let i = 0; i < spicyTargetCount; i++){
+
+            let pool =
+                spicyContents.filter(item =>
+                    !blocked.has(item.text) &&
+                    !selectedThisRound.has(item.text)
+                );
+
+            /* 最近两轮没有足够内容时，放宽“跨轮避重”，
+               但仍严格禁止本轮重复。 */
+            if(pool.length === 0){
+                pool =
+                    spicyContents.filter(item =>
+                        !selectedThisRound.has(item.text)
+                    );
+            }
+
+            if(pool.length === 0){
+                break;
+            }
+
+            const picked =
+                pool[Math.floor(Math.random() * pool.length)];
+
+            selectedThisRound.add(picked.text);
+            spicyCards.push(buildSpicyCard(picked));
+
+        }
+
+        if(spicyCards.length > 0){
+
+            const history = getSpicyHistory();
+            history.push(spicyCards.map(card => card.description));
+            saveSpicyHistory(history);
+
+        }
+
+    }
+
     const bonusCards =
-        fixedBonusCards.map(card => ({
-            ...card
-        }));
+        fixedBonusCards
+            .slice(0,bonusCardCount)
+            .map(card => ({
+                ...card
+            }));
 
     const allCards =
         shuffleArray(
-            normalCards.concat(bonusCards)
+            normalCards.concat(spicyCards,bonusCards)
         );
 
     const backPool = NORMAL_BACKS.slice();
@@ -5717,26 +6210,6 @@ function startTimer(){
         return;
     }
 
-    try{
-
-        const AudioContext =
-            window.AudioContext ||
-            window.webkitAudioContext;
-
-        if(AudioContext){
-
-            if(!audioContext){
-                audioContext = new AudioContext();
-            }
-
-            if(audioContext.state === "suspended"){
-                audioContext.resume();
-            }
-
-        }
-
-    }catch(error){}
-
     timerRemaining =
         timerSeconds;
 
@@ -5750,6 +6223,9 @@ function startTimer(){
         "结束计时";
 
     timerOverlay.classList.add("show");
+
+    /* 必须在用户点击“开始计时”的同步事件链中解锁自定义提示音。 */
+    unlockTimerAudio();
 
     if(
         !history.state ||
