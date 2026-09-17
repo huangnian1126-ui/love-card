@@ -2924,6 +2924,9 @@ const REPLACE_ROUND_STORAGE_KEY =
 const SPICY_HISTORY_STORAGE_KEY =
     "loveCard_spicyHistory_v1";
 
+const USED_CONTENTS_STORAGE_KEY =
+    "loveCard_usedContents_v1";
+
 const DEFAULT_CATEGORY_REPLACE_ROUND = 999;
 
 function createDefaultReplaceRounds(){
@@ -3027,6 +3030,111 @@ function saveSpicyHistory(history){
             JSON.stringify(history.slice(-2))
         );
 
+    }catch(error){}
+
+}
+
+/**
+ * 每个分类已使用过的内容文本集合。
+ * 规则：同一分类在「当前可用内容」全部抽完之前，不重复；
+ * 全部抽完后重置，允许重新随机。
+ * 同时尊重「从第几轮开始」解锁，新解锁的内容会加入可用池，
+ * 但不会立刻重抽已经用过的旧内容。
+ */
+function getUsedContentsMap(){
+
+    try{
+
+        const raw =
+            localStorage.getItem(USED_CONTENTS_STORAGE_KEY);
+
+        if(!raw){
+            return {};
+        }
+
+        const parsed = JSON.parse(raw);
+
+        if(!parsed || typeof parsed !== "object"){
+            return {};
+        }
+
+        const result = {};
+
+        Object.keys(parsed).forEach(key => {
+
+            if(Array.isArray(parsed[key])){
+                result[key] =
+                    parsed[key].map(item => String(item));
+            }
+
+        });
+
+        return result;
+
+    }catch(error){
+
+        return {};
+
+    }
+
+}
+
+function saveUsedContentsMap(map){
+
+    try{
+
+        localStorage.setItem(
+            USED_CONTENTS_STORAGE_KEY,
+            JSON.stringify(map || {})
+        );
+
+    }catch(error){}
+
+}
+
+function getUsedSet(categoryId){
+
+    const map = getUsedContentsMap();
+    const list = map[categoryId] || [];
+    return new Set(list);
+
+}
+
+function addUsedContent(categoryId, text){
+
+    const map = getUsedContentsMap();
+    const list = map[categoryId] || [];
+    const value = String(text);
+
+    if(!list.includes(value)){
+        list.push(value);
+        map[categoryId] = list;
+        saveUsedContentsMap(map);
+    }
+
+}
+
+function resetUsedForAvailable(categoryId, availableTexts){
+
+    /* 当前可用内容已全部抽完 → 只清除这些内容的「已用」标记，
+       让它们可以重新进入随机池；不影响尚未解锁的内容记录。 */
+    const map = getUsedContentsMap();
+    const usedList = map[categoryId] || [];
+    const availableSet = new Set(
+        availableTexts.map(t => String(t))
+    );
+
+    map[categoryId] =
+        usedList.filter(t => !availableSet.has(String(t)));
+
+    saveUsedContentsMap(map);
+
+}
+
+function clearAllUsedContents(){
+
+    try{
+        localStorage.removeItem(USED_CONTENTS_STORAGE_KEY);
     }catch(error){}
 
 }
@@ -3150,6 +3258,8 @@ function resetSavedRound(){
     try{
         localStorage.removeItem(SPICY_HISTORY_STORAGE_KEY);
     }catch(error){}
+
+    clearAllUsedContents();
 
     applyDrawTheme();
 
@@ -4719,14 +4829,47 @@ function prepareRoundCards(){
 
             if(contents.length > 0){
 
-                const randomIndex =
-                    Math.floor(
-                        Math.random() *
-                        contents.length
+                /*
+                 * 不重复规则（与「从第几轮开始」兼容）：
+                 * 1. 只在「当前已解锁」的内容里抽；
+                 * 2. 优先抽还没抽过的；
+                 * 3. 当前已解锁的全部抽完后，重置这批内容的已用记录，
+                 *    再重新随机（允许重复）；
+                 * 4. 新解锁的内容会进入可用池，但不会立刻重抽
+                 *    已经用过的旧内容。
+                 */
+                const usedSet =
+                    getUsedSet(category.id);
+
+                let pool =
+                    contents.filter(
+                        item => !usedSet.has(item.text)
                     );
 
-                selectedContent =
-                    contents[randomIndex].text;
+                if(pool.length === 0){
+
+                    /* 当前可用内容已全部用过 → 重置这批 */
+                    resetUsedForAvailable(
+                        category.id,
+                        contents.map(item => item.text)
+                    );
+
+                    pool = contents.slice();
+
+                }
+
+                const randomIndex =
+                    Math.floor(
+                        Math.random() * pool.length
+                    );
+
+                const picked = pool[randomIndex];
+                selectedContent = picked.text;
+
+                addUsedContent(
+                    category.id,
+                    selectedContent
+                );
 
             }else{
 
