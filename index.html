@@ -2878,12 +2878,12 @@ const fixedBonusCards = [
         isFixed:true
     },
     {
-        categoryId:"penalty_drink",
-        type:"罚酒牌",
-        icon:"./penalty-drink.png",
-        english:"PENALTY",
-        symbol:"✦",
-        description:"你的运气用完啦\n罚酒一杯",
+        categoryId:"blank",
+        type:"空白牌",
+        icon:"./blank.png",
+        english:"BLANK CARD",
+        symbol:"?",
+        description:"恭喜你什么也不做",
         isFixed:true
     }
 ];
@@ -2924,50 +2924,7 @@ const REPLACE_ROUND_STORAGE_KEY =
 const SPICY_HISTORY_STORAGE_KEY =
     "loveCard_spicyHistory_v1";
 
-const PENALTY_COUNT_STORAGE_KEY =
-    "loveCard_penaltyCount_v1";
-
-const DEFAULT_PENALTY_COUNT = 3;
-const MIN_PENALTY_COUNT = 0;
-const MAX_PENALTY_COUNT = 3;
-
-function loadPenaltyCount(){
-
-    try{
-
-        const n = Number(
-            localStorage.getItem(PENALTY_COUNT_STORAGE_KEY)
-        );
-
-        if(Number.isFinite(n)){
-            return Math.max(
-                MIN_PENALTY_COUNT,
-                Math.min(MAX_PENALTY_COUNT,Math.floor(n))
-            );
-        }
-
-    }catch(error){}
-
-    return DEFAULT_PENALTY_COUNT;
-
-}
-
-let penaltyCount = loadPenaltyCount();
-
-function savePenaltyCount(){
-
-    try{
-
-        localStorage.setItem(
-            PENALTY_COUNT_STORAGE_KEY,
-            String(penaltyCount)
-        );
-
-    }catch(error){}
-
-}
-
-const DEFAULT_CATEGORY_REPLACE_ROUND = 0;
+const DEFAULT_CATEGORY_REPLACE_ROUND = 999;
 
 function createDefaultReplaceRounds(){
 
@@ -3001,8 +2958,11 @@ function loadReplaceRounds(){
 
             const n = Number(parsed[id]);
 
-            if(Number.isFinite(n) && n >= 0){
+            if(Number.isFinite(n) && n >= 1){
                 defaults[id] = Math.min(999,Math.floor(n));
+            }else{
+                /* 旧版本的空白/0 默认值统一迁移为 999（默认不替换）。 */
+                defaults[id] = DEFAULT_CATEGORY_REPLACE_ROUND;
             }
 
         });
@@ -4168,119 +4128,7 @@ function renderCategoryList(){
 
     });
 
-    /* 罚酒牌：与其他牌库一样显示数字输入框；默认3张，最多3张，允许设置为0。 */
-    const penaltyItem =
-        document.createElement("div");
 
-    penaltyItem.className = "category-item penalty-deck-item";
-
-    const penaltyOpen =
-        document.createElement("div");
-
-    penaltyOpen.className = "category-open";
-    penaltyOpen.innerHTML = `
-
-        <div class="category-icon">
-            ${iconHTML("./penalty-drink.png")}
-        </div>
-
-        <div class="category-info">
-
-            <div class="category-name">
-                罚酒牌
-            </div>
-
-            <div class="category-count">
-                固定牌型
-            </div>
-
-        </div>
-
-    `;
-
-    penaltyItem.appendChild(penaltyOpen);
-
-    const penaltySetting =
-        document.createElement("div");
-
-    penaltySetting.className = "replace-setting";
-    penaltySetting.innerHTML = `
-        <input
-            type="number"
-            class="replace-input penalty-count-input"
-            min="0"
-            max="3"
-            step="1"
-            inputmode="numeric"
-            pattern="[0-9]*"
-            aria-label="罚酒牌数量"
-            value="${penaltyCount}"
-        >
-    `;
-
-    const penaltyInput =
-        penaltySetting.querySelector(".penalty-count-input");
-
-    /* 不拦截默认聚焦行为：点击/触摸输入框时直接唤起手机数字键盘。 */
-    penaltyInput.addEventListener("pointerdown",function(event){
-        event.stopPropagation();
-    });
-
-    penaltyInput.addEventListener("click",function(event){
-        event.stopPropagation();
-        penaltyInput.focus();
-    });
-
-    penaltyInput.addEventListener("input",function(){
-
-        if(penaltyInput.value === "") return;
-
-        let n = Math.floor(Number(penaltyInput.value));
-
-        if(!Number.isFinite(n)) return;
-
-        n = Math.max(0,Math.min(MAX_PENALTY_COUNT,n));
-        penaltyInput.value = String(n);
-
-        if(penaltyCount !== n){
-            penaltyCount = n;
-            savePenaltyCount();
-        }
-
-    });
-
-    penaltyInput.addEventListener("change",function(){
-
-        let n = Math.floor(Number(penaltyInput.value));
-
-        if(!Number.isFinite(n)){
-            n = penaltyCount;
-        }
-
-        n = Math.max(0,Math.min(MAX_PENALTY_COUNT,n));
-        penaltyCount = n;
-        penaltyInput.value = String(n);
-        savePenaltyCount();
-
-    });
-
-    penaltyInput.addEventListener("blur",function(){
-
-        let n = Math.floor(Number(penaltyInput.value));
-
-        if(!Number.isFinite(n)){
-            n = penaltyCount;
-        }
-
-        n = Math.max(0,Math.min(MAX_PENALTY_COUNT,n));
-        penaltyCount = n;
-        penaltyInput.value = String(n);
-        savePenaltyCount();
-
-    });
-
-    penaltyItem.appendChild(penaltySetting);
-    list.appendChild(penaltyItem);
 
 }
 
@@ -4922,14 +4770,10 @@ function prepareRoundCards(){
         });
 
     /*
-     * 瑟瑟卡负责补足所有空出来的牌位。
-     * 普通牌库被替换后会产生空位；罚酒牌从 3 张减少后也会产生空位。
-     * 无论如何调整，最终目标始终是 9 张牌。
+     * 罚酒牌与空白牌都是系统固定牌，不属于可编辑牌库。
+     * 每轮固定加入 2 张罚酒牌 + 1 张空白牌。
      */
-    const bonusCardCount = Math.max(
-        MIN_PENALTY_COUNT,
-        Math.min(MAX_PENALTY_COUNT,penaltyCount)
-    );
+    const bonusCardCount = 3;
 
     const spicyTargetCount = Math.max(
         0,
@@ -5017,12 +4861,11 @@ function prepareRoundCards(){
 
     }
 
+    /* 固定牌：2 张罚酒牌 + 1 张空白牌（在 fixedBonusCards 中已定义好） */
     const bonusCards =
-        fixedBonusCards
-            .slice(0,bonusCardCount)
-            .map(card => ({
-                ...card
-            }));
+        fixedBonusCards.map(card => ({
+            ...card
+        }));
 
     const allCards =
         shuffleArray(
