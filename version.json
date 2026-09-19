@@ -1,0 +1,6 @@
+{
+  "version": "1.2.0",
+  "appVersion": "1.2",
+  "dataPolicy": "custom card data is kept in browser storage; version updates do not clear it",
+  "backupFile": "love-card-data-v1.2.json"
+}
