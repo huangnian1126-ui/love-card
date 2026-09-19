@@ -2262,6 +2262,536 @@ button{
 
 }
 
+
+/* =====================================================
+   v1.2 牌库备份区域
+   只出现在“我的设置”页面，不悬浮、不遮挡游戏
+   ===================================================== */
+.backup-card{
+    flex-shrink:0;
+    margin:0 2px 10px;
+    padding:13px 14px;
+    border:1px solid rgba(213,177,191,.28);
+    border-radius:16px;
+    background:rgba(255,255,255,.72);
+    box-shadow:0 6px 18px rgba(143,84,108,.05);
+}
+
+.backup-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:9px;
+}
+
+.backup-title{
+    min-width:0;
+    font-size:14px;
+    font-weight:600;
+    color:#6b4e5b;
+}
+
+.backup-version{
+    flex-shrink:0;
+    padding:3px 7px;
+    border-radius:8px;
+    background:rgba(248,229,237,.75);
+    color:#ad7890;
+    font-size:10px;
+}
+
+.backup-desc{
+    margin:0 0 10px;
+    color:#a58a95;
+    font-size:11px;
+    line-height:1.55;
+}
+
+.backup-actions{
+    display:flex;
+    gap:8px;
+}
+
+.backup-actions button{
+    flex:1;
+    min-width:0;
+    height:34px;
+    padding:0 10px;
+    border:1px solid rgba(193,132,155,.24);
+    border-radius:11px;
+    background:rgba(255,255,255,.88);
+    color:#9f7082;
+    font-size:11px;
+    letter-spacing:.5px;
+    box-shadow:none;
+}
+
+.backup-actions .backup-export{
+    background:linear-gradient(135deg,#f4dce6,#efd0dc);
+    color:#8e6073;
+}
+
+.backup-actions button:active{
+    transform:scale(.98);
+}
+
+/* =====================================================
+   视觉优化：更清晰的层级与安全间距
+   ===================================================== */
+/* =====================================================
+   v1.2 牌库设置 / 编辑页美化
+   ===================================================== */
+.page-header{
+    position:relative;
+}
+
+.page-header-title{
+    font-weight:700;
+    letter-spacing:3px;
+    color:#654956;
+}
+
+/* 设置首页：只保留分类列表 + 底部两个操作 */
+#collectionPage .collection-intro{
+    display:none;
+}
+
+#collectionPage .category-list{
+    padding-top:13px;
+    padding-bottom:10px;
+}
+
+.collection-bottom{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:7px 2px calc(3px + env(safe-area-inset-bottom));
+}
+
+.reset-round-btn,
+.backup-open-btn{
+    height:38px;
+    border-radius:20px;
+    padding:0 17px;
+    font-size:12px;
+    letter-spacing:1px;
+    white-space:nowrap;
+}
+
+.reset-round-btn{
+    min-width:0;
+    border:1px solid rgba(193,132,155,.24);
+    background:rgba(255,255,255,.68);
+    color:#a87387;
+    box-shadow:0 5px 14px rgba(150,90,112,.055);
+}
+
+.backup-open-btn{
+    min-width:96px;
+    border:1px solid rgba(193,132,155,.16);
+    background:linear-gradient(135deg,#e7b0c4,#d993ad);
+    color:#fff;
+    box-shadow:0 7px 17px rgba(190,113,143,.16);
+}
+
+.reset-round-btn:active,
+.backup-open-btn:active{
+    transform:scale(.96);
+}
+
+/* 编辑页：标题上移，右上角只放一个小加号 */
+#editorPage .page-header{
+    height:50px;
+}
+
+.editor-add-btn{
+    position:absolute;
+    right:0;
+    top:50%;
+    transform:translateY(-50%);
+    width:34px;
+    height:34px;
+    border:1px solid rgba(193,132,155,.22);
+    border-radius:11px;
+    background:rgba(255,255,255,.82);
+    color:#b26f8d;
+    font-size:22px;
+    font-weight:300;
+    line-height:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 5px 13px rgba(143,84,108,.08);
+}
+
+.editor-add-btn:active{
+    transform:translateY(-50%) scale(.9);
+}
+
+#editorPage .editor-summary,
+#editorPage .add-content-box{
+    display:none;
+}
+
+#editorPage .content-list{
+    margin-top:9px;
+    padding-top:0;
+}
+
+/* 牌库备份弹窗 */
+.backup-modal{
+    position:fixed;
+    inset:0;
+    z-index:420;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:22px;
+    background:rgba(81,48,62,.22);
+    backdrop-filter:blur(9px);
+    -webkit-backdrop-filter:blur(9px);
+}
+
+.backup-modal.show{
+    display:flex;
+}
+
+.backup-box{
+    width:min(320px,88vw);
+    border:1px solid rgba(255,255,255,.78);
+    border-radius:24px;
+    padding:20px 18px 17px;
+    background:linear-gradient(145deg,rgba(255,255,255,.97),rgba(251,236,243,.97));
+    box-shadow:0 24px 60px rgba(75,38,53,.20), inset 0 1px 0 rgba(255,255,255,.9);
+    position:relative;
+}
+
+.backup-close{
+    position:absolute;
+    top:12px;
+    right:12px;
+    width:29px;
+    height:29px;
+    border:1px solid rgba(193,132,155,.18);
+    border-radius:10px;
+    background:rgba(255,255,255,.72);
+    color:#b78396;
+    font-size:19px;
+    line-height:1;
+}
+
+.backup-close:active{
+    transform:scale(.9);
+}
+
+.backup-modal-title{
+    text-align:center;
+    color:#684c59;
+    font-size:19px;
+    font-weight:700;
+    letter-spacing:2px;
+    margin:2px 0 5px;
+}
+
+.backup-modal-subtitle{
+    text-align:center;
+    color:#b18d9b;
+    font-size:10px;
+    letter-spacing:1px;
+    margin-bottom:15px;
+}
+
+.backup-modal-actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:9px;
+}
+
+.backup-modal-action{
+    height:44px;
+    border-radius:14px;
+    border:1px solid rgba(193,132,155,.20);
+    background:rgba(255,255,255,.78);
+    color:#9d6d80;
+    font-size:12px;
+    letter-spacing:1px;
+    box-shadow:0 4px 12px rgba(143,84,108,.045);
+}
+
+.backup-modal-action.primary{
+    border:none;
+    background:linear-gradient(135deg,#dfa3b9,#ca809d);
+    color:#fff;
+    box-shadow:0 7px 16px rgba(190,113,143,.14);
+}
+
+.backup-modal-action:active{
+    transform:scale(.97);
+}
+
+/* 新增内容弹窗：极简，不重复显示分类名称或说明 */
+.add-modal .backup-box{
+    padding:19px 17px 16px;
+}
+
+.add-modal-title{
+    text-align:center;
+    color:#684c59;
+    font-size:18px;
+    font-weight:700;
+    letter-spacing:2px;
+    margin:2px 0 14px;
+}
+
+.add-modal-textarea{
+    display:block;
+    width:100%;
+    height:132px;
+    resize:none;
+    border:1px solid rgba(208,173,188,.26);
+    outline:none;
+    border-radius:14px;
+    background:#fbf3f7;
+    padding:12px;
+    color:#705563;
+    font-size:14px;
+    line-height:1.65;
+    box-sizing:border-box;
+}
+
+.add-modal-textarea:focus{
+    border-color:rgba(195,132,158,.45);
+    background:#fffafd;
+}
+
+.add-modal-unlock{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-top:10px;
+}
+
+.add-modal-unlock .unlock-label{
+    font-size:12px;
+    color:#a88694;
+}
+
+.add-modal-unlock .unlock-input{
+    width:68px;
+    height:34px;
+    border-radius:11px;
+    border:1px solid rgba(213,177,191,.32);
+    outline:none;
+    background:rgba(255,255,255,.82);
+    color:#806070;
+    font-size:12px;
+    text-align:center;
+}
+
+.add-modal-confirm{
+    width:100%;
+    height:40px;
+    margin-top:11px;
+    border:none;
+    border-radius:20px;
+    background:linear-gradient(135deg,#d993ad,#c77f9b);
+    color:#fff;
+    font-size:12px;
+    letter-spacing:2px;
+    box-shadow:0 7px 16px rgba(190,113,143,.14);
+}
+
+.add-modal-confirm:active{
+    transform:scale(.97);
+}
+
+@media(max-width:360px){
+    .collection-bottom{
+        gap:8px;
+    }
+    .reset-round-btn,
+    .backup-open-btn{
+        height:36px;
+        padding:0 13px;
+        font-size:11px;
+    }
+    .editor-add-btn{
+        width:32px;
+        height:32px;
+    }
+    .backup-box{
+        width:min(310px,90vw);
+        padding-left:15px;
+        padding-right:15px;
+    }
+}
+
+.sub-page{
+    padding-left:16px;
+    padding-right:16px;
+}
+
+.page-header{
+    height:50px;
+}
+
+.page-header-title{
+    padding-top:2px;
+}
+
+.collection-intro{
+    margin-top:5px;
+    padding:0 4px;
+}
+
+.collection-intro h2{
+    font-size:21px;
+    letter-spacing:.5px;
+}
+
+.collection-intro p{
+    margin-top:5px;
+}
+
+.category-list{
+    padding-top:14px;
+    padding-bottom:8px;
+}
+
+.category-item{
+    min-height:68px;
+    margin-bottom:9px;
+    padding:10px 12px;
+    border-radius:17px;
+    box-shadow:0 5px 18px rgba(143,84,108,.045);
+}
+
+.category-icon{
+    width:40px;
+    height:40px;
+    margin-right:10px;
+    border-radius:12px;
+}
+
+.category-icon .icon-image{
+    width:36px;
+    height:36px;
+}
+
+.category-name{
+    font-size:15px;
+}
+
+.category-count{
+    margin-top:4px;
+}
+
+.replace-setting{
+    margin-left:6px;
+}
+
+.replace-input{
+    width:54px;
+    height:29px;
+}
+
+.replace-auto{
+    padding:6px 8px;
+}
+
+.collection-bottom{
+    padding:4px 0 calc(2px + env(safe-area-inset-bottom));
+}
+
+.reset-round-btn{
+    height:38px;
+    min-width:132px;
+    padding:0 18px;
+    font-size:12px;
+}
+
+#drawPage{
+    padding-left:14px;
+    padding-right:14px;
+}
+
+.draw-header{
+    height:44px;
+}
+
+.draw-status{
+    max-width:390px;
+    margin-top:10px;
+    padding:0 6px;
+}
+
+.status-chip{
+    padding:5px 9px;
+    border-radius:11px;
+    background:rgba(255,255,255,.62);
+    box-shadow:0 3px 10px rgba(143,84,108,.035);
+}
+
+.cards-board{
+    gap:12px 8px;
+    padding:8px 2px;
+}
+
+.love-card{
+    max-width:106px;
+    filter:drop-shadow(0 7px 12px rgba(130,75,98,.08));
+}
+
+@media(max-height:700px){
+    .category-list{
+        padding-top:10px;
+    }
+    .category-item{
+        min-height:62px;
+        margin-bottom:7px;
+        padding:8px 10px;
+    }
+    .category-icon{
+        width:37px;
+        height:37px;
+    }
+    .category-icon .icon-image{
+        width:33px;
+        height:33px;
+    }
+    .backup-card{
+        padding:11px 12px;
+        margin-bottom:7px;
+    }
+    .backup-desc{
+        margin-bottom:8px;
+    }
+}
+
+@media(max-width:360px){
+    .sub-page{
+        padding-left:12px;
+        padding-right:12px;
+    }
+    .backup-actions{
+        gap:6px;
+    }
+    .backup-actions button{
+        height:32px;
+        font-size:10px;
+    }
+    .replace-input{
+        width:50px;
+    }
+    .replace-auto{
+        padding-left:6px;
+        padding-right:6px;
+    }
+}
+
 </style>
 </head>
 
@@ -2362,16 +2892,6 @@ button{
 
     </div>
 
-    <div class="collection-intro">
-
-        <h2>我的牌库</h2>
-
-        <p>
-            管理八种牌型的自定义内容
-        </p>
-
-    </div>
-
     <div
         class="category-list"
         id="categoryList">
@@ -2384,6 +2904,13 @@ button{
             class="reset-round-btn"
             id="resetRoundBtn">
             重置轮数
+        </button>
+
+        <button
+            type="button"
+            class="backup-open-btn"
+            id="backupOpenBtn">
+            牌库备份
         </button>
 
     </div>
@@ -2416,68 +2943,13 @@ button{
             幸运牌
         </div>
 
-    </div>
-
-    <div class="editor-summary">
-
-        <div class="editor-summary-top">
-
-            <div
-                class="editor-summary-icon"
-                id="editorIcon">
-                🍀
-            </div>
-
-            <div>
-
-                <div
-                    class="editor-summary-name"
-                    id="editorName">
-                    幸运牌
-                </div>
-
-                <div
-                    class="editor-summary-count"
-                    id="editorCount">
-                    0 条内容
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="add-content-box">
-
-        <textarea
-            class="content-input"
-            id="contentInput"
-            maxlength="1000"
-            placeholder="输入你想放进这张牌里的内容……&#10;&#10;需要倒计时的话，可以直接写：&#10;【计时：30秒】和对方深情对视。&#10;&#10;也支持：1分钟、1分30秒、90秒。"></textarea>
-
-        <div class="unlock-row">
-            <span class="unlock-label">从第几轮开始出现</span>
-            <input
-                type="number"
-                class="unlock-input"
-                id="unlockRoundInput"
-                min="1"
-                max="999"
-                value="1"
-                inputmode="numeric">
-        </div>
-
-        <div class="add-content-row">
-
-            <button
-                type="button"
-                class="add-btn"
-                id="addContentBtn">
-                ＋ 添加内容
-            </button>
-
-        </div>
+        <button
+            type="button"
+            class="editor-add-btn"
+            id="addContentBtn"
+            aria-label="添加内容">
+            ＋
+        </button>
 
     </div>
 
@@ -2692,6 +3164,104 @@ button{
 
 
 <!-- =====================================================
+     牌库备份弹窗
+     ===================================================== -->
+
+<div
+    class="backup-modal"
+    id="backupModal">
+
+    <div class="backup-box">
+
+        <button
+            type="button"
+            class="backup-close"
+            id="backupCloseBtn"
+            aria-label="关闭">
+            ×
+        </button>
+
+        <div class="backup-modal-title">牌库备份</div>
+        <div class="backup-modal-subtitle">LOVE CARD · v1.2</div>
+
+        <div class="backup-modal-actions">
+            <button
+                type="button"
+                class="backup-modal-action primary"
+                id="v11Export">
+                导出牌库
+            </button>
+
+            <button
+                type="button"
+                class="backup-modal-action"
+                id="v11Import">
+                导入牌库
+            </button>
+        </div>
+
+        <input
+            id="v11File"
+            type="file"
+            accept=".json,application/json"
+            hidden>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     添加内容弹窗
+     ===================================================== -->
+
+<div
+    class="backup-modal add-modal"
+    id="addModal">
+
+    <div class="backup-box">
+
+        <button
+            type="button"
+            class="backup-close"
+            id="addModalCloseBtn"
+            aria-label="关闭">
+            ×
+        </button>
+
+        <div class="add-modal-title">添加内容</div>
+
+        <textarea
+            class="add-modal-textarea"
+            id="contentInput"
+            maxlength="1000"
+            placeholder=""></textarea>
+
+        <div class="add-modal-unlock">
+            <span class="unlock-label">从第几轮开始</span>
+            <input
+                type="number"
+                class="unlock-input"
+                id="unlockRoundInput"
+                min="1"
+                max="999"
+                value="1"
+                inputmode="numeric">
+        </div>
+
+        <button
+            type="button"
+            class="add-modal-confirm"
+            id="addContentConfirmBtn">
+            添加
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
      编辑弹窗
      ===================================================== -->
 
@@ -2779,6 +3349,61 @@ button{
     id="toast">
 </div>
 
+
+<script>
+/* =====================================================
+   自动版本更新
+   - 每次打开游戏都会向同目录的 version.json 查询最新版本
+   - 发现新版后，使用版本号作为 URL 参数重新加载网页
+   - 只更新网页代码，不清除 localStorage，因此词条/卡牌数据会保留
+   ===================================================== */
+const CURRENT_APP_VERSION = "1.2.0";
+const VERSION_CHECK_KEY = "loveCard_lastCheckedVersion_v1";
+
+async function checkForAppUpdate(){
+    try{
+        const versionUrl = `./version.json?t=${Date.now()}`;
+        const response = await fetch(versionUrl, {
+            cache: "no-store",
+            headers: { "Cache-Control": "no-cache" }
+        });
+
+        if(!response.ok){
+            return;
+        }
+
+        const info = await response.json();
+        const latestVersion = String(info.version || "").trim();
+
+        if(!latestVersion || latestVersion === CURRENT_APP_VERSION){
+            try{
+                localStorage.setItem(VERSION_CHECK_KEY, latestVersion || CURRENT_APP_VERSION);
+            }catch(error){}
+            return;
+        }
+
+        /* 防止刷新参数异常导致重复跳转。数据不会被清除。 */
+        const url = new URL(window.location.href);
+        if(url.searchParams.get("appVersion") === latestVersion){
+            return;
+        }
+
+        try{
+            localStorage.setItem(VERSION_CHECK_KEY, latestVersion);
+        }catch(error){}
+
+        url.searchParams.set("appVersion", latestVersion);
+        window.location.replace(url.href);
+
+    }catch(error){
+        /* 网络暂时不可用时继续使用当前版本，不影响游戏和本地词条。 */
+        console.warn("版本检查失败，继续使用当前版本：", error);
+    }
+}
+
+/* 尽早开始检查；不会阻塞游戏初始化。 */
+checkForAppUpdate();
+</script>
 
 <script>
 
@@ -3302,6 +3927,45 @@ function normalizeCardItem(item){
 
 }
 
+/*
+ * 自动按“从第几轮开始出现”排序。
+ * 轮数越小越靠前；同一轮保持原来的添加顺序。
+ * 这样即使先添加第 5 轮、再添加第 1 轮，第 1 轮也会自动排到前面。
+ */
+function sortContentList(list){
+
+    if(!Array.isArray(list)){
+        return list;
+    }
+
+    const normalized = list.map(normalizeCardItem);
+
+    normalized.sort((a,b) => {
+
+        const roundA = parseUnlockRound(a.unlockRound);
+        const roundB = parseUnlockRound(b.unlockRound);
+
+        return roundA - roundB;
+
+    });
+
+    return normalized;
+
+}
+
+function sortAllCustomData(){
+
+    categories.forEach(category => {
+
+        if(Array.isArray(customData[category.id])){
+            customData[category.id] =
+                sortContentList(customData[category.id]);
+        }
+
+    });
+
+}
+
 function loadData(){
 
     try{
@@ -3347,6 +4011,7 @@ function loadData(){
 }
 
 let customData = loadData();
+sortAllCustomData();
 
 function saveData(){
 
@@ -4274,16 +4939,6 @@ function openEditor(categoryId){
         category.name;
 
     document.getElementById(
-        "editorIcon"
-    ).innerHTML =
-        iconHTML(category.icon);
-
-    document.getElementById(
-        "editorName"
-    ).textContent =
-        category.name;
-
-    document.getElementById(
         "contentInput"
     ).value = "";
 
@@ -4294,6 +4949,7 @@ function openEditor(categoryId){
         unlockInput.value = "1";
     }
 
+    closeAddModal();
     renderEditor();
 
     history.pushState(
@@ -4320,11 +4976,6 @@ function renderEditor(){
 
     const data =
         customData[currentCategoryId];
-
-    document.getElementById(
-        "editorCount"
-    ).textContent =
-        data.length + " 条内容";
 
     const list =
         document.getElementById("contentList");
@@ -4486,6 +5137,44 @@ function parseUnlockRound(value){
 
 }
 
+function openAddModal(){
+
+    const modal = document.getElementById("addModal");
+    const input = document.getElementById("contentInput");
+    const unlockInput = document.getElementById("unlockRoundInput");
+
+    if(!modal){
+        return;
+    }
+
+    if(input){
+        input.value = "";
+    }
+
+    if(unlockInput){
+        unlockInput.value = "1";
+    }
+
+    modal.classList.add("show");
+
+    setTimeout(function(){
+        if(input){
+            input.focus();
+        }
+    },80);
+
+}
+
+function closeAddModal(){
+
+    const modal = document.getElementById("addModal");
+
+    if(modal){
+        modal.classList.remove("show");
+    }
+
+}
+
 function addContent(){
 
     if(!currentCategoryId){
@@ -4520,6 +5209,10 @@ function addContent(){
         text:text,
         unlockRound:unlockRound
     });
+
+    /* 添加后立即按轮次自动排序，避免列表顺序混乱。 */
+    customData[currentCategoryId] =
+        sortContentList(customData[currentCategoryId]);
 
     saveData();
 
@@ -4619,6 +5312,10 @@ function saveEdit(){
         text:text,
         unlockRound:unlockRound
     };
+
+    /* 修改轮次后同样自动重新排序。 */
+    customData[currentCategoryId] =
+        sortContentList(customData[currentCategoryId]);
 
     saveData();
 
@@ -6498,7 +7195,51 @@ document
             event.preventDefault();
             event.stopPropagation();
 
+            openAddModal();
+
+        }
+    );
+
+
+document
+    .getElementById("addContentConfirmBtn")
+    .addEventListener(
+        "click",
+        function(event){
+
+            event.preventDefault();
+            event.stopPropagation();
+
             addContent();
+
+        }
+    );
+
+
+document
+    .getElementById("addModalCloseBtn")
+    .addEventListener(
+        "click",
+        function(event){
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            closeAddModal();
+
+        }
+    );
+
+
+document
+    .getElementById("addModal")
+    .addEventListener(
+        "click",
+        function(event){
+
+            if(event.target === this){
+                closeAddModal();
+            }
 
         }
     );
@@ -6741,14 +7482,100 @@ showOnlyPage("home");
 </script>
 
 <script>
+/* 如果旧版本曾注册过 Service Worker，先让它更新；不触碰 localStorage。 */
 if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-        navigator.serviceWorker.register("./sw.js")
-            .catch(error => {
-                console.error("Service Worker 注册失败:", error);
-            });
+    window.addEventListener("load", async () => {
+        try {
+            const registrations = await navigator.serviceWorker.getRegistrations();
+            for (const registration of registrations) {
+                await registration.update().catch(() => {});
+            }
+        } catch (error) {
+            console.warn("Service Worker 更新检查失败：", error);
+        }
     });
 }
+</script>
+
+<script id="v11-data-tools">
+(function(){
+  const VERSION = "1.2.0";
+  const KEY = "love_card_custom_backup_v1";
+  const backupModal = document.getElementById("backupModal");
+  const openBtn = document.getElementById("backupOpenBtn");
+  const closeBtn = document.getElementById("backupCloseBtn");
+  const exportBtn = document.getElementById("v11Export");
+  const importBtn = document.getElementById("v11Import");
+  const fileInput = document.getElementById("v11File");
+
+  if(!backupModal || !openBtn || !closeBtn || !exportBtn || !importBtn || !fileInput) return;
+
+  function snapshot(){
+    const all={};
+    for(let i=0;i<localStorage.length;i++){
+      const k=localStorage.key(i);
+      if(k!==null) all[k]=localStorage.getItem(k);
+    }
+    return {__version:VERSION,__allLocalStorage:all};
+  }
+
+  function showBackupModal(){
+    backupModal.classList.add("show");
+  }
+
+  function closeBackupModal(){
+    backupModal.classList.remove("show");
+  }
+
+  function exportData(){
+    const data=snapshot();
+    try{localStorage.setItem(KEY,JSON.stringify(data));}catch(e){}
+    const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json;charset=utf-8"});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement("a");
+    a.href=url;
+    a.download="love-card-data-v1.2.json";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+    closeBackupModal();
+    showToast("牌库已导出");
+  }
+
+  function importData(file){
+    const r=new FileReader();
+    r.onload=function(){
+      try{
+        const data=JSON.parse(r.result);
+        const all=data&&data.__allLocalStorage;
+        if(!all||typeof all!=="object"||Array.isArray(all)) throw new Error("invalid");
+        Object.keys(all).forEach(k=>localStorage.setItem(k,all[k]));
+        localStorage.setItem(KEY,JSON.stringify(data));
+        closeBackupModal();
+        showToast("牌库已导入，正在刷新");
+        setTimeout(()=>location.reload(),550);
+      }catch(e){
+        showToast("导入失败，请选择正确的牌库文件");
+      }
+    };
+    r.onerror=function(){showToast("导入失败，无法读取文件");};
+    r.readAsText(file);
+  }
+
+  openBtn.addEventListener("click",showBackupModal);
+  closeBtn.addEventListener("click",closeBackupModal);
+  backupModal.addEventListener("click",function(e){
+    if(e.target===backupModal) closeBackupModal();
+  });
+  exportBtn.addEventListener("click",exportData);
+  importBtn.addEventListener("click",()=>fileInput.click());
+  fileInput.addEventListener("change",e=>{
+    const file=e.target.files&&e.target.files[0];
+    if(file) importData(file);
+    e.target.value="";
+  });
+})();
 </script>
 
 </body>
